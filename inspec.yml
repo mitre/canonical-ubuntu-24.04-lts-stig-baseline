@@ -10,8 +10,7 @@ summary: InSpec profile aligned to STIG Guidance for Canonical Ubuntu 24.04 LTS
 description: null
 version: 1.1.0
 depends: []
-inspec_version: |
-  "~>6.0"
+inspec_version: "~>6.0"
 
 supports:
   - platform-name: ubuntu
@@ -34,7 +33,7 @@ supports:
 ###
 
 inputs:
-  
+
   - name: sudoers_config_files
     description: 'The files and directories you keep your sudoers configs'
     type: Array
@@ -42,13 +41,13 @@ inputs:
       - '/etc/sudoers'
       - '/etc/sudoers.d/*'
 
-  
+
   - name: passwordless_admins
     description: List of administrative groups permitted by ISSO to have NOPASSWD set in sudoers files
     type: Array
     value: []
 
-  
+
   - name: sshd_config_values
     description: 'The agreed sshd server config values for the organization'
     type: Hash
@@ -56,13 +55,13 @@ inputs:
       GSSAPIAuthentication: 'no'
       ClientAliveInterval: '600'
 
-  
+
   - name: alternate_mfa_method
     description: Name of the MFA method in place on the system (leave blank if using the default SSSD, give the name if using an approved alternate method)
     type: String
     value: ''
 
-  
+
   - name: sssd_conf_files
     description: File and directory globs to check for SSSD configuration
     type: Array
@@ -70,7 +69,7 @@ inputs:
       - /etc/sssd/sssd.conf
       - /etc/sssd/conf.d/*.conf
 
-  
+
   - name: ssh_host_key_dirs
     description: Directories where public host SSH keys for the server are stored
     type: Array
@@ -78,32 +77,32 @@ inputs:
       - /etc/ssh/
       - /home/
 
-  
+
   - name: ssh_pub_key_mode
     description: All public ssh keyfiles on the filesystem should be equal or less permissive than this octet
     type: String
     value: '0644'
 
 
-  
+
   - name: ssh_private_key_mode
     description: All private ssh keyfiles on the filesystem should be equal or less permissive than this octet
     type: String
     value: '0640'
 
-  
+
   - name: audit_conf_mode
     description: All audit config files on the filesystem should be equal or less permissive than this octet
     type: String
     value: '0640'
 
-  
+
   - name: audit_tool_mode
     description: All audit config tools on the filesystem should be equal or less permissive than this octet
     type: String
     value: '0755'
 
-  
+
   - name: expected_modes
     description: Expected modes of system files and/or directories
     type: Hash
@@ -123,169 +122,169 @@ inputs:
       auditd_conf: "0640"
       journal: "2640"
 
-  
+
   - name: initialization_file_mode
     description: All initialization files (.bash_profile etc) should have permissions equal to or less than this octet
     type: String
     value: '0740'
 
-  
+
   - name: exempt_ini_files
     description: List of initialization files that are exempt from permissions checks
     type: Array
-    value: [] 
-    
-  
+    value: []
+
+
   - name: alternate_ini_file_dirs
     description: List of directories, other than a user's homedir, to search for initialization files
     type: Array
     value: []
 
-  
+
   - name: alert_method
     description: 'The method used to provide real-time information to the ISSO or AO'
     type: String
     value: email
 
-  
+
   - name: peripherals_package
     description: "The name of the package used to managed connected peripherals"
     type: String
     value: "usbguard"
 
-  
+
   - name: peripherals_service
     description: "The name of the service used to managed connected peripherals"
     type: String
     value: "usbguard"
 
-  
+
   - name: allow_container_openssh_server
     description: "If the OpenSSH Server has been approved outside standard container guidance to default transprots"
     type: Boolean
     value: false
 
-  
+
   - name: maxclassrepeat
     description: "The maximum number of repeating characters of the same character class for passwords"
     type: Numeric
     value: 4
 
-  
+
   - name: maxrepeat
     description: "The maximum number of repeating characters when passwords are updated"
     type: Numeric
     value: 3
 
-  
+
   - name: minclass
     description: "The minimum number of character classes that should change when passwords are updated"
     type: Numeric
     value: 4
 
-  
+
   - name: difok
     description: "The minimum number of required changed characters when passwords are updated."
     type: Numeric
     value: 8
 
-  
+
   - name: pass_min_days
     description: "The minimum password lifetime restriction in days"
     type: Numeric
     value: 1
 
-  
+
   - name: pass_max_days
     description: "The maximum password lifetime restriction in days"
     type: Numeric
     value: 60
 
-  
+
   - name: separate_filesystem_exempt
     description: "The system manages file system useage, LVM/XFS etc. or is managed by the service provider"
     type: Boolean
     value: false
 
-  
+
   - name: disable_slow_controls
     description: Controls that are known to consistently have long run times can be disabled with this attribute
     type: Boolean
     value: false
 
-  
+
   - name: disconnected_system
     description: The system is not connected to the public internet or doesn't have access to a RPM package server
     type: Boolean
     value: false
 
-  
+
   - name: use_fips
     description: "'(boolean)' Set to true if the system is required to use FIPS Encryption"
     type: Boolean
     value: true
 
-  
+
   - name: data_at_rest_exempt
     description: "'(boolean) Set to true if the system is exempt from using Data at Rest"
     type: Boolean
     value: false
 
-  
+
   - name: min_reuse_generations
     description: Number of reuse generations
     type: Numeric
     value: 5
 
-  
+
   - name: min_retry
     description: Number of permitted password retries
     type: Numeric
     value: 3
 
-  
+
   - name: pass_min_len
     description: Minimum number of characters for a new password
     type: Numeric
     value: 15
 
-  
+
   - name: faillock_tally
     description: The default SELinux security context type of the non-default tally directory
     type: String
     value: "faillog_t"
 
-  
+
   - name: network_router
     description: This indicates if the system is acting as a rounter on the network
     type: Boolean
     value: false
 
-  
+
   - name: core_dump_expected_value
     description: Expected value for the core dump setting
     type: Numeric
     value: 0
 
-  
+
   - name: concurrent_sessions_permitted
     description: Number of permitted concurrent sessions on this system
     type: Numeric
     value: 10
 
-  
+
   - name: grub_conf_path
     description: Grub config filepath
     type: String
     value: '/etc/grub2.cfg'
 
-  
+
   - name: grub_user_conf_path
     description: Grub user config filepath
     type: String
     value: '/boot/grub2/user.cfg'
 
-  
+
   - name: disallowed_grub_superusers
     description: List of default users that cannot be the default GRUB superuser
     type: Array
@@ -294,14 +293,14 @@ inputs:
       - admin
       - administrator
 
-  
+
   - name: exempt_home_users
     description: Users exempt from home directory-based controls in array format
     type: Array
     value:
       - root
 
-  
+
   - name: non_interactive_shells
     description: These shells do not allow a user to login
     type: Array
@@ -313,43 +312,43 @@ inputs:
       - "/bin/sync"
       - "/bin/true"
 
-  
+
   - name: interactive_system_account_exemptions
     description: System accounts that are exempt from the non-interactive shell requirement
     type: Array
     value:
       - root
 
-  
+
   - name: user_accounts
     description: Accounts of known managed users
     type: Array
     value: ["vagrant"]
 
-  
+
   - name: unapproved_ssl_tls_versions
     description:
     type: Array
-    value: 
+    value:
       - -VERS-DTLS0.9
       - -VERS-SSL3.0
       - -VERS-TLS1.0
       - -VERS-TLS1.1
       - -VERS-DTLS1.0
 
-  
+
   - name: unsuccessful_attempts
     description: The number of allowed failed login attempts
     type: Numeric
     value: 3
 
-  
+
   - name: bluetooth_installed
     description: "Device or operating system has a Bluetooth adapter installed"
     type: Boolean
     value: true
 
-  
+
   - name: known_system_accounts
     description: System accounts that support approved system activities.
     type: Array
@@ -375,73 +374,73 @@ inputs:
       - systemd-bus-proxy
       - systemd-network
 
-  
+
   - name: smart_card_enabled
     description: Smart card status of the system
     type: Boolean
     value: false
 
-  
+
   - name: file_integrity_tool
     description: Name of tool
     type: String
     value: "aide"
 
-  
+
   - name: authoritative_timeserver
     description: Timeserver used in /etc/chrony.conf
     type: String
     value: 0.us.pool.ntp.mil
 
-  
+
   - name: non_removable_media_fs
     description: File systems listed in /etc/fstab which are not removable media devices
     type: Array
     value: ["/", "/tmp", "none", "/home", "/tmpfs"]
 
-  
+
   - name: private_key_files
     description: List of full paths to private key files on the system
     type: Array
     value: []
 
-  
+
   - name: root_ca_file
     description: Path to an accepted trust anchor certificate file (DoD)
     type: String
     value: "/etc/sssd/pki/sssd_auth_ca_db.pem"
 
-  
+
   - name: unsuccessful_attempts
     description: Maximum number of unsuccessful attempts before lockout
     type: Numeric
     value: 3
 
-  
+
   - name: system_inactivity_timeout
     description: Maximum system inactivity timeout (time in seconds).
     type: Numeric
     value: 900
 
-  
+
   - name: days_of_inactivity
     description: Maximum number of days if account inactivity before account lockout
     type: Numeric
     value: 35
 
-  
+
   - name: temporary_accounts
     description: Temporary user accounts
     type: Array
     value: []
 
-  
+
   - name: temporary_account_max_days
     description: Max number of days a temporary account should be permitted to exist
     type: Numeric
     value: 3
 
-  
+
   - name: banner_message_text_cli
     description: Banner message text for command line interface logins.
     type: String
@@ -465,7 +464,7 @@ inputs:
       communications and work product are private and confidential. See User \
       Agreement for details."
 
-  
+
   - name: banner_message_text_ral
     description: Banner message text for remote access logins.
     type: String
@@ -489,49 +488,49 @@ inputs:
       communications and work product are private and confidential. See User \
       Agreement for details."
 
-  
+
   - name: fail_interval
     description: Interval of time in which the consecutive failed logon attempts must occur in order for the account to be locked out (time in seconds)
     type: Numeric
     value: 900
 
-  
+
   - name: lockout_time
     description: Minimum amount of time account must be locked out after failed logins. '0' indicates an account should not unlock until reset by an admin.
     type: Numeric
     value: 0
 
-  
+
   - name: system_activity_timeout
     description: The expected maximum delay in seconds before the system will lock the session
     type: Numeric
     value: 900
 
-  
+
   - name: log_directory
     description: Documented tally log directory
     type: String
     value: /var/log/faillock
 
-  
+
   - name: sshd_client_alive_count_max
     description: all network connections associated with SSH traffic are terminated at the end of the session or after 10 minutes of inactivity
     type: Numeric
     value: 1
 
-  
+
   - name: linux_threat_prevention_package
     description: Endpoint Security Linux Threat Prevention Tool Package
     type: String
     value: mcafeetp
 
-  
+
   - name: linux_threat_prevention_service
     description: Endpoint Security Linux Threat Prevention Tool Service
     type: String
     value: mfetpd
 
-  
+
   - name: remove_xorg_x11_server_packages
     description: Graphical Display Manager must not be installed
     type: Array
@@ -541,13 +540,13 @@ inputs:
       - xorg-x11-server-utils
       - xorg-x11-server-Xwayland
 
-  
+
   - name: gui_required
     description: Set to true if there is a documented requirement for the target system to have a graphical user interface enabled
     type: Boolean
     value: false
 
-  
+
   - name: disk_error_action
     description: Must take appropriate action when an audit processing failure occurs.
     type: Array
@@ -556,7 +555,7 @@ inputs:
       - SINGLE
       - HALT
 
-  
+
   - name: disk_full_action
     description: Audit system must take appropriate action when the audit storage volume is full.
     type: Array
@@ -565,37 +564,37 @@ inputs:
       - SINGLE
       - HALT
 
-  
+
   - name: admin_space_left
     description: The percentage of space left on the audit storage volume that will trigger the system to take action
     type: String
     value: "5%"
 
-  
+
   - name: admin_space_left_action
     description: Action the system should take when the audit storage volume is full
     type: String
     value: "SINGLE"
 
-  
+
   - name: max_log_file_action
     description: Action the system should take when the audit files have reached maximum size
     type: String
     value: "ROTATE"
 
-  
+
   - name: audit_flush_threshold
     description: Threshold at which the audit system should flush the audit logs to disk
     type: Numeric
     value: 100
 
-  
+
   - name: permit_root_login
     description: Whether to permit direct logons to the root account using remote access via SSH
     type: String
     value: "no"
 
-  
+
   - name: permissions_for_shells
     description: Define default permissions for logon and non-logon shells.
     type: Hash
@@ -605,13 +604,13 @@ inputs:
       cshrc_umask: "077"
       profile_umask: "077"
 
-  
+
   - name: permissions_for_libs
     description: Define default permissions for system libraries
     type: String
     value: "0755"
 
-  
+
   - name: system_libraries
     description: Define system libraries which should have strict permissions enforced
     type: Array
@@ -621,7 +620,7 @@ inputs:
       - /usr/lib
       - /usr/lib64
 
-  
+
   - name: system_command_dirs
     description: Directories containing system command executables
     type: Array
@@ -634,7 +633,7 @@ inputs:
       - /usr/local/bin
       - /usr/local/sbin
 
-  
+
   - name: audit_tools
     description: Paths to tools related to audit function
     tpye: Array
@@ -647,40 +646,40 @@ inputs:
       - /sbin/rsyslogd
       - /sbin/augenrules
 
-  
+
   - name: required_system_accounts
     description: List of system accounts permitted to group-own system libraries
     type: Array
     value:
       - root
 
-  
+
   - name: var_log_messages_group
     description: Group owner of /var/log/messages file
     type: Array
     value:
       - root
 
-  
+
   - name: sssd_certificate_verification
     description: Certificate status checking for multifactor authentication.
     type: String
     value: "ocsp_dgst=sha1"
 
-  
+
   - name: var_log_audit_group
     description: Group owner of /var/log/audit/audit.log
     type: Array
     value:
       - root
 
-  
+
   - name: use_fapolicyd
     description: Whether to use fapolicyd, similar to SELinux whitelisting
     type: Boolean
     value: true
 
-  
+
   - name: pam_auth_files
     description: THe pam.d auth paths
     type: Hash
@@ -689,19 +688,19 @@ inputs:
       password-auth: /etc/pam.d/password-auth
       smartcard-auth: /etc/pam.d/smartcard-auth
 
-  
+
   - name: security_faillock_conf
     description: The security faillock configuration file
     type: String
     value: /etc/security/faillock.conf
 
-  
+
   - name: external_firewall
     description: "The system use an external firewall or service vs a local firewall service"
     type: Boolean
     value: false
 
-  
+
   - name: firewalld_properties
     description: Ports, Protocols and Services Rules
     type: Hash
@@ -714,7 +713,7 @@ inputs:
         - dhcpv6-client
         - ssh
 
-  
+
   - name: mount_tmp_options
     description: rhel_08_04012[3-5] - RHEL 9 must mount /tmp with the (nodev|nosuid|noexec) option.
     type: Hash
@@ -723,37 +722,37 @@ inputs:
       nosuid: false
       noexec: false
 
-  
+
   - name: skip_endpoint_security_tool
     description: rhel_08_010001 - The RHEL 8 operating system must implement the Endpoint Security for Linux Threat Prevention tool.
     type: Boolean
     value: false
 
-  
+
   - name: non_default_tally_dir
     description: The directory used by pam_faillock
     type: String
     value: /var/log/faillock
 
-  
+
   - name: users_allowed_blank_passwords
     description: Users allowed to not have a password set
     type: Array
     value: []
 
-  
+
   - name: mail_package
     description: Command that is used to send email messages
     type: String
     value: mailx
 
-  
+
   - name: rpm_gpg_file
     description: Red Hat uses GPG keys labels defined in file
     type: String
     value: /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
 
-  
+
   - name: rpm_gpg_keys
     description: Red Hat uses GPG keys labels with matching fingerprints
     type: Hash
@@ -761,19 +760,19 @@ inputs:
       "release key 2": "567E 347A D004 4ADE 55BA  8A5F 199E 2F91 FD43 1D51"
       "auxiliary key": "6A6A A7C9 7C88 90AE C6AE  BFE2 F76F 66C3 D408 2792"
 
-  
+
   - name: stop_idle_session_sec
     description: Number of seconds the system can be idle before session timeout
     type: Numeric
     value: 900
 
-  
+
   - name: login_prompt_delay
     description: Delay in seconds before the login prompt is displayed again after a failed login attempt
     type: Numeric
     value: 4
 
-  
+
   - name: logging_conf_files
     description: Configuration files for the logging service
     type: Array
@@ -781,91 +780,91 @@ inputs:
       - /etc/rsyslog.conf
       - /etc/rsyslog.d/*.conf
 
-  
+
   - name: alternative_logging
     description: Flag to indicate that a non-standard logging method is in use (instead of auditd and other built-in OS logging features)
     type: Boolean
     value: false
 
-  
+
   - name: alternative_logging_method
     description: Alternative tool for logging (instead of auditd and other built-in OS logging features) - leave blank if using default OS tools
     type: String
     value: ""
 
-  
+
   - name: audit_storage_threshold
     description: The percentage threshold of space remaining in the audit storage volume before the system should take action
     type: Numeric
     value: 25
 
-  
+
   - name: autofs_required
     description: Set to true if there is a documented requirement for the target system to have autofs enabled
     type: Boolean
     value: false
 
-  
+
   - name: usb_storage_required
     description: Set to true if there is a documented requirement for the target system to use USB storage
     type: Boolean
     value: false
 
-  
+
   - name: tftp_required
     description: Set to true if there is a documented requirement for the target system to use TFTP
     type: Boolean
     value: false
 
-  
+
   - name: ftp_required
     description: Set to true if there is a documented requirement for the target system to use FTP
     type: Boolean
     value: false
 
-  
+
   - name: gssproxy_required
     description: Set to true if there is a documented requirement for the target system to use gss_proxy
     type: Boolean
     value: false
 
-  
+
   - name: iprutils_required
     description: Set to true if there is a documented requirement for the target system to use iprutils
     type: Boolean
     value: false
-  
-  
+
+
   - name: tuned_required
     description: Set to true if there is a documented requirement for the target system to use tuned
     type: Boolean
     value: false
 
-  
+
   - name: quagga_required
     description: Set to true if there is a documented requirement for the target system to use quagga
     type: Boolean
     value: false
 
-    
-  
+
+
   - name: alternate_firewall_tool
     description: Alternate firewall tool (other than firewalld) in use for the system - leave blank if using default OS tools
     type: String
     value: ""
 
-  
+
   - name: wifi_hardware
     description: Set to false if there is no wireless network capability on board the system
     type: Boolean
     value: true
 
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
   - name: audit_rule_keynames
     description: The audit rules to be applied to the system
     type: Hash
@@ -945,7 +944,7 @@ inputs:
       '/var/log/tallylog'             : 'logins'
     }
 
-  
+
   # Default values for expected keynames for all audit rules
   # NOTE: DO NOT override this hash
   # If you need to override these values, do so via adding the desired key/value to
@@ -967,21 +966,21 @@ inputs:
       '/usr/bin/setfacl'              : 'perm_chng',
     }
 
-  
+
   - name: device_file_locations
     description: Directories where device files live
     type: Array
-    value: 
+    value:
       - /dev
 
-  
+
   - name: exempt_device_files
     description: Full filepaths of files that are exempt from device file checks if the target host is a virtual machine
     type: Array
     value:
       - /dev/vmci
 
-  
+
   - name: approved_ppsm_clsa
     description: Defines allowed ports, protocols, and services as defined in the approved site or program Ports, Protocols, and Services Management Component Local Service Assessment (PPSM CLSA)
     type: Hash
@@ -991,146 +990,146 @@ inputs:
       services:
         - ssh
 
-  
+
   - name: approved_openssh_server_conf
     description: Config values expected for openssh server (order matters, so these values are comma-delimited strings and not arrays)
     type: Hash
-    value: 
+    value:
       ciphers: aes256-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes128-ctr
       macs: hmac-sha2-256-etm@openssh.com,hmac-sha2-256,hmac-sha2-512-etm@openssh.com,hmac-sha2-512
 
-  
+
   - name: password_hash_rounds
     description: Number of rounds for hashing passwords
     type: Numeric
     value: 5000
 
-  
+
   - name: expected_panic_value
     description: Expected value for the audit.rules '-f' flag
     type: Numeric
     value: 2
 
-  
+
   - name: high_availability_required
     description: Set to true if there is a documented requirement for the target system to have high availability (and therefore cannot panic on audit failure)
     type: Boolean
     value: false
 
-  
+
   - name: approved_crypto_backend
     description: FIPS 140-2/140-3 approved cryptographic module conf file
     type: String
     value: /etc/crypto-policies/back-ends/libreswan.config
 
-  
+
   - name: expected_audit_backlog_limit
     description: Expected value for the audit backlog limit
     type: Numeric
     value: 8192
 
-  
+
   - name: send_redirects
     description: Set to true if there is a requirement for this system to be able to send redirects that is documented with the ISSO
     type: Boolean
     value: false
 
-  
+
   - name: forwarding
     description: Set to true if there is a requirement for this system to be able forward packets that is documented with the ISSO
     type: Boolean
     value: false
 
-  
+
   - name: vsyscall_required
     description: Set to true if there is a requirement for this system to allow virtual system calls that is documented with the ISSO
     type: Boolean
     value: false
 
-  
+
   - name: storing_core_dumps_required
     description: Set to true if there is a requirement for this system to store core dumps that is documented with the ISSO
     type: Boolean
     value: false
 
-  
+
   - name: core_dumps_required
     description: Set to true if there is a requirement for this system to enable core dumps that is documented with the ISSO
     type: Boolean
     value: false
 
-  
+
   - name: atm_required
     description: Set to true if there is a requirement for this system to enable the Asynchronous Transfer Mode kernel module that is documented with the ISSO
     type: Boolean
     value: false
 
-  
+
   - name: can_required
     description: Set to true if there is a requirement for this system to enable the Controller Area Network kernel module that is documented with the ISSO
     type: Boolean
     value: false
 
-  
+
   - name: firewire_required
     description: Set to true if there is a requirement for this system to enable the FireWire kernel module that is documented with the ISSO
     type: Boolean
     value: false
 
-  
+
   - name: sctp_required
     description: Set to true if there is a requirement for this system to enable the Stream Control Transmission Protocol (SCTP) kernel module that is documented with the ISSO
     type: Boolean
     value: false
 
-  
+
   - name: tipc_required
     description: Set to true if there is a requirement for this system to enable the Transparent Inter Process Communication (TIPC) kernel module that is documented with the ISSO
     type: Boolean
     value: false
 
-  
+
   - name: cramfs_required
     description: Set to true if there is a requirement for this system to enable the Compressed ROM/RAM file system (cramfs) that is documented with the ISSO
     type: Boolean
     value: false
 
-  
+
   - name: bluetooth_required
     description: Set to true if there is a requirement for this system to enable Bluetooth that is documented with the ISSO
     type: Boolean
     value: false
 
-  
+
   - name: accept_ra_required
     description: Set to true if there is a requirement for this system to accept router advertisements that is documented with the ISSO
     type: Boolean
     value: false
 
-  
+
   - name: x11_forwarding_required
     description: Set to true if there is a requirement for this system to enable X11 forwarding that is documented with the ISSO
     type: Boolean
     value: false
 
-  
+
   - name: gui_automount_required
     description: Set to true if there is a requirement for this system to enable graphical user interface automount function that is documented with the ISSO
     type: Boolean
     value: false
 
-  
+
   - name: gui_autorun_required
     description: Set to true if there is a requirement for this system to enable graphical user interface autorun function that is documented with the ISSO
     type: Boolean
     value: false
-  
-  
+
+
   - name: chrony_config_file
     description: File to sync internal information system clocks
     type: String
     value: "/etc/chrony/chrony.conf"
-  
+
   #SV-260526
   - name: disable_fips
     description: Boolean to disable/enable FIPS testing
@@ -1160,8 +1159,8 @@ inputs:
     description: Location of audit offload config file
     type: String
     value: '/etc/cron.weekly/audit-offload'
-  
-  #SV-260599, SV-260603 
+
+  #SV-260599, SV-260603
   - name: admin_groups
     description: Array of groups that have administrative privileges
     type: Array
