@@ -1,21 +1,19 @@
 control 'SV-270662' do
   title 'Ubuntu 24.04 LTS must have the "SSSD" package installed.'
-  desc 'Without the use of multifactor authentication, the ease of access to privileged functions is greatly increased. 
- 
-Multifactor authentication requires using two or more factors to achieve authentication. 
- 
-Factors include:  
-1) Something a user knows (e.g., password/PIN); 
-2) Something a user has (e.g., cryptographic identification device, token); and 
-3) Something a user is (e.g., biometric). 
- 
-A privileged account is defined as an information system account with authorizations of a privileged user. 
- 
-Network access is defined as access to an information system by a user (or a process acting on behalf of a user) communicating through a network (e.g., local area network, wide area network, or the internet). 
- 
-The DOD common access card (CAC) with DOD-approved PKI is an example of multifactor authentication.
+  desc 'Without the use of multifactor authentication, the ease of access to privileged functions is greatly increased.
 
-'
+Multifactor authentication requires using two or more factors to achieve authentication.
+
+Factors include:
+1) Something a user knows (e.g., password/PIN);
+2) Something a user has (e.g., cryptographic identification device, token); and
+3) Something a user is (e.g., biometric).
+
+A privileged account is defined as an information system account with authorizations of a privileged user.
+
+Network access is defined as access to an information system by a user (or a process acting on behalf of a user) communicating through a network (e.g., local area network, wide area network, or the internet).
+
+The DOD common access card (CAC) with DOD-approved PKI is an example of multifactor authentication.'
   desc 'check', 'Verify Ubuntu 24.04 LTS has the packages required for multifactor authentication installed with the following command:
 
 $ dpkg -l | grep sssd
@@ -55,8 +53,21 @@ $ sudo apt install -y libnss-sss'
   tag stig_id: 'UBTU-24-100650'
   tag gtitle: 'SRG-OS-000705-GPOS-00150'
   tag fix_id: 'F-74596r1067155_fix'
-  tag satisfies: ['SRG-OS-000705-GPOS-00150', 'SRG-OS-000105-GPOS-00052', 'SRG-OS-000106-GPOS-00053', 'SRG-OS-000107-GPOS-00054', 'SRG-OS-000108-GPOS-00055', 'SRG-OS-000375-GPOS-00160']
   tag 'documentable'
   tag cci: ['CCI-004046', 'CCI-004047', 'CCI-000765', 'CCI-000766']
   tag nist: ['IA-2 (6) (a)', 'IA-2 (6) (b)', 'IA-2 (1)', 'IA-2 (2)']
+  tag 'host'
+
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  required_packages = %w[sssd libpam-sss libnss-sss]
+  missing = required_packages.reject { |pkg| package(pkg).installed? }
+
+  describe 'Required SSSD and SSSD integration packages' do
+    it 'are installed' do
+      expect(missing).to be_empty, "Missing packages:\n\t- #{missing.join("\n\t- ")}"
+    end
+  end
 end

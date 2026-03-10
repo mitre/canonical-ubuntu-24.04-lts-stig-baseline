@@ -31,6 +31,8 @@ $ sudo update-ca-certificates)
   tag 'documentable'
   tag cci: ['CCI-002470']
   tag nist: ['SC-23 (5)']
+  tag 'host'
+  tag 'container'
 
   allowed_ca_fingerprints_regex = input('allowed_ca_fingerprints_regex')
   find_command = ''"

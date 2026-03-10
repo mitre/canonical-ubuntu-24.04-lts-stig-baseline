@@ -1,7 +1,7 @@
 control 'SV-270827' do
   title 'Ubuntu 24.04 LTS must be configured so that audit log files are not read or write-accessible by unauthorized users.'
-  desc 'Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.  
-  
+  desc 'Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.
+
 Audit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit operating system activity.'
   desc 'check', 'Verify that the audit log files have a mode of "0600" or less permissive. 
  
@@ -40,7 +40,7 @@ $ sudo chmod 0600 /var/log/audit/*'
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !virtualization.system.eql?('docker')
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
   log_file = auditd_conf('/etc/audit/auditd.conf').log_file

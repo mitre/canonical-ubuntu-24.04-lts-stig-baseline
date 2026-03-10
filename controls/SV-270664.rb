@@ -1,6 +1,6 @@
 control 'SV-270664' do
   title 'Ubuntu 24.04 LTS must have the "chrony" package installed.'
-  desc 'Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis. Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events. Sources outside the configured acceptable allowance (drift) may be inaccurate.  
+  desc 'Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis. Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events. Sources outside the configured acceptable allowance (drift) may be inaccurate.
 
 Organizations must consider endpoints that may not have regular access to the authoritative time server (e.g., mobile, teleworking, and tactical endpoints).'
   desc 'check', 'Verify the "chrony" package is installed using the following command:
@@ -24,7 +24,10 @@ $ sudo apt install -y chrony'
   tag cci: ['CCI-001891', 'CCI-000366']
   tag nist: ['AU-8 (1) (a)', 'CM-6 b']
   tag 'host'
-  tag 'container'
+
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
 
   describe package('chrony') do
     it { should be_installed }

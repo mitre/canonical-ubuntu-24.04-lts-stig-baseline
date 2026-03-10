@@ -32,4 +32,29 @@ Note: The system must be restarted for these settings to take effect.'
   tag 'documentable'
   tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']
+  tag 'host'
+
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  journal_bases = %w[/run/log/journal /var/log/journal]
+
+  journal_bases.each do |base|
+    if file(base).exist?
+      describe "Systemd journal directory ownership under #{base}" do
+        subject do
+          command("find -L #{base} -type d ! -user root -print 2>/dev/null").stdout.split("\n").reject(&:empty?)
+        end
+
+        it 'should have all directories owned by root' do
+          expect(subject).to be_empty, "Directories under #{base} not owned by root:\n\t- #{subject.join("\n\t- ")}"
+        end
+      end
+    else
+      describe "Systemd journal directory #{base}" do
+        skip "#{base} does not exist; skipping ownership validation per applicability"
+      end
+    end
+  end
 end

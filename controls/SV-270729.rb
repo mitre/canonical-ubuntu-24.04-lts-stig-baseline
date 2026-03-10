@@ -25,8 +25,8 @@ difok=8'
   tag gtitle: 'SRG-OS-000072-GPOS-00040'
   tag fix_id: 'F-74663r1066675_fix'
   tag 'documentable'
-  tag cci: ['CCI-000195', 'CCI-004065', 'CCI-004066']
-  tag nist: ['IA-5 (1) (b)', 'IA-5 (1) (g)', 'IA-5 (1) (h)']
+  tag cci: ['CCI-000195', 'CCI-004066', 'CCI-004065']
+  tag nist: ['IA-5 (1) (b)', 'IA-5 (1) (h)', 'IA-5 (1) (g)']
   tag 'host'
   tag 'container'
 

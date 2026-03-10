@@ -20,11 +20,27 @@ ldap_user_certificate=userCertificate;binary'
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !virtualization.system.eql?('docker')
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  describe file('/etc/sssd/sssd.conf') do
-    it { should exist }
-    its('content') { should match(/^\s*\[certmap.*\]\s*$/) }
+  if input('pki_disabled')
+    impact 0.0
+    describe 'This system is not using PKI for authentication so the controls is Not Applicable.' do
+      skip 'This system is not using PKI for authentication so the controls is Not Applicable.'
+    end
+  else
+    config_file = '/etc/pam_pkcs11/pam_pkcs11.conf'
+    config_file_exists = file(config_file).exist?
+
+    if config_file_exists
+      describe parse_config_file(config_file) do
+        its('use_mappers') { should cmp 'pwent' }
+      end
+    else
+      describe("#{config_file} exists") do
+        subject { config_file_exists }
+        it { should be true }
+      end
+    end
   end
 end

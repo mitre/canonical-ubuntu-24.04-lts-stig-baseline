@@ -23,7 +23,7 @@ $ sudo pro enable fips-updates'
   tag check_id: 'C-74777r1066719_chk'
   tag severity: 'high'
   tag gid: 'V-270744'
-  tag rid: 'SV-270744r1066721_rule'
+  tag rid: 'SV-270744r1137699_rule'
   tag stig_id: 'UBTU-24-600030'
   tag gtitle: 'SRG-OS-000478-GPOS-00223'
   tag fix_id: 'F-74678r1066720_fix'
@@ -34,7 +34,7 @@ $ sudo pro enable fips-updates'
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !virtualization.system.eql?('docker')
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
   describe command('grep -i 1 /proc/sys/crypto/fips_enabled') do

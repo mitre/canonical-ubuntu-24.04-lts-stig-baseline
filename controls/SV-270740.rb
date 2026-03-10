@@ -1,11 +1,11 @@
 control 'SV-270740' do
   title 'Ubuntu 24.04 LTS must generate audit records for privileged activities, nonlocal maintenance, diagnostic sessions, and other system-level access.'
-  desc 'If events associated with nonlocal administrative access or diagnostic sessions are not logged, a major tool for assessing and investigating attacks would not be available.  
-  
-This requirement addresses auditing-related issues associated with maintenance tools used specifically for diagnostic and repair actions on organizational information systems.  
-  
-Nonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network. Local maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection.  
-  
+  desc 'If events associated with nonlocal administrative access or diagnostic sessions are not logged, a major tool for assessing and investigating attacks would not be available.
+
+This requirement addresses auditing-related issues associated with maintenance tools used specifically for diagnostic and repair actions on organizational information systems.
+
+Nonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network. Local maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection.
+
 This requirement applies to hardware/software diagnostic test equipment or tools. This requirement does not cover hardware/software components that may support information system maintenance, yet are a part of the system, for example, the software implementing "ping," "ls," "ipconfig," or the hardware and software implementing the monitoring port of an Ethernet switch.'
   desc 'check', 'Verify Ubuntu 24.04 LTS audits activities performed during nonlocal maintenance and diagnostic sessions with the following command: 
  
@@ -34,37 +34,25 @@ $ sudo augenrules --load'
   tag fix_id: 'F-74674r1066708_fix'
   tag satisfies: ['SRG-OS-000392-GPOS-00172', 'SRG-OS-000471-GPOS-00215']
   tag 'documentable'
-  tag cci: ['CCI-000172', 'CCI-002884']
-  tag nist: ['AU-12 c', 'MA-4 (1) (a)']
+  tag cci: ['CCI-000172', 'CCI-002884', 'CCI-004188']
+  tag nist: ['AU-12 c', 'MA-4 (1) (a)', 'MA-3 (5)']
+  tag 'host'
 
-  if virtualization.system.eql?('docker')
-    impact 0.0
-    describe 'Control not applicable to a container' do
-      skip 'Control not applicable to a container'
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  audit_file = '/var/log/sudo.log'
+
+  if auditd.lines.nil? || auditd.lines.empty?
+    describe 'Audit rules' do
+      skip 'No audit rules loaded or auditd not configured'
     end
   else
-    @audit_file = '/var/log/sudo.log'
-
-    audit_lines_exist = !auditd.lines.index { |line| line.include?(@audit_file) }.nil?
-    if audit_lines_exist
-      describe auditd.file(@audit_file) do
-        its('permissions') { should_not cmp [] }
-        its('action') { should_not include 'never' }
-      end
-
-      @perms = auditd.file(@audit_file).permissions
-
-      @perms.each do |perm|
-        describe perm do
-          it { should include 'w' }
-          it { should include 'a' }
-        end
-      end
-    else
-      describe('Audit line(s) for ' + @audit_file + ' exist') do
-        subject { audit_lines_exist }
-        it { should be true }
-      end
+    describe auditd.file(audit_file) do
+      it { should exist }
+      its('action') { should_not include 'never' }
+      its('permissions.flatten') { should include('w', 'a') }
     end
   end
 end

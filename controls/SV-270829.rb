@@ -1,7 +1,7 @@
 control 'SV-270829' do
   title 'Ubuntu 24.04 LTS must permit only authorized groups ownership of the audit log files.'
-  desc 'Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.  
-  
+  desc 'Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.
+
 Audit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit operating system activity.'
   desc 'check', 'Verify the group owner is set to own newly created audit logs in the audit configuration file with the following command: 
 
@@ -43,7 +43,7 @@ $ sudo systemctl kill auditd -s SIGHUP)
   tag nist: ['AU-9', 'AU-9 a', 'SI-11 b']
   tag 'host'
 
-  if virtualization.system.eql?('docker')
+  if %w[docker podman kubepods lxc].include?(virtualization.system)
     impact 0.0
     describe 'Control not applicable to a container' do
       skip 'Control not applicable to a container'
@@ -58,7 +58,7 @@ $ sudo systemctl kill auditd -s SIGHUP)
         its('group') { should be_in admin_groups }
       end
     else
-      describe('Audit log file ' + log_file + ' exists') do
+      describe("Audit log file #{log_file} exists") do
         subject { log_file_exists }
         it { should be true }
       end

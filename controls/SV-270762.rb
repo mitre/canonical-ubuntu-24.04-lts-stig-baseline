@@ -31,4 +31,17 @@ Note: The system must be restarted for these settings to take effect.'
   tag 'documentable'
   tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']
+  tag 'host'
+
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  failing_files = command("find -L /run/log/journal /var/log/journal -type f ! -group systemd-journal -exec ls -d {} \\\; 2>/dev/null").stdout.split("\n").reject(&:empty?)
+
+  describe 'Systemd journal files' do
+    it 'should be group-owned by systemd-journal' do
+      expect(failing_files).to be_empty, "Files not group-owned by systemd-journal:\n\t- #{failing_files.join("\n\t- ")}"
+    end
+  end
 end

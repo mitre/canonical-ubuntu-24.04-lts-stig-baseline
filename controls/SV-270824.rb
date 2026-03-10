@@ -24,15 +24,15 @@ $ sudo find /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin -perm /
   tag 'documentable'
   tag cci: ['CCI-001495']
   tag nist: ['AU-9']
+  tag 'host'
+  tag 'container'
 
   system_commands = command('find -L /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin -perm /022 -type d').stdout.strip.split("\n").entries
   valid_system_commands = Set[]
 
   if system_commands.count > 0
     system_commands.each do |sys_cmd|
-      if file(sys_cmd).exist?
-        valid_system_commands = valid_system_commands << sys_cmd
-      end
+      valid_system_commands << sys_cmd if file(sys_cmd).exist?
     end
   end
 

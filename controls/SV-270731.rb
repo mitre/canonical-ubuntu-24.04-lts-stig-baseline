@@ -19,8 +19,8 @@ PASS_MAX_DAYS    60'
   tag rid: 'SV-270731r1066682_rule'
   tag stig_id: 'UBTU-24-400310'
   tag fix_id: 'F-74665r1066681_fix'
-  tag cci: ['CCI-000199', 'CCI-004065', 'CCI-004066']
-  tag nist: ['IA-5 (1) (d)', 'IA-5 (1) (g)', 'IA-5 (1) (h)']
+  tag cci: ['CCI-000199', 'CCI-004066', 'CCI-004065']
+  tag nist: ['IA-5 (1) (d)', 'IA-5 (1) (h)', 'IA-5 (1) (g)']
   tag 'host'
   tag 'container'
 

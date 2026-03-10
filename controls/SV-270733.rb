@@ -1,9 +1,9 @@
 control 'SV-270733' do
   title 'Ubuntu 24.04 LTS must enforce password complexity by requiring that at least one special character be used.'
-  desc 'Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity or strength is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.  
-  
-Password complexity is one factor in determining how long it takes to crack a password. The more complex the password, the greater the number of possible combinations that need to be tested before the password is compromised.  
-  
+  desc 'Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity or strength is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.
+
+Password complexity is one factor in determining how long it takes to crack a password. The more complex the password, the greater the number of possible combinations that need to be tested before the password is compromised.
+
 Special characters are those characters that are not alphanumeric. Examples include: ~ ! @ # $ % ^ *.'
   desc 'check', 'Determine if the field "ocredit" is set in the "/etc/security/pwquality.conf" file with the following command: 
  
@@ -23,8 +23,8 @@ ocredit=-1'
   tag rid: 'SV-270733r1066688_rule'
   tag stig_id: 'UBTU-24-400330'
   tag fix_id: 'F-74667r1066687_fix'
-  tag cci: ['CCI-001619', 'CCI-004065', 'CCI-004066']
-  tag nist: ['IA-5 (1) (a)', 'IA-5 (1) (g)', 'IA-5 (1) (h)']
+  tag cci: ['CCI-001619', 'CCI-004066', 'CCI-004065']
+  tag nist: ['IA-5 (1) (a)', 'IA-5 (1) (h)', 'IA-5 (1) (g)']
   tag 'host'
   tag 'container'
 

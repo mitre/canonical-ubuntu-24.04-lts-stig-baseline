@@ -31,7 +31,7 @@ $ sudo apt install -y aide'
   file_integrity_tool = input('file_integrity_tool')
 
   only_if('Control not applicable within a container', impact: 0.0) do
-    !virtualization.system.eql?('docker')
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   end
 
   if file_integrity_tool == 'aide'

@@ -1,7 +1,7 @@
 control 'SV-270723' do
   title 'Ubuntu 24.04 LTS must electronically verify Personal Identity Verification (PIV) credentials.'
-  desc 'The use of PIV credentials facilitates standardization and reduces the risk of unauthorized access.  
-  
+  desc 'The use of PIV credentials facilitates standardization and reduces the risk of unauthorized access.
+
 DOD has mandated the use of the common access card (CAC) to support identity management and personal authentication for systems covered under Homeland Security Presidential Directive (HSPD) 12, as well as making the CAC a primary component of layered protection for national security systems.'
   desc 'check', %q(Verify Ubuntu 24.04 LTS electronically verifies PIV credentials via certificate status checking with the following command: 
  
@@ -24,8 +24,9 @@ Modify all of the "cert_policy" lines in "/etc/pam_pkcs11/pam_pkcs11.conf" to in
   tag 'documentable'
   tag cci: ['CCI-001954']
   tag nist: ['IA-2 (12)']
+  tag 'host'
 
-  if virtualization.system.eql?('docker')
+  if %w[docker podman kubepods lxc].include?(virtualization.system)
     impact 0.0
     describe 'Control not applicable to a container' do
       skip 'Control not applicable to a container'

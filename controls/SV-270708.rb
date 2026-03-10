@@ -30,7 +30,18 @@ $ sudo systemctl restart sshd.service'
   tag 'host'
   tag 'container-conditional'
 
-  describe sshd_config do
-    its('X11Forwarding') { should cmp 'no' }
+  only_if('This requirement is Not Applicable inside a container, the containers host manages the containers filesystems', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system) || file('/etc/ssh/sshd_config').exist?
+  }
+
+  if input('x11_forwarding_required')
+    impact 0.0
+    describe 'N/A' do
+      skip "Profile inputs indicate that this parameter's setting is a documented operational requirement"
+    end
+  else
+    describe sshd_config do
+      its('X11Forwarding') { should cmp 'no' }
+    end
   end
 end

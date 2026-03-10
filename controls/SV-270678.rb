@@ -25,25 +25,32 @@ Note: If "lock-enabled" is not set to "true", this is a finding.
 If "lock-delay" is set to a value greater than "0", or if "idle-delay" is set to a value greater than "600", or either settings are missing, this is a finding.'
   desc 'fix', 'Configure Ubuntu 24.04 LTS to lock the current graphical user interface session after 10 minutes of inactivity.  
  
-Set the following settings to allow graphical user interface session lock to initiate after 10 minutes of inactivity:  
- 
-$ gsettings set org.gnome.desktop.screensaver lock-enabled true
-$ gsettings set org.gnome.desktop.screensaver lock-delay 0
-$ gsettings set org.gnome.desktop.session idle-delay 600'
+Create or edit a file named /etc/dconf/db/local.d/00-screensaver with the following contents:
+
+[org/gnome/desktop/session]
+idle-delay=uint32 900
+
+[org/gnome/desktop/screensaver]
+lock-enabled=true
+lock-delay=uint32 600
+
+Update the dconf settings:
+
+$ sudo dconf update'
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000029-GPOS-00010'
   tag satisfies: ['SRG-OS-000029-GPOS-00010', 'SRG-OS-000031-GPOS-00012']
   tag gid: 'V-270678'
-  tag rid: 'SV-270678r1066523_rule'
+  tag rid: 'SV-270678r1101791_rule'
   tag stig_id: 'UBTU-24-200020'
-  tag fix_id: 'F-74612r1066522_fix'
+  tag fix_id: 'F-74612r1101790_fix'
   tag cci: ['CCI-000057', 'CCI-000060']
   tag nist: ['AC-11 a', 'AC-11 (1)']
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !virtualization.system.eql?('docker')
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
   if package('gnome-desktop3').installed?

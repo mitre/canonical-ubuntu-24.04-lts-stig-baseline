@@ -1,7 +1,7 @@
 control 'SV-270653' do
   title 'Ubuntu 24.04 LTS must be configured to preserve log records from failure events.'
-  desc 'Failure to a known state can address safety or security in accordance with the mission/business needs of the organization. Failure to a known secure state helps prevent a loss of confidentiality, integrity, or availability in the event of a failure of the information system or a component of the system.   
-  
+  desc 'Failure to a known state can address safety or security in accordance with the mission/business needs of the organization. Failure to a known secure state helps prevent a loss of confidentiality, integrity, or availability in the event of a failure of the information system or a component of the system.
+
 Preserving operating system state information helps to facilitate operating system restart and return to the operational mode of the organization with least disruption to mission/business processes.'
   desc 'check', 'Verify the log service is installed properly with the following command: 
  
@@ -44,7 +44,7 @@ $ sudo systemctl enable --now rsyslog'
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !virtualization.system.eql?('docker')
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
   if input('alternative_logging_method') != ''

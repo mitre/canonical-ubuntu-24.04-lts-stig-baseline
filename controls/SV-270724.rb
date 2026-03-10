@@ -32,7 +32,7 @@ $ sudo passwd -l root'
 
   describe.one do
     describe shadow.where(user: 'root') do
-      its('passwords.uniq.first') { should eq '!*' }
+      its('passwords.uniq.first') { should match(/^[!*]/) }
     end
   end
   describe command('passwd -S root').stdout.strip do

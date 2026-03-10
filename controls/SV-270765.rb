@@ -26,6 +26,6 @@ $ sudo chgrp syslog /var/log'
 
   describe directory('/var/log') do
     it { should exist }
-    its('group') { should eq 'root' }
+    its('group') { should eq 'syslog' }
   end
 end

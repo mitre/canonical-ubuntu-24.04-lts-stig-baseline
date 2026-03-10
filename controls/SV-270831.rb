@@ -15,7 +15,6 @@ $ egrep '(\\/sbin\\/(audit|au))' /etc/aide/aide.conf
 /sbin/ausearch p+i+n+u+g+s+b+acl+xattrs+sha512 
 /sbin/aureport p+i+n+u+g+s+b+acl+xattrs+sha512 
 /sbin/autrace p+i+n+u+g+s+b+acl+xattrs+sha512 
-/sbin/audispd p+i+n+u+g+s+b+acl+xattrs+sha512 
 /sbin/augenrules p+i+n+u+g+s+b+acl+xattrs+sha512 
  
 If any of the seven audit tools do not have appropriate selection lines, this is a finding."
@@ -27,45 +26,45 @@ If any of the seven audit tools do not have appropriate selection lines, this is
 /sbin/ausearch p+i+n+u+g+s+b+acl+xattrs+sha512 
 /sbin/aureport p+i+n+u+g+s+b+acl+xattrs+sha512 
 /sbin/autrace p+i+n+u+g+s+b+acl+xattrs+sha512 
-/sbin/audispd p+i+n+u+g+s+b+acl+xattrs+sha512 
 /sbin/augenrules p+i+n+u+g+s+b+acl+xattrs+sha512'
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000278-GPOS-00108'
   tag gid: 'V-270831'
-  tag rid: 'SV-270831r1066982_rule'
-  tag stig_id: 'UBTU-24-90890'
-  tag fix_id: 'F-74765r1066981_fix'
+  tag rid: 'SV-270831r1135002_rule'
+  tag stig_id: 'UBTU-24-909890'
+  tag fix_id: 'F-74765r1135002_fix'
   tag cci: ['CCI-001496', 'CCI-001493', 'CCI-001494', 'CCI-001495']
   tag nist: ['AU-9 (3)', 'AU-9 a', 'AU-9']
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !virtualization.system.eql?('docker')
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  audit_tools = %w[/usr/sbin/auditctl
-                   /usr/sbin/auditd
-                   /usr/sbin/ausearch
-                   /usr/sbin/aureport
-                   /usr/sbin/autrace
-                   /usr/sbin/rsyslogd
-                   /usr/sbin/augenrules]
+  audit_tools = %w[/sbin/auditctl
+                   /sbin/auditd
+                   /sbin/ausearch
+                   /sbin/aureport
+                   /sbin/autrace
+                   /sbin/augenrules]
+
+  audit_rule_suffix = 'p+i+n+u+g+s+b+acl+xattrs+sha512'
 
   if package('aide').installed?
-    audit_tools.each do |tool|
-      describe "selection_line: #{tool}" do
-        subject { aide_conf.where { selection_line.eql?(tool) } }
-        its('rules.flatten') { should include 'p' }
-        its('rules.flatten') { should include 'i' }
-        its('rules.flatten') { should include 'n' }
-        its('rules.flatten') { should include 'u' }
-        its('rules.flatten') { should include 'g' }
-        its('rules.flatten') { should include 's' }
-        its('rules.flatten') { should include 'b' }
-        its('rules.flatten') { should include 'acl' }
-        its('rules.flatten') { should include 'xattrs' }
-        its('rules.flatten') { should include 'sha512' }
+    describe file('/etc/aide/aide.conf') do
+      it { should exist }
+    end
+
+    describe 'AIDE audit tools selection lines' do
+      subject do
+        content = file('/etc/aide/aide.conf').content.to_s
+        audit_tools.reject do |tool|
+          content.lines.any? { |line| line.match?(/^#{Regexp.escape(tool)}\s+#{Regexp.escape(audit_rule_suffix)}$/) }
+        end
+      end
+      it 'must include exact lines for all audit tools' do
+        expect(subject).to be_empty, "Missing or incorrect lines in /etc/aide/aide.conf for: #{subject.join(', ')}"
       end
     end
   else

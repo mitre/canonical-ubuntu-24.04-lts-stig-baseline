@@ -28,29 +28,12 @@ SILENTREPORTS=no'
   tag nist: ['CM-3 (5)', 'SI-6 b', 'SI-6 d']
   tag 'host'
 
-  file_integrity_tool = input('file_integrity_tool')
-
-  only_if('Control not applicable within a container', impact: 0.0) {
-    !virtualization.system.eql?('docker')
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  describe package(file_integrity_tool) do
-    it { should be_installed }
-  end
-  describe.one do
-    describe file("/etc/cron.daily/#{file_integrity_tool}") do
-      its('content') { should match %r{/bin/mail} }
-    end
-    describe file("/etc/cron.weekly/#{file_integrity_tool}") do
-      its('content') { should match %r{/bin/mail} }
-    end
-    describe crontab('root').where { command =~ /#{file_integrity_tool}/ } do
-      its('commands.flatten') { should include(match %r{/bin/mail}) }
-    end
-    if file("/etc/cron.d/#{file_integrity_tool}").exist?
-      describe crontab(path: "/etc/cron.d/#{file_integrity_tool}") do
-        its('commands') { should include(match %r{/bin/mail}) }
-      end
-    end
+  describe file('/etc/default/aide') do
+    it { should exist }
+    its('content') { should match(/^\s*SILENTREPORTS=(['"]?)no\1\s*$/) }
   end
 end

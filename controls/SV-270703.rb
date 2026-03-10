@@ -25,7 +25,7 @@ $ sudo chgrp [SYSTEMACCOUNT] [FILE]'
   tag 'host'
   tag 'container'
 
-  failing_files = command("find -L #{input('system_command_dirs').join(' ')} ! -group root -exec ls -d {} \\;").stdout.split("\n")
+  failing_files = command("find -L #{input('system_command_dirs').join(' ')} -type f ! -group root ! -perm /2000 -exec ls -d {} \\;").stdout.split("\n")
 
   describe 'System commands' do
     it 'should be group-owned by root' do

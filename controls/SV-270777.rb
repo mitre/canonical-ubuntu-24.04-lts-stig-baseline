@@ -1,7 +1,7 @@
 control 'SV-270777' do
   title 'Ubuntu 24.04 LTS must permit only authorized groups to own the audit configuration files.'
-  desc "Without the capability to restrict which roles and individuals can select which events are audited, unauthorized personnel may be able to prevent the auditing of critical events.   
-  
+  desc "Without the capability to restrict which roles and individuals can select which events are audited, unauthorized personnel may be able to prevent the auditing of critical events.
+
 Misconfigured audits may degrade the system's performance by overwhelming the audit log. Misconfigured audits may also make it more difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one."
   desc 'check', 'Verify /etc/audit/audit.rules, /etc/audit/rules.d/*, and /etc/audit/auditd.conf files are owned by "root" group with the following command: 
  
@@ -34,8 +34,9 @@ $ sudo chown :root /etc/audit/audit*.{rules,conf} /etc/audit/rules.d/*'
   tag 'documentable'
   tag cci: ['CCI-000171']
   tag nist: ['AU-12 b']
+  tag 'host'
 
-  if virtualization.system.eql?('docker')
+  if %w[docker podman kubepods lxc].include?(virtualization.system)
     impact 0.0
     describe 'Control not applicable to a container' do
       skip 'Control not applicable to a container'
@@ -50,7 +51,7 @@ $ sudo chown :root /etc/audit/audit*.{rules,conf} /etc/audit/rules.d/*'
         its('group') { should be_in admin_groups }
       end
     else
-      describe('Audit log file ' + log_file + ' exists') do
+      describe("Audit log file #{log_file} exists") do
         subject { log_file_exists }
         it { should be true }
       end

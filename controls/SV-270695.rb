@@ -26,6 +26,8 @@ APT::Get::AllowUnauthenticated "false";'
   tag 'documentable'
   tag cci: ['CCI-001749', 'CCI-003992']
   tag nist: ['CM-5 (3)', 'CM-14']
+  tag 'host'
+  tag 'container'
 
   describe directory('/etc/apt/apt.conf.d') do
     it { should exist }

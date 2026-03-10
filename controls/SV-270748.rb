@@ -13,10 +13,10 @@ $ grep sudo /etc/group
 sudo:x:27:foo 
  
 If the sudo group contains users not needing access to security functions, this is a finding.'
-  desc 'fix', 'Configure the sudo group with only members requiring access to security functions.  
-  
-To remove a user from the sudo group, run:  
-  
+  desc 'fix', 'Configure the sudo group with only members requiring access to security functions.
+
+To remove a user from the sudo group, run:
+
      $ sudo gpasswd -d <username> sudo'
   impact 0.7
   tag check_id: 'C-74781r1066731_chk'
@@ -29,6 +29,8 @@ To remove a user from the sudo group, run:
   tag 'documentable'
   tag cci: ['CCI-001084']
   tag nist: ['SC-3']
+  tag 'host'
+  tag 'container'
 
   sudo_accounts = input('sudo_accounts')
 

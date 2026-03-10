@@ -1,9 +1,9 @@
 control 'SV-270675' do
   title 'Ubuntu 24.04 LTS when booted must require authentication upon booting into single-user and maintenance modes.'
-  desc 'To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs, all DOD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access.   
-  
-Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.  
-  
+  desc 'To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs, all DOD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access.
+
+Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.
+
 Access control policies include identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.'
   desc 'check', 'Verify Ubuntu 24.04 LTS requires a password for authentication upon booting into single-user and maintenance modes with the following command: 
  
@@ -33,7 +33,7 @@ $ sudo update-grub)
   tag check_id: 'C-74708r1066512_chk'
   tag severity: 'high'
   tag gid: 'V-270675'
-  tag rid: 'SV-270675r1066514_rule'
+  tag rid: 'SV-270675r1137691_rule'
   tag stig_id: 'UBTU-24-102000'
   tag gtitle: 'SRG-OS-000080-GPOS-00048'
   tag fix_id: 'F-74609r1066513_fix'
@@ -43,7 +43,8 @@ $ sudo update-grub)
   tag 'host'
   tag 'container'
 
-  describe ini('/usr/lib/systemd/system/rescue.service') do
-    its('Service.ExecStart') { should match %r{^-/usr/lib/systemd/systemd-sulogin-shell rescue$} }
+  describe file('/boot/grub/grub.cfg') do
+    it { should exist }
+    its('content') { should match(/^password_pbkdf2\s+root\s+grub\.pbkdf2/) }
   end
 end

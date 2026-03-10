@@ -1,7 +1,7 @@
 control 'SV-270726' do
   title 'Ubuntu 24.04 LTS must enforce password complexity by requiring that at least one uppercase character be used.'
-  desc 'Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.  
-  
+  desc 'Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.
+
 Password complexity is one factor of several that determines how long it takes to crack a password. The more complex the password, the greater the number of possible combinations that need to be tested before the password is compromised.'
   desc 'check', 'Verify Ubuntu 24.04 LTS enforces password complexity by requiring that at least one uppercase character be used with the following command: 
  
@@ -21,8 +21,8 @@ ucredit=-1'
   tag rid: 'SV-270726r1066667_rule'
   tag stig_id: 'UBTU-24-400260'
   tag fix_id: 'F-74660r1066666_fix'
-  tag cci: ['CCI-000192', 'CCI-004065', 'CCI-004066']
-  tag nist: ['IA-5 (1) (a)', 'IA-5 (1) (g)', 'IA-5 (1) (h)']
+  tag cci: ['CCI-000192', 'CCI-004066', 'CCI-004065']
+  tag nist: ['IA-5 (1) (a)', 'IA-5 (1) (h)', 'IA-5 (1) (g)']
   tag 'host'
   tag 'container'
 

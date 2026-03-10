@@ -1,7 +1,7 @@
 control 'SV-270672' do
   title 'Ubuntu 24.04 LTS must accept Personal Identity Verification (PIV) credentials.'
-  desc 'The use of PIV credentials facilitates standardization and reduces the risk of unauthorized access.  
-  
+  desc 'The use of PIV credentials facilitates standardization and reduces the risk of unauthorized access.
+
 DOD has mandated the use of the common access card (CAC) to support identity management and personal authentication for systems covered under Homeland Security Presidential Directive (HSPD) 12, as well as making the CAC a primary component of layered protection for national security systems.'
   desc 'check', 'Verify the "opensc-pcks11" package is installed on the system with the following command: 
  
@@ -29,7 +29,7 @@ $ sudo apt install -y opensc-pkcs11'
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !virtualization.system.eql?('docker')
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
   if input('smart_card_enabled')

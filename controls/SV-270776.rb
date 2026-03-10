@@ -1,7 +1,7 @@
 control 'SV-270776' do
   title 'Ubuntu 24.04 LTS must permit only authorized accounts to own the audit configuration files.'
-  desc "Without the capability to restrict which roles and individuals can select which events are audited, unauthorized personnel may be able to prevent the auditing of critical events.   
-  
+  desc "Without the capability to restrict which roles and individuals can select which events are audited, unauthorized personnel may be able to prevent the auditing of critical events.
+
 Misconfigured audits may degrade the system's performance by overwhelming the audit log. Misconfigured audits may also make it more difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one."
   desc 'check', 'Verify /etc/audit/audit.rules, /etc/audit/rules.d/*, and /etc/audit/auditd.conf files are owned by "root" account with the following command: 
  
@@ -34,18 +34,22 @@ $ sudo chown root /etc/audit/audit*.{rules,conf} /etc/audit/rules.d/*'
   tag 'documentable'
   tag cci: ['CCI-000171']
   tag nist: ['AU-12 b']
+  tag 'host'
 
-  if virtualization.system.eql?('docker')
-    impact 0.0
-    describe 'Control not applicable to a container' do
-      skip 'Control not applicable to a container'
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  files1 = command('find /etc/audit/ -type f \( -iname \*.rules -o -iname \*.conf \)').stdout.strip.split("\n").entries
+  files2 = command('find /etc/audit/rules.d/* -type f').stdout.strip.split("\n").entries
+
+  audit_conf_files = files1 + files2
+
+  if audit_conf_files.empty?
+    describe 'Audit configuration files' do
+      skip 'No audit configuration files found'
     end
   else
-    files1 = command('find /etc/audit/ -type f \( -iname \*.rules -o -iname \*.conf \)').stdout.strip.split("\n").entries
-    files2 = command('find /etc/audit/rules.d/* -type f').stdout.strip.split("\n").entries
-
-    audit_conf_files = files1 + files2
-
     audit_conf_files.each do |conf|
       describe file(conf) do
         its('owner') { should cmp 'root' }

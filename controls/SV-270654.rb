@@ -30,7 +30,19 @@ $ sudo apt install -y ufw'
   tag nist: ['CM-7 b', 'AC-17 (1)']
   tag 'host'
 
-  describe package('ufw') do
-    it { should be_installed }
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  alternate_firewall_tool = input('alternate_firewall_tool')
+
+  if alternate_firewall_tool == ''
+    describe package('ufw') do
+      it { should be_installed }
+    end
+  else
+    describe package(alternate_firewall_tool) do
+      it { should be_installed }
+    end
   end
 end

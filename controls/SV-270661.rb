@@ -21,6 +21,8 @@ $ sudo apt install -y libpam-pwquality'
   tag 'documentable'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
+  tag 'host'
+  tag 'container'
 
   describe package('libpam-pwquality') do
     it { should be_installed }

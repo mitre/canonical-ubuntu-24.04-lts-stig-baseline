@@ -29,10 +29,25 @@ Note: Enabling the firewall will potentially disrupt ssh sessions.'
   tag 'documentable'
   tag cci: ['CCI-002314']
   tag nist: ['AC-17 (1)']
+  tag 'host'
 
-  describe service('ufw') do
-    it { should be_installed }
-    it { should be_enabled }
-    it { should be_running }
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  alternate_firewall_tool = input('alternate_firewall_tool')
+
+  if alternate_firewall_tool == ''
+    describe service('ufw') do
+      it { should be_installed }
+      it { should be_enabled }
+      it { should be_running }
+    end
+  else
+    describe service(alternate_firewall_tool) do
+      it { should be_installed }
+      it { should be_enabled }
+      it { should be_running }
+    end
   end
 end

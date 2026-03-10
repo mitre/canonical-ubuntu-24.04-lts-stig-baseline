@@ -35,23 +35,18 @@ $ sudo systemctl restart sshd'
   tag 'host'
   tag 'container-conditional'
 
-  # NOTE: At time of writing, the STIG baseline calls for two different values for the MACs option in the openssh.config file.
-  # SV-257990 calls for one set of MACs and SV-257991 calls for a mutually exclusive set.
-
-  only_if('Control not applicable - SSH is not installed within containerized RHEL', impact: 0.0) {
-    !(virtualization.system.eql?('docker') && !file('/etc/sysconfig/sshd').exist?)
+  only_if('Control not applicable - SSH is not installed within containerized Ubuntu', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system) || file('/etc/ssh/sshd_config').exist?
   }
 
   approved_macs = input('approved_openssh_server_conf')['macs']
 
-  options = { 'assignment_regex': /^(\S+)\s+(\S+)$/ }
-  opensshserver_conf = parse_config_file('/etc/crypto-policies/back-ends/opensshserver.config', options).params.map { |k, v| [k.downcase, v.split(',')] }.to_h
+  macs_cmd = command("/usr/sbin/sshd -T 2>/dev/null | awk '$1==\"macs\"{print $2}'")
+  actual_macs = macs_cmd.stdout.strip
 
-  actual_macs = opensshserver_conf['macs'].join(',')
-
-  describe 'OpenSSH server configuration' do
-    it 'implement approved MACs' do
-      expect(actual_macs).to eq(approved_macs), "OpenSSH server cipher configuration actual value:\n\t#{actual_macs}\ndoes not match the expected value:\n\t#{approved_macs}"
+  describe 'OpenSSH server MACs' do
+    it 'matches the approved list in exact order' do
+      expect(actual_macs).to eq(approved_macs), "OpenSSH server MACs:\n\t#{actual_macs}\ndoes not match the expected value:\n\t#{approved_macs}"
     end
   end
 end

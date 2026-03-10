@@ -31,11 +31,12 @@ $ sudo augenrules --load'
   tag 'documentable'
   tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']
+  tag 'host'
 
   audit_command = '/usr/bin/gpasswd'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !virtualization.system.eql?('docker')
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
   describe 'Command' do

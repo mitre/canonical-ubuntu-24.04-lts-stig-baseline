@@ -3,17 +3,17 @@ control 'SV-270714' do
   desc 'If an account has an empty password, anyone could log on and run commands with the privileges of that account. Accounts with empty passwords must never be used in operational environments.'
   desc 'check', 'To verify null passwords cannot be used, run the following command: 
 
-$ grep nullok /etc/pam.d/common-password
+$ grep nullok /etc/pam.d/common-password /etc/pam.d/common-auth
 
 If this produces any output, this is a finding.'
   desc 'fix', 'If an account is configured for password authentication but does not have an assigned password, it is possible to log on to the account without authenticating.
 
 Remove any instances of the "nullok" option in "/etc/pam.d/common-password" to prevent logons with empty passwords.'
   impact 0.7
-  tag check_id: 'C-74747r1066629_chk'
+  tag check_id: 'C-74747r1134807_chk'
   tag severity: 'high'
   tag gid: 'V-270714'
-  tag rid: 'SV-270714r1067119_rule'
+  tag rid: 'SV-270714r1134808_rule'
   tag stig_id: 'UBTU-24-300028'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag fix_id: 'F-74648r1066630_fix'

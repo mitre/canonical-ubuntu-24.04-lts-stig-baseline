@@ -25,8 +25,10 @@ $ sudo chmod 0755 /var/log'
   tag 'documentable'
   tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']
+  tag 'host'
+  tag 'container'
 
   describe directory('/var/log') do
-    it {should_not be_more_permissive_than('755')}
+    it { should_not be_more_permissive_than('755') }
   end
 end

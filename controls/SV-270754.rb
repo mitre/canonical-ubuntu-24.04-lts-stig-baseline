@@ -63,4 +63,12 @@ $ sudo ufw limit in on eth0'
   tag cci: ['CCI-002385']
   tag nist: ['SC-5', 'SC-5 a']
   tag 'host'
+
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  describe 'Manual review required: correlate listening services from ss -l46ut with ufw status and confirm LIMIT is applied to each listening port unless explicitly DENY' do
+    skip 'Run ss -l46ut to list listening services. For each listening port not DENY, check sudo ufw status and ensure Action is LIMIT for that port or service. If any listening port not DENY lacks LIMIT, this is a finding.'
+  end
 end

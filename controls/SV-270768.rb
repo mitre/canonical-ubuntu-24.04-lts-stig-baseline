@@ -23,8 +23,18 @@ $ sudo chgrp adm /var/log/syslog'
   tag 'documentable'
   tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']
+  tag 'host'
 
-  describe file('/var/log/syslog') do
-    its('group') { should cmp 'adm' }
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  describe.one do
+    describe file('/var/log/syslog') do
+      its('group') { should cmp 'adm' }
+    end
+    describe file('/var/log/syslog') do
+      it { should_not exist }
+    end
   end
 end

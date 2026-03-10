@@ -35,15 +35,15 @@ $ sudo augenrules --load'
   audit_command = '/bin/kmod'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !virtualization.system.eql?('docker')
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
   describe 'Command' do
     it "#{audit_command} is audited properly" do
-    audit_rule = auditd.file(audit_command)
-    expect(audit_rule).to exist
-    expect(audit_rule.permissions.flatten).to include('x')
-    expect(audit_rule.key.uniq).to include(input('audit_rule_keynames').merge(input('audit_rule_keynames_overrides'))[audit_command])
+      audit_rule = auditd.file(audit_command)
+      expect(audit_rule).to exist
+      expect(audit_rule.permissions.flatten).to include('x')
+      expect(audit_rule.key.uniq).to include(input('audit_rule_keynames').merge(input('audit_rule_keynames_overrides'))[audit_command])
     end
   end
 end

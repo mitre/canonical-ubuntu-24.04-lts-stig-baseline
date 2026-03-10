@@ -1,6 +1,6 @@
 control 'SV-270646' do
   title 'Ubuntu 24.04 LTS must not have the "ntp" package installed.'
-  desc 'Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis. Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events. Sources outside the configured acceptable allowance (drift) may be inaccurate.  
+  desc 'Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis. Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events. Sources outside the configured acceptable allowance (drift) may be inaccurate.
 
 Organizations must consider endpoints that may not have regular access to the authoritative time server (e.g., mobile, teleworking, and tactical endpoints).'
   desc 'check', 'Verify the "ntp" package is not installed with the following command:
@@ -26,6 +26,8 @@ $ sudo apt-get purge ntp'
   tag 'documentable'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
+  tag 'host'
+  tag 'container'
 
   describe package('ntp') do
     it { should_not be_installed }

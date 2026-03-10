@@ -1,7 +1,7 @@
 control 'SV-270812' do
   title 'Ubuntu 24.04 LTS must generate audit records for the /var/log/btmp file.'
-  desc 'Without generating audit records specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.  
-  
+  desc 'Without generating audit records specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
+
 Audit records can be generated from various components within the information system (e.g., module or policy filter).'
   desc 'check', %q(Verify Ubuntu 24.04 LTS generates audit records showing start and stop times for user access to the system via the "/var/log/btmp" file with the following command: 
  
@@ -31,35 +31,23 @@ $ sudo augenrules --load'
   tag 'documentable'
   tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']
+  tag 'host'
 
-  if virtualization.system.eql?('docker')
-    impact 0.0
-    describe 'Control not applicable to a container' do
-      skip 'Control not applicable to a container'
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  audit_file = '/var/log/btmp'
+
+  if auditd.lines.nil? || auditd.lines.empty?
+    describe 'Audit rules' do
+      skip 'No audit rules loaded or auditd not configured'
     end
   else
-    @audit_file = '/var/log/btmp'
-
-    audit_lines_exist = !auditd.lines.index { |line| line.include?(@audit_file) }.nil?
-    if audit_lines_exist
-      describe auditd.file(@audit_file) do
-        its('permissions') { should_not cmp [] }
-        its('action') { should_not include 'never' }
-      end
-
-      @perms = auditd.file(@audit_file).permissions
-
-      @perms.each do |perm|
-        describe perm do
-          it { should include 'w' }
-          it { should include 'a' }
-        end
-      end
-    else
-      describe('Audit line(s) for ' + @audit_file + ' exist') do
-        subject { audit_lines_exist }
-        it { should be true }
-      end
+    describe auditd.file(audit_file) do
+      it { should exist }
+      its('action') { should_not include 'never' }
+      its('permissions.flatten') { should include('w', 'a') }
     end
   end
 end

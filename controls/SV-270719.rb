@@ -24,14 +24,14 @@ Ask the system administrator for the site or program PPSM Components Local Servi
 If there are any additional ports, protocols, or services that are not included in the PPSM CLSA, this is a finding. 
  
 If there are any ports, protocols, or services that are prohibited by the PPSM CAL, this is a finding.'
-  desc 'fix', 'Add all ports, protocols, or services allowed by the PPSM CLSA by using the following command:  
-  
-     $ sudo ufw allow <direction> <port/protocol/service>  
-  
-Where the direction is "in" or "out" and the port is the one corresponding to the protocol or service allowed.  
-  
-To deny access to ports, protocols, or services, use:  
-  
+  desc 'fix', 'Add all ports, protocols, or services allowed by the PPSM CLSA by using the following command:
+
+     $ sudo ufw allow <direction> <port/protocol/service>
+
+Where the direction is "in" or "out" and the port is the one corresponding to the protocol or service allowed.
+
+To deny access to ports, protocols, or services, use:
+
      $ sudo ufw deny <direction> <port/protocol/service>'
   impact 0.5
   tag severity: 'medium'
@@ -43,6 +43,11 @@ To deny access to ports, protocols, or services, use:
   tag cci: ['CCI-000382']
   tag nist: ['CM-7 b']
   tag 'host'
+  tag 'container-conditional'
+
+  only_if('Control not applicable - containerized environment or external firewall in use per site policy', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system) && !input('external_firewall')
+  }
 
   ufw_status = command('ufw status').stdout.strip.lines.first
   value = ufw_status.split(':')[1].strip
@@ -50,5 +55,8 @@ To deny access to ports, protocols, or services, use:
   describe 'UFW status' do
     subject { value }
     it { should cmp 'active' }
+  end
+  describe 'Status listings for any allowed services, ports, or applications must be documented with the organization' do
+    skip 'Status listings checks must be preformed manually'
   end
 end
