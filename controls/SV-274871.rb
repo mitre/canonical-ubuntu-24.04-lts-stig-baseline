@@ -35,4 +35,24 @@ $ sudo dconf update)
   tag 'documentable'
   tag cci: ['CCI-000060']
   tag nist: ['AC-11 (1)']
+  tag 'host'
+
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  if package('gnome-shell').installed?
+    describe file('/etc/dconf/db/local.d/00-security-settings') do
+      its('content') { should match %r{^\[org/gnome/desktop/screensaver\]\npicture-uri=''\s*$} }
+    end
+    describe file('/etc/dconf/db/local.d/locks/00-security-settings-lock') do
+      its('content') { should match %r{/org/gnome/desktop/screensaver/picture-uri} }
+    end
+  else
+    impact 0.0
+    describe 'The system does not have GNOME installed' do
+      skip "The system does not have GNOME installed, this requirement is Not
+        Applicable."
+    end
+  end
 end

@@ -35,4 +35,21 @@ $ sudo dconf update'
   tag 'documentable'
   tag cci: ['CCI-000778', 'CCI-001958']
   tag nist: ['IA-3', 'IA-3']
+  tag 'host'
+
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  if package('gnome-shell').installed?
+    describe file('/etc/dconf/db/local.d/locks/00-security-settings-lock') do
+      its('content') { should match %r{/org/gnome/desktop/media-handling/autorun-never} }
+    end
+  else
+    impact 0.0
+    describe 'The system does not have GNOME installed' do
+      skip "The system does not have GNOME installed, this requirement is Not
+        Applicable."
+    end
+  end
 end
