@@ -502,7 +502,7 @@ inputs:
   - name: system_activity_timeout
     description: The expected maximum delay in seconds before the system will lock the session
     type: Numeric
-    value: 900
+    value: 600
 
   
   - name: log_directory
@@ -682,9 +682,9 @@ inputs:
     description: THe pam.d auth paths
     type: Hash
     value:
-      system-auth: /etc/pam.d/system-auth
-      password-auth: /etc/pam.d/password-auth
-      smartcard-auth: /etc/pam.d/smartcard-auth
+      system-auth: /etc/pam.d/common-password
+      password-auth: /etc/pam.d/common-auth
+      smartcard-auth: /etc/pam.d/common-auth
 
   
   - name: security_faillock_conf
@@ -994,7 +994,7 @@ inputs:
     type: Hash
     value: 
       ciphers: aes256-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes128-ctr
-      macs: hmac-sha2-256-etm@openssh.com,hmac-sha2-256,hmac-sha2-512-etm@openssh.com,hmac-sha2-512
+      macs: hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
 
   
   - name: password_hash_rounds

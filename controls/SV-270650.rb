@@ -44,4 +44,21 @@ Done.'
   tag 'documentable'
   tag cci: ['CCI-002696']
   tag nist: ['SI-6 a']
+  tag 'host'
+
+  file_integrity_tool = input('file_integrity_tool')
+
+  only_if('This control is Not Applicable to containers or systesm without AIDE', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system) && package('aide').installed?
+  }
+
+  if file_integrity_tool == 'aide'
+    describe command('sudo aide -c /etc/aide/aide.conf --check') do
+      its('exit_status') { should eq 0 }
+    end
+  end
+
+  describe package(file_integrity_tool) do
+    it { should be_installed }
+  end
 end

@@ -41,4 +41,38 @@ Edit "/etc/audit/auditd.conf" and set the "space_left" parameter to be at least 
   tag 'documentable'
   tag cci: ['CCI-001855']
   tag nist: ['AU-5 (1)']
+  tag 'host'
+
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  log_file = auditd_conf.log_file
+  log_dir_exists = !log_file.nil? && !File.dirname(log_file).nil?
+
+  if log_dir_exists
+    email_to_notify = input('action_mail_acct')
+
+    partition_threshold_mb = (filesystem(log_file).size_kb / 1024 * 0.25).to_i
+    system_alert_configuration_mb = auditd_conf.space_left.to_i
+
+    describe 'The space_left configuration' do
+      subject { system_alert_configuration_mb }
+      it { should >= partition_threshold_mb }
+    end
+    describe 'The space_left_action configuration' do
+      subject { auditd_conf.space_left_action }
+      it { should eq 'email' }
+    end
+
+    describe 'The action_mail_acct configuration' do
+      subject { auditd_conf.action_mail_acct }
+      it { should eq email_to_notify }
+    end
+  else
+    describe("Audit file/directory for file #{log_file} exists") do
+      subject { log_dir_exists }
+      it { should be true }
+    end
+  end
 end

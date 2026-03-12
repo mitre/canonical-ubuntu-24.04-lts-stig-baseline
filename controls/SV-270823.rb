@@ -35,4 +35,20 @@ Replace "[audit_tool]" with each audit tool not group owned by root.'
   tag 'documentable'
   tag cci: ['CCI-001494', 'CCI-001493']
   tag nist: ['AU-9', 'AU-9 a']
+  tag 'host'
+
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  audit_tools = ['/sbin/auditctl', '/sbin/aureport', '/sbin/ausearch', '/sbin/autrace', '/sbin/auditd', '/sbin/augenrules'] + Dir.glob('/sbin/audisp*')
+
+  existing_tools = audit_tools.select { |at| file(at).exist? }
+  failing_tools = existing_tools.reject { |at| file(at).owned_by?('root') }
+
+  describe 'Audit executables' do
+    it 'should be owned by root' do
+      expect(failing_tools).to be_empty, "Failing tools:\n\t- #{failing_tools.join("\n\t- ")}"
+    end
+  end
 end

@@ -48,4 +48,32 @@ Note: Encrypting a partition in an already-installed system is more difficult be
   tag 'documentable'
   tag cci: ['CCI-001199', 'CCI-002475', 'CCI-002476', 'CCI-004910']
   tag nist: ['SC-28', 'SC-28 (1)', 'SC-28 (1)', 'SC-28 (3)']
+  tag 'host'
+
+  only_if('This control is Not Applicable to containers (disk encryption and data-at-rest implementation is handled on the host)', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  all_args = command('blkid').stdout.strip.split("\n").map { |s| s.sub(/^"(.*)"$/, '\1') }
+
+  def describe_and_skip(message)
+    describe message do
+      skip message
+    end
+  end
+
+  # TODO: This should really have a resource
+  if input('data_at_rest_exempt') == true
+    impact 0.0
+    describe_and_skip('Data At Rest Requirements have been set to Not Applicabe by the `data_at_rest_exempt` input.')
+  elsif all_args.empty?
+    # TODO: Determine if this is an NA vs and NR or even a pass
+    describe_and_skip('Command blkid did not return and non-psuedo block devices.')
+  else
+    all_args.each do |args|
+      describe args do
+        it { should match(/\bcrypto_LUKS\b/) }
+      end
+    end
+  end
 end

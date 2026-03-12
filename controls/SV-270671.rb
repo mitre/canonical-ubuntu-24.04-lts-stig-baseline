@@ -31,4 +31,21 @@ $ sudo systemctl restart ssh'
   tag 'documentable'
   tag cci: ['CCI-001453']
   tag nist: ['AC-17 (2)']
+  tag 'host'
+  tag 'container-conditional'
+
+  only_if('Control not applicable - SSH is not installed within containerized Ubuntu', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system) || file('/etc/ssh/sshd_config').exist?
+  }
+
+  approved_macs = input('approved_openssh_server_conf')['macs']
+
+  macs_cmd = command("/usr/sbin/sshd -T 2>/dev/null | awk '$1==\"macs\"{print $2}'")
+  actual_macs = macs_cmd.stdout.strip
+
+  describe 'OpenSSH server MACs' do
+    it 'matches the approved list in exact order' do
+      expect(actual_macs).to eq(approved_macs), "OpenSSH server MACs:\n\t#{actual_macs}\ndoes not match the expected value:\n\t#{approved_macs}"
+    end
+  end
 end

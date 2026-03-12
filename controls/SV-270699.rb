@@ -22,4 +22,14 @@ $ sudo find /lib /lib64 /usr/lib /usr/lib64 -type f -name '*.so*' ! -group root 
   tag 'documentable'
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
+  tag 'host'
+  tag 'container'
+
+  failing_files = command("find #{input('system_libraries').join(' ')} -type f -name '*.so*' ! -group root -exec stat -c '%n %G' {} +").stdout.split("\n")
+
+  describe 'System libraries' do
+    it 'should be group-owned by root' do
+      expect(failing_files).to be_empty, "Files not group-owned by root:\n\t- #{failing_files.join("\n\t- ")}"
+    end
+  end
 end

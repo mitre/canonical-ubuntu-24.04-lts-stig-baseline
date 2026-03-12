@@ -29,4 +29,32 @@ $ sudo chage -E $(date -d +3days +%Y-%m-%d) <temporary_account_name>'
   tag 'documentable'
   tag cci: ['CCI-000016', 'CCI-001682']
   tag nist: ['AC-2 (2)', 'AC-2 (2)']
+  tag 'host'
+  tag 'container'
+
+  tmp_users = input('temporary_accounts')
+
+  tmp_max_days = input('temporary_account_max_days')
+
+  if tmp_users.empty?
+    describe 'Temporary accounts' do
+      subject { tmp_users }
+      it { should be_empty }
+    end
+  else
+    tmp_users_existing = tmp_users.select { |u| user(u).exists? }
+    failing_users = tmp_users_existing.select { |u| user(u).warndays > tmp_max_days }
+
+    describe 'Temporary accounts' do
+      if tmp_users_existing.nil?
+        it "should have expiration times less than or equal to '#{tmp_max_days}' days" do
+          expect(failing_users).to be_empty, "Failing users:\n\t- #{failing_users.join("\n\t- ")}"
+        end
+      else
+        it "(input as '#{tmp_users.join("', '")}') were not found on this system" do
+          expect(tmp_users_existing).to be_empty
+        end
+      end
+    end
+  end
 end

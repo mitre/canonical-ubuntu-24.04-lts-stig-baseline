@@ -23,4 +23,15 @@ $ sudo timedatectl set-timezone [ZONE]'
   tag 'documentable'
   tag cci: ['CCI-001890']
   tag nist: ['AU-8 b']
+  tag 'host'
+
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  time_zone = command('timedatectl status | grep -i "time zone"').stdout.strip
+
+  describe time_zone do
+    it { should match(/(UTC|GMT)/i) }
+  end
 end

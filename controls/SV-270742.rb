@@ -33,4 +33,25 @@ $ sudo systemctl restart ssh.service'
   tag 'documentable'
   tag cci: ['CCI-001133']
   tag nist: ['SC-10']
+  tag 'host'
+  tag 'container-conditional'
+
+  only_if('SSH is not installed on the system this requirement is Not Applicable', impact: 0.0) {
+    (service('sshd').enabled? || package('openssh-server').installed?)
+  }
+
+  client_alive_count = input('sshd_client_alive_count_max')
+
+  if %w[docker podman kubepods lxc].include?(virtualization.system) && !file('/etc/ssh/sshd_config').exist?
+    impact 0.0
+    describe 'skip' do
+      skip 'SSH configuration does not apply inside containers. This control is Not Applicable.'
+    end
+  else
+    describe 'SSH ClientAliveCountMax configuration' do
+      it "should be set to #{client_alive_count}" do
+        expect(sshd_config.ClientAliveCountMax).to(cmp(client_alive_count), "SSH ClientAliveCountMax is commented out or not set to the expected value (#{client_alive_count})")
+      end
+    end
+  end
 end

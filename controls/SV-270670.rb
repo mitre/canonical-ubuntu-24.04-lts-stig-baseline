@@ -35,4 +35,31 @@ $ sudo systemctl restart ssh'
   tag 'documentable'
   tag cci: ['CCI-001453']
   tag nist: ['AC-17 (2)']
+  tag 'host'
+
+  if input('disable_fips')
+    impact 0.0
+    describe 'FIPS testing has been disabled' do
+      skip 'This control has been set to Not Applicable, FIPS validation has been disabled with the `disable_fips` input'
+    end
+  elsif %w[docker podman kubepods lxc].include?(virtualization.system)
+    describe 'FIPS validation in a container must be reviewed manually' do
+      skip 'FIPS validation in a container must be reviewed manually'
+    end
+  else
+    approved = %w[aes256-gcm@openssh.com aes128-gcm@openssh.com aes256-ctr aes128-ctr]
+    ciphers = inspec.sshd_config.params['ciphers']
+    ciphers = ciphers.first.split(',').map(&:strip) unless ciphers.nil?
+
+    describe 'SSH ciphers' do
+      it 'should contain only approved FIPS ciphers' do
+        unapproved_ciphers = ciphers.nil? ? [] : (ciphers - approved)
+        missing_approved_ciphers = ciphers.nil? ? approved : (approved - ciphers)
+
+        expect(ciphers).to_not be_nil, 'Ciphers directive missing from sshd_config'
+        expect(unapproved_ciphers).to eq([]), "Non-approved ciphers present (#{unapproved_ciphers.length}): #{unapproved_ciphers.join(', ')}"
+        expect(missing_approved_ciphers).to eq([]), "Approved ciphers missing (#{missing_approved_ciphers.length}): #{missing_approved_ciphers.join(', ')}"
+      end
+    end
+  end
 end

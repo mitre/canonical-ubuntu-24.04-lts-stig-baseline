@@ -25,4 +25,13 @@ $ sudo apt install -y libpam-pkcs11'
   tag 'documentable'
   tag cci: ['CCI-001953']
   tag nist: ['IA-2 (12)']
+  tag 'host'
+
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  describe package('libpam-pkcs11') do
+    it { should be_installed }
+  end
 end

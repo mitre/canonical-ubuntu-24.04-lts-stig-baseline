@@ -29,4 +29,31 @@ $ sudo systemctl restart sshd.service'
   tag 'documentable'
   tag cci: ['CCI-001133']
   tag nist: ['SC-10']
+  tag 'host'
+  tag 'container-conditional'
+
+  setting = 'ClientAliveInterval'
+  gssapi_authentication = input('sshd_config_values')
+  value = gssapi_authentication[setting]
+  openssh_present = package('openssh-server').installed?
+  is_container = %w[docker podman kubepods lxc].include?(virtualization.system)
+  allow_container_openssh = input('allow_container_openssh_server')
+
+  only_if('This requirement is Not Applicable in the container without open-ssh installed', impact: 0.0) {
+    !(is_container && !openssh_present)
+  }
+
+  if is_container
+    describe 'In a container Environment' do
+      it 'the OpenSSH Server should be installed only when allowed in a container environment' do
+        expect(openssh_present).to eq(allow_container_openssh), 'OpenSSH Server is installed but not approved for the container environment'
+      end
+    end
+  else
+    describe 'The OpenSSH Server configuration' do
+      it "has the correct #{setting} configuration" do
+        expect(sshd_config.params[setting.downcase]).to cmp(value), "The #{setting} setting in the SSHD config is not correct. Please ensure it set to '#{value}'."
+      end
+    end
+  end
 end

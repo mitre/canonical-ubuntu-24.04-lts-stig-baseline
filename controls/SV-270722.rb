@@ -39,4 +39,20 @@ PubkeyAuthentication yes'
   tag 'documentable'
   tag cci: ['CCI-000765', 'CCI-000766']
   tag nist: ['IA-2 (1)', 'IA-2 (2)']
+  tag 'host'
+
+  only_if('Control not applicable within a container', impact: 0.0) do
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  end
+
+  if input('pki_disabled')
+    impact 0.0
+    describe 'This system is not using PKI for authentication so the controls is Not Applicable.' do
+      skip 'This system is not using PKI for authentication so the controls is Not Applicable.'
+    end
+  else 
+    describe sshd_config do
+      its('PubkeyAuthentication') { should cmp 'yes' }
+    end
+  end
 end
