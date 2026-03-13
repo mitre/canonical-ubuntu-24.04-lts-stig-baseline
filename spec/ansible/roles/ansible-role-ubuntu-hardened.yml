@@ -1,0 +1,20 @@
+---
+- hosts:
+    - localhost
+  roles:
+    - roles/ansible-role-ubuntu-vanilla
+    - roles/ansible-role-ubuntu-hardened
+    - roles/ubuntu24STIG
+  serial: 50
+  become: yes
+  vars:
+    ubtu24stig_bootloader_password_hash: "changethispassword"
+    system_is_ec2: true
+    ubtu24stig_disruption_high: false
+    # Skip broken upstream controls
+    ubtu24stig_900920: false
+    ubtu24stig_900950: false
+    ubtu24stig_900960: false
+    ubtu24stig_900980: false
+    ubtu24stig_901220: false
+    ubtu24stig_audit_log_filesystem: "/var/log"
