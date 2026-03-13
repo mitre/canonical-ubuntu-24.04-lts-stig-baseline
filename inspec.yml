@@ -868,11 +868,11 @@ inputs:
     type: Hash
     value: {
       'execve'                        : 'execpriv',
-      '/etc/shadow'                   : 'identity',
-      '/etc/security/opasswd'         : 'identity',
-      '/etc/passwd'                   : 'identity',
-      '/etc/gshadow'                  : 'identity',
-      '/etc/group'                    : 'identity',
+      '/etc/shadow'                   : 'usergroup_modification',
+      '/etc/security/opasswd'         : 'usergroup_modification',
+      '/etc/passwd'                   : 'usergroup_modification',
+      '/etc/gshadow'                  : 'usergroup_modification',
+      '/etc/group'                    : 'usergroup_modification',
       '/etc/sudoers'                  : 'identity',
       '/etc/sudoers.d'                : 'identity',
       '/usr/bin/su'                   : 'privileged-priv_change',
