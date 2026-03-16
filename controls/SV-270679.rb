@@ -43,4 +43,39 @@ $ sudo dconf update'
   tag 'documentable'
   tag cci: ['CCI-000056']
   tag nist: ['AC-11 b']
+  tag 'host'
+
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  only_if('This requirement is not applicable because GNOME is not installed.', impact: 0.0) do
+    package('gnome-shell').installed? || file('/usr/bin/gnome-shell').exist?
+  end
+
+  profile_file = '/etc/dconf/profile/user'
+
+  describe file(profile_file) do
+    it { should exist }
+    it { should be_file }
+  end
+
+  system_db =
+    if file(profile_file).exist?
+      m = file(profile_file).content.match(/^\s*system-db\s*:\s*(\S+)\s*$/)
+      m && m[1]
+    end
+
+  locks_dir = "/etc/dconf/db/#{system_db}.d/locks"
+  required_lock = '/org/gnome/desktop/media-handling/automount-open'
+
+  describe file(locks_dir) do
+    it { should exist }
+    it { should be_directory }
+  end
+
+  describe command("grep -Rhs '^#{Regexp.escape(required_lock)}$' #{locks_dir} 2>/dev/null") do
+    its('exit_status') { should eq 0 }
+    its('stdout') { should include(required_lock) }
+  end
 end

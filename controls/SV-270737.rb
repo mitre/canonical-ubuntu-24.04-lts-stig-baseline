@@ -39,4 +39,29 @@ If the system is missing an "/etc/pam_pkcs11/" directory and an "/etc/pam_pkcs11
   tag 'documentable'
   tag cci: ['CCI-000185', 'CCI-004909']
   tag nist: ['IA-5 (2) (b) (1)', 'SC-17 b']
+  tag 'host'
+
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
+
+  if input('pki_disabled')
+    impact 0.0
+    describe 'This system is not using PKI for authentication so the controls is Not Applicable.' do
+      skip 'This system is not using PKI for authentication so the controls is Not Applicable.'
+    end
+  else
+    config_file_exists = file('/etc/pam_pkcs11/pam_pkcs11.conf').exist?
+    if config_file_exists
+      describe parse_config_file('/etc/pam_pkcs11/pam_pkcs11.conf') do
+        its('use_pkcs11_module') { should_not be_nil }
+        its('cert_policy') { should include 'ca' }
+      end
+    else
+      describe '/etc/pam_pkcs11/pam_pkcs11.conf exists' do
+        subject { config_file_exists }
+        it { should be true }
+      end
+    end
+  end
 end
