@@ -162,6 +162,28 @@ inputs:
     type: Boolean
     value: false
 
+  - name: ssh_ack_script_path
+    description: Path to shell script that enforces SSH banner acknowledgement
+    type: String
+    value: "/etc/profile.d/ssh_confirm.sh"
+
+  - name: ssh_ack_prompt
+    description: Interactive prompt string that requires explicit acknowledgement
+    type: String
+    value: "Do you agree? [y/N]"
+
+  - name: ssh_consent_banner_required_lines
+    description: Sentinel substrings that must appear in the DoD Notice and Consent banner presented for SSH acknowledgement
+    type: Array
+    value:
+      - "You are accessing a U.S. Government (USG) Information System (IS)"
+      - "By using this IS (which includes any device attached to this IS)"
+      - "The USG routinely intercepts and monitors communications on this IS"
+      - "At any time, the USG may inspect and seize data stored on this IS."
+      - "Communications using, or data stored on, this IS are not private"
+      - "This IS includes security measures (e.g., authentication and access controls)"
+      - "Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI"
+
   
   - name: maxclassrepeat
     description: "The maximum number of repeating characters of the same character class for passwords"
@@ -875,7 +897,7 @@ inputs:
       '/etc/group'                    : 'usergroup_modification',
       '/etc/sudoers'                  : 'identity',
       '/etc/sudoers.d'                : 'identity',
-      '/usr/bin/su'                   : 'privileged-priv_change',
+      '/bin/su'                       : 'privileged-priv_change',
       'setxattr'                      : 'perm_mod',
       'fsetxattr'                     : 'perm_mod',
       'lsetxattr'                     : 'perm_mod',
@@ -887,9 +909,9 @@ inputs:
       '/usr/bin/ssh-agent'            : 'privileged-ssh',
       '/usr/bin/passwd'               : 'privileged-passwd',
       '/usr/bin/mount'                : 'privileged-mount',
-      '/usr/bin/umount'               : 'privileged-mount',
+      '/usr/bin/umount'               : 'privileged-umount',
       'mount'                         : 'privileged-mount',
-      '/usr/sbin/unix_update'         : 'privileged-unix-update',
+      '/sbin/unix_update'             : 'privileged-unix-update',
       '/usr/sbin/postdrop'            : 'privileged-unix-update',
       '/usr/sbin/postqueue'           : 'privileged-unix-update',
       '/usr/sbin/semanage'            : 'privileged-unix-update',
@@ -897,7 +919,7 @@ inputs:
       '/usr/sbin/userhelper'          : 'privileged-unix-update',
       '/usr/sbin/setsebool'           : 'privileged-unix-update',
       '/usr/sbin/unix_chkpwd'         : 'privileged-unix-update',
-      '/usr/libexec/openssh/ssh-keysign' : 'privileged-ssh',
+      '/usr/lib/openssh/ssh-keysign'  : 'privileged-ssh',
       '/usr/bin/setfacl'              : 'perm_mod',
       '/usr/sbin/pam_timestamp_check' : 'privileged-pam_timestamp_check',
       '/usr/bin/newgrp'               : 'priv_cmd',
@@ -922,13 +944,13 @@ inputs:
       'fchown'                        : 'perm_mod',
       'fchownat'                      : 'perm_mod',
       'lchown'                        : 'perm_mod',
-      'chmod'                         : 'perm_mod',
-      'fchmod'                        : 'perm_mod',
-      'fchmodat'                      : 'perm_mod',
+      'chmod'                         : 'perm_chng',
+      'fchmod'                        : 'perm_chng',
+      'fchmodat'                      : 'perm_chng',
       '/usr/bin/sudo'                 : 'priv_cmd',
       '/usr/sbin/usermod'             : 'privileged-usermod',
       '/usr/bin/chacl'                : 'perm_mod',
-      '/usr/bin/kmod'                 : 'modules',
+      '/bin/kmod'                     : 'modules',
       '/var/log/faillock'             : 'logins',
       '/var/log/lastlog'              : 'logins',
       '/usr/bin/sudoedit'             : 'priv_cmd',
@@ -938,8 +960,9 @@ inputs:
       '/usr/sbin/shutdown'            : 'privileged-shutdown',
       '/usr/bin/umount'               : 'privileged-mount',
       'umount2'                       : 'perm_mod',
-      '/var/log/faillock'             : 'logins',
-      '/var/log/tallylog'             : 'logins'
+      '/var/log/faillog'              : 'logins',
+      '/var/log/tallylog'             : 'logins',
+      '/usr/sbin/fdisk'               : 'fdisk'
     }
 
   

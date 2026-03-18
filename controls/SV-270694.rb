@@ -79,4 +79,38 @@ Note: The "ssh_confirm.sh" script is provided as a supplemental file to this doc
   tag 'documentable'
   tag cci: ['CCI-000050']
   tag nist: ['AC-8 b']
+  tag 'host'
+  tag 'container-conditional'
+
+ 
+  script_path = input('ssh_ack_script_path')
+  prompt      = input('ssh_ack_prompt')
+  banner_lines = input('ssh_consent_banner_required_lines')
+
+  describe file(script_path) do
+    it { should exist }
+    it { should be_file }
+    its('content') { should match(/^#!\/bin\/bash/) }
+    # SSH session guard
+    its('content') { should match(/if\s+\[\s+-n\s+\"\$SSH_CLIENT\"\s*\]\s*\|\|\s*\[\s+-n\s+\"\$SSH_TTY\"\s*\]\s*;?\s*then/) }
+    # Interactive loop and prompt
+    its('content') { should match(/while\s+true\s*;\s*do/) }
+    its('content') { should match(/read\s+-p/m) }
+    its('content') { should include prompt }
+    # Case handling with explicit accept/deny actions
+    its('content') { should match(/case\s+\$yn\s+in/) }
+    its('content') { should match(/\[Yy\]\*\s*\)\s*break\s*;;/) }
+    its('content') { should match(/\[Nn\]\*\s*\)\s*exit\s+1\s*;;/) }
+    its('content') { should match(/done/) }
+    its('content') { should match(/fi/) }
+  end
+
+  # The consent banner must contain the required lines
+  banner_lines.each do |line|
+    describe "Banner contains required lines: #{line}" do
+      subject { file(script_path).content }
+      it { should include line }
+    end
+  end
 end
+
