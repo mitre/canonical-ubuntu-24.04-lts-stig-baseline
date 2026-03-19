@@ -4,11 +4,9 @@ platforms:
 
 driver:
   name: ec2
-  region: us-east-1
   subnet_id: "<%= ENV['SAF_PIPELINE_SUBNET'] %>"
   security_group_ids:
     - "<%= ENV['SAF_PIPELINE_SG'] %>"
-    - sg-06d5ae646f5663620
   metadata_options:
     http_tokens: required
     http_put_response_hop_limit: 1
