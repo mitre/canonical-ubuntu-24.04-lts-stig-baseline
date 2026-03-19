@@ -16,7 +16,7 @@ jobs:
       KITCHEN_LOCAL_YAML: kitchen.container.yml
       LC_ALL: "en_US.UTF-8"
       PLATFORM: "ubuntu-24"
-      HARDENED_CONTAINER_IMAGE: "docker pull registry1.dso.mil/ironbank/canonical/ubuntu-pro-stig:22.04_stable"
+      HARDENED_CONTAINER_IMAGE: "registry1.dso.mil/ironbank/canonical/ubuntu-pro-stig:24.04_stable"
       VANILLA_CONTAINER_IMAGE: "ubuntu:24.04"
     strategy:
       matrix:
