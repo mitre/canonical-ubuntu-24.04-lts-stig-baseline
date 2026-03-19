@@ -1,11 +1,11 @@
 control 'SV-270762' do
   title 'Ubuntu 24.04 LTS must configure the files used by the system journal to be group-owned by "systemd-journal".'
-  desc "Only authorized personnel are to be made aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify Ubuntu 24.04 LTS or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives. 
- 
+  desc "Only authorized personnel are to be made aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify Ubuntu 24.04 LTS or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives.
+
 The structure and content of error messages must be carefully considered by the organization and development team. The extent to which the information system is able to identify and handle error conditions is guided by organizational policy and operational requirements."
   desc 'check', 'Verify the /run/log/journal and /var/log/journal files are group-owned by "systemd-journal" with the following command:
 
-$ sudo find /run/log/journal /var/log/journal  -type f -exec stat -c "%n %G" {} \\; 
+$ sudo find /run/log/journal /var/log/journal  -type f -exec stat -c "%n %G" {} \\;
 /var/log/journal/d5745ad455d34fb8b6f78be37c1fcd3e/system.journal systemd-journal
 /var/log/journal/d5745ad455d34fb8b6f78be37c1fcd3e/user-1000@0005f97cd4a8c9b5-f088232c3718485a.journal~ systemd-journal
 /var/log/journal/d5745ad455d34fb8b6f78be37c1fcd3e/system@0005f97cd2a1e0a7-d58b848af46813a4.journal~ systemd-journal
@@ -37,7 +37,7 @@ Note: The system must be restarted for these settings to take effect.'
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  failing_files = command("find -L /run/log/journal /var/log/journal -type f ! -group systemd-journal -exec ls -d {} \\\; 2>/dev/null").stdout.split("\n").reject(&:empty?)
+  failing_files = command('find -L /run/log/journal /var/log/journal -type f ! -group systemd-journal -exec ls -d {} \\; 2>/dev/null').stdout.split("\n").reject(&:empty?)
 
   describe 'Systemd journal files' do
     it 'should be group-owned by systemd-journal' do

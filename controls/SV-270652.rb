@@ -1,16 +1,16 @@
 control 'SV-270652' do
   title 'Ubuntu 24.04 LTS must notify designated personnel if baseline configurations are changed in an unauthorized manner. The file integrity tool must notify the system administrator (SA) when changes to the baseline configuration or anomalies in the operation of any security functions are discovered.'
-  desc "Unauthorized changes to the baseline configuration could make the system vulnerable to various attacks or allow unauthorized access to Ubuntu 24.04 LTS. Changes to Ubuntu 24.04 LTS configurations can have unintended side effects, some of which may be relevant to security. 
- 
+  desc "Unauthorized changes to the baseline configuration could make the system vulnerable to various attacks or allow unauthorized access to Ubuntu 24.04 LTS. Changes to Ubuntu 24.04 LTS configurations can have unintended side effects, some of which may be relevant to security.
+
 Detecting such changes and providing an automated response can help avoid unintended, negative consequences that could ultimately affect the security state of Ubuntu 24.04 LTS. Ubuntu 24.04 LTS' IMO/information system security officer (ISSO) and SAs must be notified via email and/or monitoring system trap when there is an unauthorized modification of a configuration item."
-  desc 'check', 'Verify that Advanced Intrusion Detection Environment (AIDE) notifies the SA when anomalies in the operation of any security functions are discovered with the following command: 
- 
+  desc 'check', 'Verify that Advanced Intrusion Detection Environment (AIDE) notifies the SA when anomalies in the operation of any security functions are discovered with the following command:
+
 $ grep SILENTREPORTS /etc/default/aide
 SILENTREPORTS=no
- 
+
 If "SILENTREPORTS" is set to "yes", is commented out, or is missing, this is a finding.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to notify designated personnel if baseline configurations are changed in an unauthorized manner. 
- 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to notify designated personnel if baseline configurations are changed in an unauthorized manner.
+
 Modify the "SILENTREPORTS" parameter in the "/etc/default/aide" file with a value of "no" if it does not already exist as follows:
 
 SILENTREPORTS=no'

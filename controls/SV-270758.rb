@@ -1,7 +1,7 @@
 control 'SV-270758' do
   title 'Ubuntu 24.04 LTS must be configured so that the "journalctl" command is not accessible by unauthorized users.'
-  desc 'Any operating system providing too much information in error messages risks compromising the data and security of the structure, and content of error messages must be carefully considered by the organization. 
- 
+  desc 'Any operating system providing too much information in error messages risks compromising the data and security of the structure, and content of error messages must be carefully considered by the organization.
+
 Organizations carefully consider the structure/content of error messages. The extent to which information systems are able to identify and handle error conditions is guided by organizational policy and operational requirements. Information that could be exploited by adversaries includes, for example, erroneous logon attempts with passwords entered by mistake as the username, mission/business information that can be derived from (if not stated explicitly by) information recorded, and personal information, such as account numbers, social security numbers, and credit card numbers.'
   desc 'check', 'Verify the journalctl command has a permission set of "740" with the following command:
 

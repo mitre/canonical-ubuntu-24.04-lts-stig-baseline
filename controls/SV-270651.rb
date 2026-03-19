@@ -1,9 +1,9 @@
 control 'SV-270651' do
   title 'Ubuntu 24.04 LTS must be configured so that the script which runs each 30 days or less to check file integrity is the default one.'
-  desc 'Without verification, security functions may not operate correctly and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters. 
- 
-Notifications provided by information systems include, for example, electronic alerts to system administrators, messages to local computer consoles, and/or hardware indications, such as lights. 
- 
+  desc 'Without verification, security functions may not operate correctly and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.
+
+Notifications provided by information systems include, for example, electronic alerts to system administrators, messages to local computer consoles, and/or hardware indications, such as lights.
+
 This requirement applies to Ubuntu 24.04 LTS performing security function verification/testing and/or systems and environments that require this functionality.'
   desc 'check', 'Note: If AIDE is not installed, this finding is not applicable.
 
@@ -11,8 +11,8 @@ Check the AIDE configuration file integrity installed on the system (the default
 $ sudo sha256sum /etc/aide/aide.conf
 f3bbea2552f2c5b475627850d8a5fba1659df6466986d5a18948d9821ecbe491  /etc/aide/aide.conf
 
-Download the original aide-common package in the /tmp directory: 
-$ cd /tmp; apt download aide-common 
+Download the original aide-common package in the /tmp directory:
+$ cd /tmp; apt download aide-common
 
 Generate the checksum from the aide.conf file in the downloaded .deb package:
 $ sudo dpkg-deb --fsys-tarfile /tmp/aide-common_0.18.6-2build2_all.deb | tar -xO ./usr/share/aide/config/aide/aide.conf | sha256sum
@@ -35,18 +35,18 @@ $ sudo systemctl cat dailyaidecheck.timer
 $ sudo systemctl cat dailyaidecheck.service
 
 If there is no AIDE script file in the cron directories or in the systemd timer, this is a finding.'
-  desc 'fix', 'The cron file for AIDE is fairly complex as it creates the report. This file is installed with the "aide-common" package, and the default can be restored by copying it from the package: 
- 
-Download the original package to the /tmp dir: 
- 
-$ cd /tmp; apt download aide-common 
- 
-Extract the aide script to its original place: 
+  desc 'fix', 'The cron file for AIDE is fairly complex as it creates the report. This file is installed with the "aide-common" package, and the default can be restored by copying it from the package:
+
+Download the original package to the /tmp dir:
+
+$ cd /tmp; apt download aide-common
+
+Extract the aide script to its original place:
 
 $ dpkg-deb --fsys-tarfile /tmp/aide-common_*.deb | sudo tar -x --wildcards ./usr/share/aide/config/cron.daily/dailyaidecheck* -C /
- 
-Copy it to the cron.daily directory: 
- 
+
+Copy it to the cron.daily directory:
+
 $  sudo cp -f /usr/share/aide/config/cron.daily/aide /etc/cron.daily/dailyaidecheck*'
   impact 0.5
   tag check_id: 'C-74684r1066440_chk'

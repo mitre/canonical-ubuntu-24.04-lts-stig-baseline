@@ -9,10 +9,10 @@ $ grep -i minlen /etc/security/pwquality.conf
 minlen=15
 
 If "minlen" parameter value is not "15" or higher, is commented out, or is missing, this is a finding.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to enforce a minimum 15-character password length. 
- 
-Add or modify the "minlen" parameter value to the "/etc/security/pwquality.conf" file: 
- 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to enforce a minimum 15-character password length.
+
+Add or modify the "minlen" parameter value to the "/etc/security/pwquality.conf" file:
+
 minlen=15'
   impact 0.5
   tag severity: 'medium'

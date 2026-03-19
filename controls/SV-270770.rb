@@ -1,16 +1,16 @@
 control 'SV-270770' do
   title 'Ubuntu 24.04 LTS must configure /var/log/syslog file with mode "0640" or less permissive.'
-  desc "Only authorized personnel are to be made aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify Ubuntu 24.04 LTS or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives. 
- 
+  desc "Only authorized personnel are to be made aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify Ubuntu 24.04 LTS or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives.
+
 The structure and content of error messages must be carefully considered by the organization and development team. The extent to which the information system is able to identify and handle error conditions is guided by organizational policy and operational requirements."
-  desc 'check', 'Verify that Ubuntu 24.04 LTS configures the /var/log/syslog file with mode "0640" or less permissive with the following command: 
- 
+  desc 'check', 'Verify that Ubuntu 24.04 LTS configures the /var/log/syslog file with mode "0640" or less permissive with the following command:
+
 $ stat -c "%n %a" /var/log/syslog
-/var/log/syslog 640 
- 
+/var/log/syslog 640
+
 If a value of "640" or less permissive is not returned, this is a finding.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to have permissions of "0640" for the /var/log/syslog file by running the following command: 
- 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to have permissions of "0640" for the /var/log/syslog file by running the following command:
+
 $ sudo chmod 0640 /var/log/syslog'
   impact 0.5
   tag check_id: 'C-74803r1066797_chk'

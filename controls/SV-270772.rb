@@ -1,29 +1,29 @@
 control 'SV-270772' do
   title 'Ubuntu 24.04 LTS must implement address space layout randomization to protect its memory from unauthorized code execution.'
-  desc 'Some adversaries launch attacks with the intent of executing code in nonexecutable regions of memory or in memory locations that are prohibited. Security safeguards employed to protect memory include, for example, data execution prevention and address space layout randomization. Data execution prevention safeguards can either be hardware-enforced or software-enforced with hardware providing the greater strength of mechanism. 
- 
+  desc 'Some adversaries launch attacks with the intent of executing code in nonexecutable regions of memory or in memory locations that are prohibited. Security safeguards employed to protect memory include, for example, data execution prevention and address space layout randomization. Data execution prevention safeguards can either be hardware-enforced or software-enforced with hardware providing the greater strength of mechanism.
+
 Examples of attacks are buffer overflow attacks.'
-  desc 'check', 'Verify Ubuntu 24.04 LTS implements address space layout randomization (ASLR) with the following command: 
- 
+  desc 'check', 'Verify Ubuntu 24.04 LTS implements address space layout randomization (ASLR) with the following command:
+
 $ sysctl kernel.randomize_va_space
-kernel.randomize_va_space = 2 
- 
-If nothing is returned, verify the kernel parameter "randomize_va_space" is set to "2" with the following command: 
- 
+kernel.randomize_va_space = 2
+
+If nothing is returned, verify the kernel parameter "randomize_va_space" is set to "2" with the following command:
+
 $ cat /proc/sys/kernel/randomize_va_space
-2 
- 
-If "kernel.randomize_va_space" is not set to "2", this is a finding. 
- 
-Verify that a saved value of the "kernel.randomize_va_space" variable is not defined. 
- 
-$ sudo egrep -R "^kernel.randomize_va_space=[^2]" /etc/sysctl.conf /etc/sysctl.d 
- 
+2
+
+If "kernel.randomize_va_space" is not set to "2", this is a finding.
+
+Verify that a saved value of the "kernel.randomize_va_space" variable is not defined.
+
+$ sudo egrep -R "^kernel.randomize_va_space=[^2]" /etc/sysctl.conf /etc/sysctl.d
+
 If this returns a result, this is a finding.'
-  desc 'fix', 'Remove the "kernel.randomize_va_space" entry found in the "/etc/sysctl.conf" file or any file located in the "/etc/sysctl.d/" directory. 
- 
-After the line has been removed, the kernel settings from all system configuration files must be reloaded before any of the changes will take effect. Run the following command to reload all of the kernel system configuration files: 
- 
+  desc 'fix', 'Remove the "kernel.randomize_va_space" entry found in the "/etc/sysctl.conf" file or any file located in the "/etc/sysctl.d/" directory.
+
+After the line has been removed, the kernel settings from all system configuration files must be reloaded before any of the changes will take effect. Run the following command to reload all of the kernel system configuration files:
+
 $ sudo sysctl --system'
   impact 0.5
   tag severity: 'medium'

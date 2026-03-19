@@ -3,16 +3,16 @@ control 'SV-270727' do
   desc 'Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.
 
 Password complexity is one factor of several that determines how long it takes to crack a password. The more complex the password, the greater the number of possible combinations that need to be tested before the password is compromised.'
-  desc 'check', 'Verify Ubuntu 24.04 LTS enforces password complexity by requiring that at least one lowercase character be used with the following command: 
- 
-$ grep -i "lcredit" /etc/security/pwquality.conf
-lcredit=-1 
- 
-If the "lcredit" parameter is greater than "-1", is commented out, or is missing, this is a finding.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to enforce password complexity by requiring that at least one lowercase character be used. 
+  desc 'check', 'Verify Ubuntu 24.04 LTS enforces password complexity by requiring that at least one lowercase character be used with the following command:
 
-Add or update the "/etc/security/pwquality.conf" file to contain the "lcredit" parameter: 
- 
+$ grep -i "lcredit" /etc/security/pwquality.conf
+lcredit=-1
+
+If the "lcredit" parameter is greater than "-1", is commented out, or is missing, this is a finding.'
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to enforce password complexity by requiring that at least one lowercase character be used.
+
+Add or update the "/etc/security/pwquality.conf" file to contain the "lcredit" parameter:
+
 lcredit=-1'
   impact 0.5
   tag severity: 'medium'

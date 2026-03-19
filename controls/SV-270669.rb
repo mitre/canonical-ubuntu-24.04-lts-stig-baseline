@@ -7,7 +7,7 @@ The system will attempt to use the first algorithm presented by the client that 
 
 $ sudo grep -ir kexalgorithms /etc/ssh/sshd_config*
 KexAlgorithms ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group14-sha256
- 
+
 If "KexAlgorithms" does not contain only the algorithms "ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group14-sha256", is commented out, or is missing, this is a finding.'
   desc 'fix', 'Configure the SSH daemon to use only FIPS-validated key exchange algorithms by adding or modifying the following line in "/etc/ssh/sshd_config":
 

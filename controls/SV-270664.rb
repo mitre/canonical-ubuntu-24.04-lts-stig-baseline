@@ -4,7 +4,7 @@ control 'SV-270664' do
 
 Organizations must consider endpoints that may not have regular access to the authoritative time server (e.g., mobile, teleworking, and tactical endpoints).'
   desc 'check', 'Verify the "chrony" package is installed using the following command:
- 
+
 $ dpkg -l | grep chrony
 ii  chrony     4.5-1ubuntu4.1     amd64     Versatile implementation of the Network Time Protocol
 

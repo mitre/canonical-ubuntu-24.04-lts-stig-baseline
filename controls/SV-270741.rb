@@ -7,10 +7,10 @@ $ sudo grep -r ^UsePAM /etc/ssh/sshd_config*
 /etc/ssh/sshd_config:UsePAM yes
 
 If "UsePAM" is not set to "yes", conflicting results are returned, the line is commented out, or is missing, this is a finding.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to use strong authentication when establishing nonlocal maintenance and diagnostic sessions.  
- 
-Add or modify the following line to /etc/ssh/sshd_config: 
- 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to use strong authentication when establishing nonlocal maintenance and diagnostic sessions.
+
+Add or modify the following line to /etc/ssh/sshd_config:
+
 UsePAM yes'
   impact 0.5
   tag check_id: 'C-74774r1066710_chk'

@@ -1,7 +1,7 @@
 control 'SV-270757' do
   title 'Ubuntu 24.04 LTS must generate system journal entries without revealing information that could be exploited by adversaries.'
-  desc 'Any operating system providing too much information in error messages risks compromising the data and security of the structure, and content of error messages must be carefully considered by the organization. 
- 
+  desc 'Any operating system providing too much information in error messages risks compromising the data and security of the structure, and content of error messages must be carefully considered by the organization.
+
 Organizations carefully consider the structure/content of error messages. The extent to which information systems are able to identify and handle error conditions is guided by organizational policy and operational requirements. Information that could be exploited by adversaries includes, for example, erroneous logon attempts with passwords entered by mistake as the username, mission/business information that can be derived from (if not stated explicitly by) information recorded, and personal information, such as account numbers, social security numbers, and credit card numbers.'
   desc 'check', 'Verify the /run/log/journal and /var/log/journal directories have permissions set to "2640" or less permissive with the following command:
 

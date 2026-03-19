@@ -3,7 +3,7 @@ control 'SV-270690' do
   desc 'By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.'
   desc 'check', %q(Verify that Ubuntu 24.04 LTS utilizes the "pam_faillock" module with the following command:
 
-$ grep faillock /etc/pam.d/common-auth 
+$ grep faillock /etc/pam.d/common-auth
 auth     [default=die]  pam_faillock.so authfail
 auth     sufficient     pam_faillock.so authsucc
 
@@ -23,7 +23,7 @@ If the "audit" keyword is missing or commented out, this is a finding.
 If the "deny" keyword is missing, commented out, or set to a value greater than "3", this is a finding.
 If the "fail_interval" keyword is missing, commented out, or set to a value greater than "900", this is a finding.
 If the "unlock_time" keyword is missing, commented out, or not set to "0", this is a finding.)
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to utilize the "pam_faillock" module. 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to utilize the "pam_faillock" module.
 
 Edit the /etc/pam.d/common-auth file to add the following lines below the "auth" definition for pam_unix.so:
 auth     [default=die]  pam_faillock.so authfail

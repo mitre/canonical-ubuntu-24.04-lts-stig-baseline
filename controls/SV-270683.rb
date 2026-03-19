@@ -3,20 +3,20 @@ control 'SV-270683' do
   desc 'Inactive identifiers pose a risk to systems and applications because attackers may exploit an inactive identifier and potentially obtain undetected access to the system. Owners of inactive accounts will not notice if unauthorized access to their user account has been obtained.
 
 Operating systems need to track periods of inactivity and disable application identifiers after 35 days of inactivity.'
-  desc 'check', 'Verify the account identifiers (individuals, groups, roles, and devices) are disabled after 35 days of inactivity with the following command: 
- 
-Check the account inactivity value by performing the following command: 
- 
+  desc 'check', 'Verify the account identifiers (individuals, groups, roles, and devices) are disabled after 35 days of inactivity with the following command:
+
+Check the account inactivity value by performing the following command:
+
 $ grep INACTIVE /etc/default/useradd
-INACTIVE=35 
- 
+INACTIVE=35
+
 If "INACTIVE" is not set to a value 0<[VALUE]<=35, is commented out, or is missing, this is a finding.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to disable account identifiers after 35 days of inactivity after the password expiration.  
- 
-Run the following command to change the configuration for adduser: 
- 
-$ sudo useradd -D -f 35 
- 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to disable account identifiers after 35 days of inactivity after the password expiration.
+
+Run the following command to change the configuration for adduser:
+
+$ sudo useradd -D -f 35
+
 Note: DOD recommendation is 35 days, but a lower value is acceptable. The value "0" will disable the account immediately after the password expires.'
   impact 0.5
   tag severity: 'medium'

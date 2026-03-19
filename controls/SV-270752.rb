@@ -1,17 +1,17 @@
 control 'SV-270752' do
   title 'Ubuntu 24.04 LTS must synchronize internal information system clocks to the authoritative time source when the time difference is greater than one second.'
-  desc 'Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis. Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events. 
- 
-Synchronizing internal information system clocks provides uniformity of time stamps for information systems with multiple system clocks and systems connected over a network. Organizations must consider setting time periods for different types of systems (e.g., financial, legal, or mission-critical systems). 
- 
+  desc 'Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis. Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events.
+
+Synchronizing internal information system clocks provides uniformity of time stamps for information systems with multiple system clocks and systems connected over a network. Organizations must consider setting time periods for different types of systems (e.g., financial, legal, or mission-critical systems).
+
 Organizations must also consider endpoints that may not have regular access to the authoritative time server (e.g., mobile, teleworking, and tactical endpoints). This requirement is related to the comparison done every 24 hours in SRG-OS-000355 because a comparison must be done to determine the time difference.'
-  desc 'check', 'Verify Ubuntu 24.04 LTS synchronizes internal system clocks to the authoritative time source when the time difference is greater than one second. 
- 
-Check the value of "makestep" with the following command: 
- 
+  desc 'check', 'Verify Ubuntu 24.04 LTS synchronizes internal system clocks to the authoritative time source when the time difference is greater than one second.
+
+Check the value of "makestep" with the following command:
+
 $ grep makestep /etc/chrony/chrony.conf
-makestep 1 -1 
- 
+makestep 1 -1
+
 If the makestep option is not set to "1 -1", is commented out, or is missing, this is a finding.'
   desc 'fix', 'Configure chrony to synchronize the internal system clocks to the authoritative source when the time difference is greater than one second by doing the following:
 

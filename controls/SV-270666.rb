@@ -16,8 +16,8 @@ can be accomplished by physical means (e.g., employing physical distribution
 systems) or by logical means (e.g., employing cryptographic techniques). If
 physical means of protection are employed, then logical means (cryptography) do
 not have to be employed, and vice versa.'
-  desc 'check', 'Verify the "sshd.service" is enabled and active with the following commands: 
- 
+  desc 'check', 'Verify the "sshd.service" is enabled and active with the following commands:
+
 $ sudo systemctl is-enabled ssh
 enabled
 
@@ -25,12 +25,12 @@ $ sudo systemctl is-active ssh
 active
 
 If "ssh.service" is not active or loaded, this is a finding.'
-  desc 'fix', 'Enable the "ssh" service to start automatically on reboot with the following command: 
- 
-$ sudo systemctl enable ssh.service 
- 
-ensure the "ssh" service is running 
- 
+  desc 'fix', 'Enable the "ssh" service to start automatically on reboot with the following command:
+
+$ sudo systemctl enable ssh.service
+
+ensure the "ssh" service is running
+
 $ sudo systemctl start ssh.service'
   impact 0.7
   tag severity: 'high'

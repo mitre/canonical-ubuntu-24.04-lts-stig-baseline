@@ -16,16 +16,16 @@ can be accomplished by physical means (e.g., employing physical distribution
 systems) or by logical means (e.g., employing cryptographic techniques). If
 physical means of protection are employed, then logical means (cryptography) do
 not have to be employed, and vice versa.'
-  desc 'check', 'Verify the SSH package is installed with the following command: 
- 
-$ dpkg -l | grep openssh 
+  desc 'check', 'Verify the SSH package is installed with the following command:
+
+$ dpkg -l | grep openssh
 ii  openssh-client     1:9.6p1-3ubuntu13.5     amd64     secure shell (SSH) client, for secure access to remote machines
 ii  openssh-server     1:9.6p1-3ubuntu13.5     amd64     secure shell (SSH) server, for secure access from remote machines
 ii  openssh-sftp-server     1:9.6p1-3ubuntu13.5     amd64     secure shell (SSH) sftp server module, for SFTP access from remote machines
- 
+
 If the "openssh" server package is not installed, this is a finding.'
-  desc 'fix', 'Install the "ssh" meta-package on the system with the following command: 
- 
+  desc 'fix', 'Install the "ssh" meta-package on the system with the following command:
+
 $ sudo apt install -y ssh'
   impact 0.7
   tag severity: 'high'

@@ -1,24 +1,24 @@
 control 'SV-270684' do
   title 'Ubuntu 24.04 LTS must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/passwd.'
-  desc 'Once an attacker establishes access to a system, the attacker often attempts to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to create an account. Auditing account creation actions provides logging that can be used for forensic purposes. 
- 
+  desc 'Once an attacker establishes access to a system, the attacker often attempts to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to create an account. Auditing account creation actions provides logging that can be used for forensic purposes.
+
 To address access requirements, many operating systems may be integrated with enterprise-level authentication/access/auditing mechanisms that meet or exceed access control policy requirements.'
-  desc 'check', 'Verify Ubuntu 24.04 LTS generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/passwd" with the following command: 
- 
-$ sudo auditctl -l | grep passwd 
--w /etc/passwd -p wa -k usergroup_modification 
- 
-If the command does not return a line that matches the example or the line is commented out, this is a finding. 
- 
+  desc 'check', 'Verify Ubuntu 24.04 LTS generates audit records for all account creations, modifications, disabling, and termination events that affect "/etc/passwd" with the following command:
+
+$ sudo auditctl -l | grep passwd
+-w /etc/passwd -p wa -k usergroup_modification
+
+If the command does not return a line that matches the example or the line is commented out, this is a finding.
+
 Note: The "-k" allows for specifying an arbitrary identifier, and the string after it does not need to match the example output above.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to generate audit records for all account creations, modifications, disabling, and termination events that affect "/etc/passwd". 
- 
-Add or update the following rule to "/etc/audit/rules.d/stig.rules": 
- 
--w /etc/passwd -p wa -k usergroup_modification 
-  
-To reload the rules file, issue the following command: 
- 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to generate audit records for all account creations, modifications, disabling, and termination events that affect "/etc/passwd".
+
+Add or update the following rule to "/etc/audit/rules.d/stig.rules":
+
+-w /etc/passwd -p wa -k usergroup_modification
+
+To reload the rules file, issue the following command:
+
 $ sudo augenrules --load'
   impact 0.5
   tag severity: 'medium'

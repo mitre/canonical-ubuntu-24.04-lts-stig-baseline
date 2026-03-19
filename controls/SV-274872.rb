@@ -10,9 +10,9 @@ Verify Ubuntu 24.04 LTS disables ability of the user to override the graphical u
 Determine which profile the system database is using with the following command:
 
 $ gsettings writable org.gnome.desktop.media-handling autorun-never
- 
+
 false
- 
+
 If "autorun-never" is writable, the result is "true". If this is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.'
   desc 'fix', 'Configure the Ubuntu 24.04 LTS GNOME desktop to not allow a user to change the setting that disables autorun on removable media.
 

@@ -3,29 +3,29 @@ control 'SV-270827' do
   desc 'Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.
 
 Audit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit operating system activity.'
-  desc 'check', 'Verify that the audit log files have a mode of "0600" or less permissive. 
- 
-Determine where the audit logs are stored with the following command: 
- 
-$ sudo grep -iw log_file /etc/audit/auditd.conf
-log_file = /var/log/audit/audit.log 
- 
-Using the path of the directory containing the audit logs, determine if the audit log files have a mode of "0600" or less with the following command: 
- 
-$ sudo stat -c "%n %a" /var/log/audit/*
-/var/log/audit/audit.log 600 
- 
-If the audit log files have a mode more permissive than "0600", this is a finding.'
-  desc 'fix', 'Configure the audit log files to have a mode of "0600" or less permissive. 
- 
-Determine where the audit logs are stored with the following command: 
- 
-$ sudo grep -iw log_file /etc/audit/auditd.conf 
+  desc 'check', 'Verify that the audit log files have a mode of "0600" or less permissive.
 
-log_file = /var/log/audit/audit.log 
- 
-Using the path of the directory containing the audit logs, configure the audit log files to have a mode of "0600" or less permissive by using the following command: 
- 
+Determine where the audit logs are stored with the following command:
+
+$ sudo grep -iw log_file /etc/audit/auditd.conf
+log_file = /var/log/audit/audit.log
+
+Using the path of the directory containing the audit logs, determine if the audit log files have a mode of "0600" or less with the following command:
+
+$ sudo stat -c "%n %a" /var/log/audit/*
+/var/log/audit/audit.log 600
+
+If the audit log files have a mode more permissive than "0600", this is a finding.'
+  desc 'fix', 'Configure the audit log files to have a mode of "0600" or less permissive.
+
+Determine where the audit logs are stored with the following command:
+
+$ sudo grep -iw log_file /etc/audit/auditd.conf
+
+log_file = /var/log/audit/audit.log
+
+Using the path of the directory containing the audit logs, configure the audit log files to have a mode of "0600" or less permissive by using the following command:
+
 $ sudo chmod 0600 /var/log/audit/*'
   impact 0.5
   tag severity: 'medium'

@@ -3,22 +3,22 @@ control 'SV-270829' do
   desc 'Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.
 
 Audit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit operating system activity.'
-  desc 'check', 'Verify the group owner is set to own newly created audit logs in the audit configuration file with the following command: 
+  desc 'check', 'Verify the group owner is set to own newly created audit logs in the audit configuration file with the following command:
 
 $ sudo grep -iw log_group /etc/audit/auditd.conf
-log_group = root 
+log_group = root
 
 If the value of the "log_group" parameter is other than "root", this is a finding.
 
-Determine where the audit logs are stored with the following command: 
+Determine where the audit logs are stored with the following command:
 
 $ sudo grep -iw log_file /etc/audit/auditd.conf
-log_file = /var/log/audit/audit.log 
+log_file = /var/log/audit/audit.log
 
-Using the path of the directory containing the audit logs, determine if the audit log files are owned by the "root" group with the following command: 
+Using the path of the directory containing the audit logs, determine if the audit log files are owned by the "root" group with the following command:
 
 $ sudo stat -c "%n %G" /var/log/audit/*
-/var/log/audit/audit.log root 
+/var/log/audit/audit.log root
 
 If the audit log files are owned by a group other than "root", this is a finding.'
   desc 'fix', %q(Configure the audit log directory and its underlying files to be owned by "root" group.

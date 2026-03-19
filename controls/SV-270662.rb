@@ -27,7 +27,7 @@ ii  sssd-krb5-common     2.9.4-1.1ubuntu6.1     amd64     System Security Servic
 ii  sssd-ldap     2.9.4-1.1ubuntu6.1     amd64     System Security Services Daemon -- LDAP back end
 ii  sssd-proxy     2.9.4-1.1ubuntu6.1     amd64     System Security Services Daemon -- proxy back end
 
-If the "sssd" package is not installed, this is a finding. The additional sssd components listed by the command may differ from configuration to configuration.  
+If the "sssd" package is not installed, this is a finding. The additional sssd components listed by the command may differ from configuration to configuration.
 
 Ensure that "libpam-sss" (the PAM integration module for SSSD) is installed with the following command:
 
@@ -38,8 +38,8 @@ Ensure that "libnss-sss" (the NSS module for retrieving user and group informati
 
 $ dpkg -l | grep libnss-sss
 ii  libnss-sss:amd64     2.9.4-1.1ubuntu6.1      amd64     Nss library for the System Security Services Daemon'
-  desc 'fix', 'Install the sssd.service and the required pam packages with the following commands: 
- 
+  desc 'fix', 'Install the sssd.service and the required pam packages with the following commands:
+
 $ sudo apt install -y sssd
 
 $ sudo apt install -y libpam-sss

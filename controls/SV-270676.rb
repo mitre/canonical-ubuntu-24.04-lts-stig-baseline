@@ -1,32 +1,32 @@
 control 'SV-270676' do
   title 'Ubuntu 24.04 LTS must initiate session audits at system startup.'
   desc 'If auditing is enabled late in the startup process, the actions of some startup processes may not be audited. Some audit systems also maintain state information only available if auditing is enabled before a given process is created.'
-  desc 'check', 'Verify Ubuntu 24.04 LTS enables auditing at system startup in GRUB. 
+  desc 'check', 'Verify Ubuntu 24.04 LTS enables auditing at system startup in GRUB.
 
 Check the main GRUB defaults to ensure that auditing is enabled:
 $ sudo grep -ir GRUB_CMDLINE_LINUX /etc/default/grub
 /etc/default/grub:GRUB_CMDLINE_LINUX_DEFAULT="audit=1"
 /etc/default/grub:GRUB_CMDLINE_LINUX="audit=1"
- 
+
 If any linux lines do not contain "audit=1", this is a finding.
 
 Check the generated GRUB configuration to ensure that the setting is propagated to the bootloader:
-$ sudo grep "^\\s*linux" /boot/grub/grub.cfg 
+$ sudo grep "^\\s*linux" /boot/grub/grub.cfg
 linux   /vmlinuz-6.8.0-31-generic root=UUID=c92a542f-aee4-4af9-94b2-203624ccb8e3 ro audit=1 quiet splash $vt_handoff
 linux   /vmlinuz-6.8.0-31-generic root=UUID=c92a542f-aee4-4af9-94b2-203624ccb8e3 ro recovery nomodeset dis_ucode_ldr audit=1
- 
+
 If any linux lines do not contain "audit=1", this is a finding.
 
 Note: Output details may vary by system.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to produce audit records at system startup.  
- 
-Edit the "/etc/default/grub" file and add "audit=1" to the "GRUB_CMDLINE_LINUX" option and to the "GRUB_CMDLINE_LINUX_DEFAULT" option. 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to produce audit records at system startup.
+
+Edit the "/etc/default/grub" file and add "audit=1" to the "GRUB_CMDLINE_LINUX" option and to the "GRUB_CMDLINE_LINUX_DEFAULT" option.
 
 GRUB_CMDLINE_LINUX_DEFAULT="audit=1"
 GRUB_CMDLINE_LINUX="audit=1"
- 
-To update the grub config file, run: 
- 
+
+To update the grub config file, run:
+
 $ sudo update-grub'
   impact 0.5
   tag severity: 'medium'

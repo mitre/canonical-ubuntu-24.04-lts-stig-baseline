@@ -5,16 +5,16 @@ control 'SV-270733' do
 Password complexity is one factor in determining how long it takes to crack a password. The more complex the password, the greater the number of possible combinations that need to be tested before the password is compromised.
 
 Special characters are those characters that are not alphanumeric. Examples include: ~ ! @ # $ % ^ *.'
-  desc 'check', 'Determine if the field "ocredit" is set in the "/etc/security/pwquality.conf" file with the following command: 
- 
+  desc 'check', 'Determine if the field "ocredit" is set in the "/etc/security/pwquality.conf" file with the following command:
+
 $ grep -i "ocredit" /etc/security/pwquality.conf
-ocredit=-1 
- 
+ocredit=-1
+
 If the "ocredit" parameter is greater than "-1", is commented out, or is missing, this is a finding.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to enforce password complexity by requiring that at least one special character be used.  
- 
-Add or update the following line in the "/etc/security/pwquality.conf" file to include the "ocredit=-1" parameter: 
- 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to enforce password complexity by requiring that at least one special character be used.
+
+Add or update the following line in the "/etc/security/pwquality.conf" file to include the "ocredit=-1" parameter:
+
 ocredit=-1'
   impact 0.5
   tag severity: 'medium'

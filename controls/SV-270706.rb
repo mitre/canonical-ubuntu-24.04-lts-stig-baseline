@@ -3,16 +3,16 @@ control 'SV-270706' do
   desc 'Limiting the number of logon attempts over a certain time interval reduces the chances that an unauthorized user may gain access to an account.
 
 The delay option is set in microseconds.'
-  desc 'check', 'Verify Ubuntu 24.04 LTS enforces a delay of at least four seconds between logon prompts following a failed logon attempt with the following command: 
- 
+  desc 'check', 'Verify Ubuntu 24.04 LTS enforces a delay of at least four seconds between logon prompts following a failed logon attempt with the following command:
+
 $ grep pam_faildelay /etc/pam.d/common-auth
 auth    required    pam_faildelay.so    delay=4000000
- 
+
 If the value for "delay" is not set to "4000000" or greater, the line is commented out, or is missing, this is a finding.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to enforce a delay of at least four seconds between logon prompts following a failed logon attempt. 
- 
-Edit the file "/etc/pam.d/common-auth" and set the parameter "pam_faildelay" to a value of "4000000" or greater: 
- 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to enforce a delay of at least four seconds between logon prompts following a failed logon attempt.
+
+Edit the file "/etc/pam.d/common-auth" and set the parameter "pam_faildelay" to a value of "4000000" or greater:
+
 auth    required    pam_faildelay.so    delay=4000000'
   impact 0.3
   tag severity: 'low'

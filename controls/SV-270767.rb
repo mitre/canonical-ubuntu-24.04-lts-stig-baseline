@@ -1,7 +1,7 @@
 control 'SV-270767' do
   title 'Ubuntu 24.04 LTS must configure the /var/log directory to have mode "0755" or less permissive.'
-  desc "Only authorized personnel are to be made aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify Ubuntu 24.04 LTS or platform. Additionally, personally identifiable information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives. 
- 
+  desc "Only authorized personnel are to be made aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify Ubuntu 24.04 LTS or platform. Additionally, personally identifiable information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives.
+
 The structure and content of error messages must be carefully considered by the organization and development team. The extent to which the information system is able to identify and handle error conditions is guided by organizational policy and operational requirements."
   desc 'check', 'Note: If rsyslog is active and enabled on Ubuntu 24.04 LTS, this requirement is not applicable.
 
@@ -11,8 +11,8 @@ $ stat -c "%n %a" /var/log
 /var/log 755
 
 If a value of "755" or less permissive is not returned, this is a finding.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to have permissions of "0755" for the /var/log directory by running the following command: 
- 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to have permissions of "0755" for the /var/log directory by running the following command:
+
 $ sudo chmod 0755 /var/log'
   impact 0.5
   tag check_id: 'C-74800r1066788_chk'

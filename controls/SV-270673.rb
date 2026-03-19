@@ -1,18 +1,18 @@
 control 'SV-270673' do
   title 'Ubuntu 24.04 LTS must accept Personal Identity Verification (PIV) credentials managed through the Privileged Access Management (PAM)  framework.'
-  desc 'The use of PIV credentials facilitates standardization and reduces the risk of unauthorized access. 
- 
+  desc 'The use of PIV credentials facilitates standardization and reduces the risk of unauthorized access.
+
 DOD has mandated the use of the common access card (CAC) to support identity management and personal authentication for systems covered under Homeland Security Presidential Directive (HSPD) 12, as well as making the CAC a primary component of layered protection for national security systems.'
-  desc 'check', 'Verify the "libpam-pcks11" package is installed on the system with the following command: 
- 
-$ dpkg -l | grep libpam-pkcs11 
+  desc 'check', 'Verify the "libpam-pcks11" package is installed on the system with the following command:
+
+$ dpkg -l | grep libpam-pkcs11
 ii  libpam-pkcs11     0.6.12-2build3     amd64     Fully featured PAM module for using PKCS#11 smart cards
- 
+
 If the "libpam-pcks11" package is not installed, this is a finding.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to accept PIV credentials that are managed through the PAM framework. 
- 
-Install the "libpam-pkcs11" package using the following command: 
- 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to accept PIV credentials that are managed through the PAM framework.
+
+Install the "libpam-pkcs11" package using the following command:
+
 $ sudo apt install -y libpam-pkcs11'
   impact 0.5
   tag check_id: 'C-74706r1067162_chk'

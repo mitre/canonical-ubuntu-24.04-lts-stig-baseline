@@ -5,15 +5,15 @@ control 'SV-270750' do
 This requirement generally applies to the design of an information technology product, but it can also apply to the configuration of particular information system components that are, or use, such products. This can be verified by acceptance/validation processes in DOD or other government agencies.
 
 There may be shared resources with configurable protections (e.g., files in storage) that may be assessed on specific information system components.'
-  desc 'check', 'Verify all public (world-writeable) directories have the public sticky bit set with the following command:  
- 
-$ sudo find / -type d -perm -002 ! -perm -1000 
- 
+  desc 'check', 'Verify all public (world-writeable) directories have the public sticky bit set with the following command:
+
+$ sudo find / -type d -perm -002 ! -perm -1000
+
 If any world-writable directories are found missing the sticky bit, this is a finding.'
-  desc 'fix', 'Configure all public directories to have the sticky bit set to prevent unauthorized and unintended information transferred via shared system resources. 
- 
-Set the sticky bit on all public directories using the following command, replacing "[Public Directory]" with any directory path missing the sticky bit: 
- 
+  desc 'fix', 'Configure all public directories to have the sticky bit set to prevent unauthorized and unintended information transferred via shared system resources.
+
+Set the sticky bit on all public directories using the following command, replacing "[Public Directory]" with any directory path missing the sticky bit:
+
 $ sudo chmod +t  [Public Directory]'
   impact 0.5
   tag check_id: 'C-74783r1066737_chk'
@@ -30,7 +30,7 @@ $ sudo chmod +t  [Public Directory]'
   tag 'container'
 
   output = command('find / -xdev -type d  \( -perm -0002 -a ! -perm -1000 \) -print 2>/dev/null').stdout.strip.split("\n").entries
-  if output.count > 0
+  if output.any?
     output.each do |line|
       dir = line.strip
       describe directory(dir) do

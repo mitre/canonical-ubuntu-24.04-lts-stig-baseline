@@ -1,37 +1,37 @@
 control 'SV-270657' do
   title 'Ubuntu 24.04 LTS must produce audit records and reports containing information to establish when, where, what type, the source, and the outcome for all DOD-defined auditable events and actions in near real time.'
-  desc 'Without establishing the when, where, type, source, and outcome of events that occurred, it would be difficult to establish, correlate, and investigate the events leading up to an outage or attack. 
- 
-Without the capability to generate audit records, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one. 
- 
-Audit record content that may be necessary to satisfy this requirement includes, for example, time stamps, source and destination addresses, user/process identifiers, event descriptions, success/fail indications, filenames involved, and access control or flow control rules invoked. 
- 
-Reconstruction of harmful events or forensic analysis is not possible if audit records do not contain enough information. 
- 
-Successful incident response and auditing relies on timely, accurate system information and analysis to allow the organization to identify and respond to potential incidents in a proficient manner. If Ubuntu 24.04 LTS does not provide the ability to centrally review Ubuntu 24.04 LTS logs, forensic analysis is negatively impacted. 
- 
+  desc 'Without establishing the when, where, type, source, and outcome of events that occurred, it would be difficult to establish, correlate, and investigate the events leading up to an outage or attack.
+
+Without the capability to generate audit records, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
+
+Audit record content that may be necessary to satisfy this requirement includes, for example, time stamps, source and destination addresses, user/process identifiers, event descriptions, success/fail indications, filenames involved, and access control or flow control rules invoked.
+
+Reconstruction of harmful events or forensic analysis is not possible if audit records do not contain enough information.
+
+Successful incident response and auditing relies on timely, accurate system information and analysis to allow the organization to identify and respond to potential incidents in a proficient manner. If Ubuntu 24.04 LTS does not provide the ability to centrally review Ubuntu 24.04 LTS logs, forensic analysis is negatively impacted.
+
 Associating event types with detected events in Ubuntu 24.04 LTS audit logs provides a means of investigating an attack; recognizing resource utilization or capacity thresholds; or identifying an improperly configured operating system.'
-  desc 'check', 'Verify the audit service is enabled with the following command: 
- 
-$ systemctl is-enabled auditd.service 
+  desc 'check', 'Verify the audit service is enabled with the following command:
+
+$ systemctl is-enabled auditd.service
 enabled
 
-If the command above returns "disabled", this is a finding. 
- 
-Verify the audit service is properly running and active on the system with the following command: 
- 
-$ systemctl is-active auditd.service 
-active 
- 
+If the command above returns "disabled", this is a finding.
+
+Verify the audit service is properly running and active on the system with the following command:
+
+$ systemctl is-active auditd.service
+active
+
 If the command above returns "inactive", this is a finding.'
-  desc 'fix', 'Configure the audit service to produce audit records containing the information needed to establish when (date and time) an event occurred. 
- 
-Enable the audit service with the following command: 
- 
-$ sudo systemctl enable auditd.service 
- 
-To reload the rules file, issue the following command: 
- 
+  desc 'fix', 'Configure the audit service to produce audit records containing the information needed to establish when (date and time) an event occurred.
+
+Enable the audit service with the following command:
+
+$ sudo systemctl enable auditd.service
+
+To reload the rules file, issue the following command:
+
 $ sudo augenrules --load'
   impact 0.5
   tag severity: 'medium'

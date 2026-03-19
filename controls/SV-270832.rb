@@ -26,7 +26,7 @@ If the audit system is not set to be immutable by adding the "-e 2" option to th
   only_if('This control is Not Applicable to containers', impact: 0.0) {
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
-  
+
   describe file('/etc/audit/audit.rules') do
     it { should exist }
     its('content') { should match(/^-e\s+2\b/) }

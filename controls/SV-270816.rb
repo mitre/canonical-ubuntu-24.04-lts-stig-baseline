@@ -1,38 +1,38 @@
 control 'SV-270816' do
   title "Ubuntu 24.04 LTS must allocate audit record storage capacity to store at least one week's worth of audit records, when audit records are not immediately sent to a central audit record storage facility."
-  desc 'To ensure operating systems have a sufficient storage capacity in which to write the audit logs, operating systems must be able to allocate audit record storage capacity. 
- 
+  desc 'To ensure operating systems have a sufficient storage capacity in which to write the audit logs, operating systems must be able to allocate audit record storage capacity.
+
 The task of allocating audit record storage capacity is usually performed during initial installation of Ubuntu 24.04 LTS.'
-  desc 'check', %q(Verify Ubuntu 24.04 LTS allocates audit record storage capacity to store at least one week's worth of audit records when audit records are not immediately sent to a central audit record storage facility. 
- 
-Determine which partition the audit records are being written to with the following command: 
- 
+  desc 'check', %q(Verify Ubuntu 24.04 LTS allocates audit record storage capacity to store at least one week's worth of audit records when audit records are not immediately sent to a central audit record storage facility.
+
+Determine which partition the audit records are being written to with the following command:
+
 $ sudo grep ^log_file /etc/audit/auditd.conf
-log_file = /var/log/audit/audit.log 
- 
-Check the size of the partition that audit records are written to (with the example being "/var/log/audit/") with the following command: 
- 
+log_file = /var/log/audit/audit.log
+
+Check the size of the partition that audit records are written to (with the example being "/var/log/audit/") with the following command:
+
 $ sudo df -h /var/log/audit/
-/dev/sda2 24G 10.4G 13.6G 43% /var/log/audit 
- 
-If the audit records are not written to a partition made specifically for audit records ("/var/log/audit" is a separate partition), determine the amount of space being used by other files in the partition with the following command: 
- 
+/dev/sda2 24G 10.4G 13.6G 43% /var/log/audit
+
+If the audit records are not written to a partition made specifically for audit records ("/var/log/audit" is a separate partition), determine the amount of space being used by other files in the partition with the following command:
+
 $ sudo du -sh [audit_partition]
-1.8G /var/log/audit 
- 
-Note: The partition size needed to capture a week's worth of audit records is based on the activity level of the system and the total storage capacity available. 
- 
+1.8G /var/log/audit
+
+Note: The partition size needed to capture a week's worth of audit records is based on the activity level of the system and the total storage capacity available.
+
 If the audit record partition is not allocated for sufficient storage capacity, this is a finding.)
-  desc 'fix', %q(Allocate enough storage capacity for at least one week's worth of audit records when audit records are not immediately sent to a central audit record storage facility. 
- 
-If audit records are stored on a partition made specifically for audit records, use the "parted" program to resize the partition with sufficient space to contain one week's worth of audit records. 
- 
-If audit records are not stored on a partition made specifically for audit records, a new partition with sufficient amount of space will need be to be created. 
- 
-Set the auditd server to point to the mount point where the audit records must be located: 
- 
-$ sudo sed -i -E 's@^(log_file\s*=\s*).*@\1 <log mountpoint>/audit.log@' /etc/audit/auditd.conf 
- 
+  desc 'fix', %q(Allocate enough storage capacity for at least one week's worth of audit records when audit records are not immediately sent to a central audit record storage facility.
+
+If audit records are stored on a partition made specifically for audit records, use the "parted" program to resize the partition with sufficient space to contain one week's worth of audit records.
+
+If audit records are not stored on a partition made specifically for audit records, a new partition with sufficient amount of space will need be to be created.
+
+Set the auditd server to point to the mount point where the audit records must be located:
+
+$ sudo sed -i -E 's@^(log_file\s*=\s*).*@\1 <log mountpoint>/audit.log@' /etc/audit/auditd.conf
+
 where <log mountpoint> is the aforementioned mount point.)
   impact 0.3
   tag severity: 'low'
@@ -58,7 +58,7 @@ where <log mountpoint> is the aforementioned mount point.)
 
   # Fetch partition sizes in 1K blocks for consistency
   partition_info = command("df -B 1K #{audit_log_dir}").stdout.split("\n")
-  partition_sz_arr = partition_info.last.gsub(/\s+/m, ' ').strip.split(' ')
+  partition_sz_arr = partition_info.last.gsub(/\s+/m, ' ').strip.split
 
   # Get unused space percentage
   percentage_space_unused = (100 - partition_sz_arr[4].to_i)

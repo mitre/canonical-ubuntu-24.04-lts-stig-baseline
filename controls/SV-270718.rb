@@ -5,7 +5,7 @@ control 'SV-270718' do
 Peripherals include, but are not limited to, devices such as flash drives, external storage, and printers.'
   desc 'check', 'Verify that Ubuntu 24.04 LTS disables the ability to load the USB storage kernel module with the following command:
 
-$ sudo grep usb-storage /etc/modprobe.d/* | grep "/bin/false" 
+$ sudo grep usb-storage /etc/modprobe.d/* | grep "/bin/false"
 /etc/modprobe.d/DISASTIG.conf:install usb-storage /bin/false
 
 If the command does not return any output, or the line is commented out, this is a finding.
@@ -16,7 +16,7 @@ $ sudo grep usb-storage /etc/modprobe.d/* | grep -i "blacklist"
 /etc/modprobe.d/DISASTIG.conf:blacklist usb-storage
 
 If the command does not return any output, or the line is commented out, this is a finding.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to disable using the USB storage kernel module with the following command: 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to disable using the USB storage kernel module with the following command:
 
 $ sudo su -c "echo install usb-storage /bin/false >> /etc/modprobe.d/DISASTIG.conf"
 

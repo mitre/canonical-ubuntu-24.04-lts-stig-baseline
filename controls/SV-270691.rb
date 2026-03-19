@@ -23,56 +23,56 @@ By using this IS (which includes any device attached to this IS), you consent to
 Use the following verbiage for operating systems that have severe limitations on the number of characters that can be displayed in the banner:
 
 "I've read (literal ampersand) consent to terms in IS user agreem't.")
-  desc 'check', 'Verify Ubuntu 24.04 LTS displays the Standard Mandatory DOD Notice and Consent Banner before granting access via an SSH logon with the following command: 
- 
-$ sudo grep -ir banner /etc/ssh/sshd_config* 
+  desc 'check', 'Verify Ubuntu 24.04 LTS displays the Standard Mandatory DOD Notice and Consent Banner before granting access via an SSH logon with the following command:
+
+$ sudo grep -ir banner /etc/ssh/sshd_config*
 /etc/ssh/sshd_config:Banner /etc/issue.net
- 
+
 The command will return the banner option along with the name of the file that contains the SSH banner. If the line is commented out, missing, or conflicting results are returned, this is a finding.
- 
-Verify the specified banner file matches the Standard Mandatory DOD Notice and Consent Banner exactly: 
- 
-$ cat /etc/issue.net 
-"You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only. 
- 
-By using this IS (which includes any device attached to this IS), you consent to the following conditions: 
- 
--The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations. 
- 
--At any time, the USG may inspect and seize data stored on this IS. 
- 
--Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose. 
- 
--This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy. 
- 
--Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details." 
- 
+
+Verify the specified banner file matches the Standard Mandatory DOD Notice and Consent Banner exactly:
+
+$ cat /etc/issue.net
+"You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+
+By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+
+-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.
+
+-At any time, the USG may inspect and seize data stored on this IS.
+
+-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.
+
+-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.
+
+-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."
+
 If the banner text does not match the Standard Mandatory DOD Notice and Consent Banner exactly, this is a finding.'
   desc 'fix', %q(Configure Ubuntu 24.04 LTS to display the Standard Mandatory DOD Notice and Consent Banner before granting access via an SSH logon.
 
-Set the parameter Banner in "/etc/ssh/sshd_config" to point to the "/etc/issue.net" file: 
- 
-$ sudo sed -i '/^Banner/d' /etc/ssh/sshd_config 
-$ sudo sed -i '$aBanner /etc/issue.net' /etc/ssh/sshd_config 
- 
-Either create the file containing the banner or replace the text in the file with the Standard Mandatory DOD Notice and Consent Banner. The DOD required text is: 
- 
-"You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only. 
- 
-By using this IS (which includes any device attached to this IS), you consent to the following conditions: 
- 
--The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations. 
- 
--At any time, the USG may inspect and seize data stored on this IS. 
- 
--Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose. 
- 
--This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy. 
- 
--Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details." 
- 
-Restart the SSH daemon for the changes to take effect and then signal the SSH server to reload the configuration file: 
- 
+Set the parameter Banner in "/etc/ssh/sshd_config" to point to the "/etc/issue.net" file:
+
+$ sudo sed -i '/^Banner/d' /etc/ssh/sshd_config
+$ sudo sed -i '$aBanner /etc/issue.net' /etc/ssh/sshd_config
+
+Either create the file containing the banner or replace the text in the file with the Standard Mandatory DOD Notice and Consent Banner. The DOD required text is:
+
+"You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+
+By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+
+-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.
+
+-At any time, the USG may inspect and seize data stored on this IS.
+
+-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.
+
+-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.
+
+-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."
+
+Restart the SSH daemon for the changes to take effect and then signal the SSH server to reload the configuration file:
+
 $ sudo systemctl -s SIGHUP kill sshd)
   impact 0.5
   tag severity: 'medium'

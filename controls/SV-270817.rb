@@ -4,14 +4,14 @@ control 'SV-270817' do
 
 Offloading is a common process in information systems with limited audit storage capacity.'
   desc 'check', 'Note: If this is an interconnected system, this is not applicable.
- 
+
 Verify there is a script that offloads audit data and that script runs weekly with the following command:
 
-$ ls /etc/cron.weekly 
-audit-offload 
- 
-Check if the script inside the file offloads audit logs to external media. 
- 
+$ ls /etc/cron.weekly
+audit-offload
+
+Check if the script inside the file offloads audit logs to external media.
+
 If the script file does not exist or does not offload audit logs, this is a finding.'
   desc 'fix', 'Create a script that offloads audit logs to external media and runs weekly.
 

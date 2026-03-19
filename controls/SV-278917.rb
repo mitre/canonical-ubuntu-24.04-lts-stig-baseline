@@ -2,7 +2,7 @@ control 'SV-278917' do
   title 'Ubuntu 24.04 LTS must be a vendor-supported release.'
   desc 'An operating system release is considered "supported" if the vendor continues to provide security patches for the product. With an unsupported release, it will not be possible to resolve security issues discovered in the system software.
 
-The support status of the OS depends on its subscription status.  
+The support status of the OS depends on its subscription status.
 
 End Of Life dates for Ubuntu 24.04 releases are as follows:
 Standard Support: April 2029

@@ -20,10 +20,10 @@ $ grep -r pam_pkcs11.so /etc/pam.d/common-auth
 auth    [success=2 default=ignore] pam_pkcs11.so
 
 If the module is not configured, is missing, or commented out, this is a finding.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to use multifactor authentication for access to accounts. 
- 
-Add or update "pam_pkcs11.so" in "/etc/pam.d/common-auth" to match the following line: 
- 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to use multifactor authentication for access to accounts.
+
+Add or update "pam_pkcs11.so" in "/etc/pam.d/common-auth" to match the following line:
+
 auth    [success=2 default=ignore] pam_pkcs11.so'
   impact 0.5
   tag check_id: 'C-74754r1066650_chk'

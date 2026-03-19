@@ -1,7 +1,7 @@
 control 'SV-270714' do
   title 'Ubuntu 24.04 LTS must not allow accounts configured in Pluggable Authentication Modules (PAM) with blank or null passwords.'
   desc 'If an account has an empty password, anyone could log on and run commands with the privileges of that account. Accounts with empty passwords must never be used in operational environments.'
-  desc 'check', 'To verify null passwords cannot be used, run the following command: 
+  desc 'check', 'To verify null passwords cannot be used, run the following command:
 
 $ grep nullok /etc/pam.d/common-password /etc/pam.d/common-auth
 

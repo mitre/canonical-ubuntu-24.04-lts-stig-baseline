@@ -7,22 +7,22 @@ This requirement addresses auditing-related issues associated with maintenance t
 Nonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network. Local maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection.
 
 This requirement applies to hardware/software diagnostic test equipment or tools. This requirement does not cover hardware/software components that may support information system maintenance, yet are a part of the system, for example, the software implementing "ping," "ls," "ipconfig," or the hardware and software implementing the monitoring port of an Ethernet switch.'
-  desc 'check', 'Verify Ubuntu 24.04 LTS audits activities performed during nonlocal maintenance and diagnostic sessions with the following command: 
- 
-$ sudo auditctl -l | grep sudo.log 
--w /var/log/sudo.log -p wa -k maintenance 
- 
-If the command does not return lines that match the example or the lines are commented out, this is a finding. 
- 
+  desc 'check', 'Verify Ubuntu 24.04 LTS audits activities performed during nonlocal maintenance and diagnostic sessions with the following command:
+
+$ sudo auditctl -l | grep sudo.log
+-w /var/log/sudo.log -p wa -k maintenance
+
+If the command does not return lines that match the example or the lines are commented out, this is a finding.
+
 Note: The "-k" allows for specifying an arbitrary identifier, and the string after it does not need to match the example output above.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to audit activities performed during nonlocal maintenance and diagnostic sessions. 
- 
-Add or update the following rules in the "/etc/audit/rules.d/stig.rules" file: 
- 
--w /var/log/sudo.log -p wa -k maintenance 
-  
-To reload the rules file, issue the following command: 
- 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to audit activities performed during nonlocal maintenance and diagnostic sessions.
+
+Add or update the following rules in the "/etc/audit/rules.d/stig.rules" file:
+
+-w /var/log/sudo.log -p wa -k maintenance
+
+To reload the rules file, issue the following command:
+
 $ sudo augenrules --load'
   impact 0.5
   tag check_id: 'C-74773r1066707_chk'

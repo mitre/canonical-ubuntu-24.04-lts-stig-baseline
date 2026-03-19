@@ -7,14 +7,14 @@ $ sudo grep -ir x11uselocalhost /etc/ssh/sshd_config*
 X11UseLocalhost yes
 
 If the "X11UseLocalhost" keyword is set to "no", is commented out, is missing, or multiple conflicting results are returned, this is a finding.'
-  desc 'fix', 'Configure the SSH daemon to prevent remote hosts from connecting to the proxy display. 
- 
-Edit the "/etc/ssh/sshd_config" file to uncomment or add the line for the "X11UseLocalhost" keyword and set its value to "yes" (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor): 
- 
-X11UseLocalhost yes 
- 
-Restart the SSH daemon for the changes to take effect: 
- 
+  desc 'fix', 'Configure the SSH daemon to prevent remote hosts from connecting to the proxy display.
+
+Edit the "/etc/ssh/sshd_config" file to uncomment or add the line for the "X11UseLocalhost" keyword and set its value to "yes" (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor):
+
+X11UseLocalhost yes
+
+Restart the SSH daemon for the changes to take effect:
+
 $ sudo systemctl restart sshd.service'
   impact 0.5
   tag severity: 'medium'

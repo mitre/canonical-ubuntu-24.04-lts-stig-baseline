@@ -6,9 +6,9 @@ control 'SV-274871' do
 To verify the screensaver is configured to be blank, run the following command:
 
 $ gsettings writable org.gnome.desktop.screensaver picture-uri
- 
+
 false
- 
+
 If "picture-uri" is writable and the result is "true", this is a finding.'
   desc 'fix', %q(Configure Ubuntu 24.04 LTS to prevent a user from overriding the picture-uri setting for graphical user interfaces.
 

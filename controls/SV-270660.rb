@@ -1,29 +1,29 @@
 control 'SV-270660' do
   title 'Ubuntu 24.04 LTS must be configured to use AppArmor.'
-  desc 'Control of program execution is a mechanism used to prevent execution of unauthorized programs. Some operating systems may provide a capability that runs counter to the mission or provides users with functionality that exceeds mission requirements. This includes functions and services installed at Ubuntu 24.04 LTS-level. 
- 
-Some of the programs, installed by default, may be harmful or may not be necessary to support essential organizational operations (e.g., key missions, functions). Removal of executable programs is not always possible; therefore, establishing a method of preventing program execution is critical to maintaining a secure system baseline. 
- 
+  desc 'Control of program execution is a mechanism used to prevent execution of unauthorized programs. Some operating systems may provide a capability that runs counter to the mission or provides users with functionality that exceeds mission requirements. This includes functions and services installed at Ubuntu 24.04 LTS-level.
+
+Some of the programs, installed by default, may be harmful or may not be necessary to support essential organizational operations (e.g., key missions, functions). Removal of executable programs is not always possible; therefore, establishing a method of preventing program execution is critical to maintaining a secure system baseline.
+
 Methods for complying with this requirement include restricting execution of programs in certain environments, while preventing execution in other environments; or limiting execution of certain program functionality based on organization-defined criteria (e.g., privileges, subnets, sandboxed environments, or roles).'
-  desc 'check', 'Verify Ubuntu 24.04 LTS AppArmor active with the following commands: 
- 
+  desc 'check', 'Verify Ubuntu 24.04 LTS AppArmor active with the following commands:
+
 $ systemctl is-active apparmor.service
-active 
- 
-If "active" is not returned, this is a finding. 
- 
-$ systemctl is-enabled apparmor.service 
-enabled 
- 
+active
+
+If "active" is not returned, this is a finding.
+
+$ systemctl is-enabled apparmor.service
+enabled
+
 If "enabled" is not returned, this is a finding.'
   desc 'fix', 'Enable "apparmor" with the following command:
- 
-$ sudo systemctl enable apparmor.service 
- 
-Start "apparmor" with the following command: 
- 
-$ sudo systemctl start apparmor.service 
- 
+
+$ sudo systemctl enable apparmor.service
+
+Start "apparmor" with the following command:
+
+$ sudo systemctl start apparmor.service
+
 Note: AppArmor must have properly configured profiles for applications and home directories. All configurations will be based on the actual system setup and organization and normally are on a per role basis. Refer to the AppArmor documentation for more information on configuring profiles.'
   impact 0.5
   tag check_id: 'C-74693r1066467_chk'

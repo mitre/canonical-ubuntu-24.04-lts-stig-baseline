@@ -23,12 +23,12 @@ $ sudo systemctl is-active sssd
 active
 
 If "sssd.service" is not active or enabled, this is a finding.'
-  desc 'fix', 'Enable the "sssd.service to start automatically on reboot with the following command: 
- 
-$ sudo systemctl enable sssd.service 
- 
-ensure the "sssd" service is running 
- 
+  desc 'fix', 'Enable the "sssd.service to start automatically on reboot with the following command:
+
+$ sudo systemctl enable sssd.service
+
+ensure the "sssd" service is running
+
 $ sudo systemctl start sssd.service'
   impact 0.5
   tag check_id: 'C-74696r1066476_chk'
