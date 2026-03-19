@@ -107,11 +107,11 @@ jobs:
       - name: Run Bundle Install
         run: bundle install
 
-      - name: Installed Inspec
-        run: bundle exec inspec version
+      - name: Installed Cinc-auditor
+        run: bundle exec cinc-auditor version
 
       - name: Vendor the Profile
-        run: bundle exec inspec vendor . --overwrite
+        run: bundle exec cinc-auditor vendor . --overwrite
 
       - name: Generate ephemeral SSH key for Kitchen
         run: |

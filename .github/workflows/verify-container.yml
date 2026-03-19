@@ -61,11 +61,11 @@ jobs:
       - name: Run Bundle Install
         run: bundle install
 
-      - name: Installed Inspec
-        run: bundle exec inspec version
+      - name: Installed Cinc-auditor
+        run: bundle exec cinc-auditor version
 
       - name: Vendor the Profile
-        run: bundle exec inspec vendor . --overwrite
+        run: bundle exec cinc-auditor vendor . --overwrite
 
       - name: Run kitchen test
         if: ${{ !contains(steps.commit.outputs.message, 'only-validate-profile') }}
