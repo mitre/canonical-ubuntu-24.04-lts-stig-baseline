@@ -4,8 +4,8 @@ infrastructure and applications when validating compliancy with [Department of D
 requirements.
 
 - Profile Version: **1.1.0**
-- Benchmark Date: **28 Jan 2025**
-- Benchmark Version: **Version 1 Release 1 (V1R1)**
+- Benchmark Date: **22 Jan 2026**
+- Benchmark Version: **Version 1 Release 4 (V1R4)**
 
 
 This profile was developed to reduce the time it takes to perform a security checks based upon the

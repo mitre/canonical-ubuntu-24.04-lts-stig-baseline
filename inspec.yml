@@ -1,6 +1,6 @@
 name: canonical-ubuntu-24.04-lts-stig-baseline
 title: "Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide ::
-  Version 1, Release 1 :: Benchmark Date:  28 Jan 2025"
+  Version 1, Release 4 :: Benchmark Date:  22 Jan 2026"
 maintainer: MITRE SAF Team
 copyright: MITRE
 copyright_email: saf@groups.mitre.org
@@ -361,10 +361,6 @@ inputs:
       - -VERS-DTLS1.0
 
   
-  - name: unsuccessful_attempts
-    description: The number of allowed failed login attempts
-    type: Numeric
-    value: 3
 
   
   - name: bluetooth_installed

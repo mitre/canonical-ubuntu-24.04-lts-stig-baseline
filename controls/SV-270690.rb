@@ -52,9 +52,15 @@ unlock_time = 0'
   tag 'host'
   tag 'container'
 
+  unsuccessful_attempts = input('unsuccessful_attempts')
+  fail_interval = input('fail_interval')
   lockout_time = input('lockout_time')
 
   describe parse_config_file('/etc/security/faillock.conf') do
+    its('audit') { should eq '' }
+    its('silent') { should eq '' }
+    its('deny') { should cmp <= unsuccessful_attempts }
+    its('fail_interval') { should cmp <= fail_interval }
     its('unlock_time') { should cmp lockout_time }
   end
 end
