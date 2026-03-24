@@ -42,13 +42,7 @@ If any of the seven audit tools do not have appropriate selection lines, this is
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  audit_tools = %w[/sbin/auditctl
-                   /sbin/auditd
-                   /sbin/ausearch
-                   /sbin/aureport
-                   /sbin/autrace
-                   /sbin/augenrules]
-
+  audit_tools = input('audit_tools')
   audit_rule_suffix = 'p+i+n+u+g+s+b+acl+xattrs+sha512'
 
   if package('aide').installed?

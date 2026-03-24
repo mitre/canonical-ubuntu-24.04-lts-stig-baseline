@@ -37,7 +37,7 @@ Replace "[audit_tool]" with each audit tool not owned by root.'
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  audit_tools = ['/sbin/auditctl', '/sbin/aureport', '/sbin/ausearch', '/sbin/autrace', '/sbin/auditd', '/sbin/augenrules'] + Dir.glob('/sbin/audisp*')
+  audit_tools = input('audit_tools') + Dir.glob('/sbin/audisp*')
 
   existing_tools = audit_tools.select { |at| file(at).exist? }
   failing_tools = existing_tools.reject { |at| file(at).owned_by?('root') }

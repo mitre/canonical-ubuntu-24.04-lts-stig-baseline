@@ -663,7 +663,6 @@ inputs:
       - /sbin/ausearch
       - /sbin/autrace
       - /sbin/auditd
-      - /sbin/rsyslogd
       - /sbin/augenrules
 
   
@@ -1215,4 +1214,4 @@ inputs:
   - name: expected_aide_sha1sum
     description: SHA1 checksum of the default AIDE cron script from the aide-common package
     type: String
-    value: "b71bb2cafaedf15ec3ac2f566f209d3260a37af0"
+    value: "b5c99edb28d39b84f76a523a15dca80f0d609fee"
