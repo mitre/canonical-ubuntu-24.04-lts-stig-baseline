@@ -43,16 +43,20 @@ $ export TMOUT=600'
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  timeout_setting = command("grep -E '\\bTMOUT=[0-9]+' /etc/bash.bashrc /etc/profile.d/*.sh 2>/dev/null | tail -n1").stdout.strip.match(/TMOUT=(?<timeout>\d+)/)
+  content = command('cat /etc/bash.bashrc /etc/profile.d/*.sh 2>/dev/null').stdout
+  t = parse_config(
+    content,
+    assignment_regex: /^\s*(?:export\s+)?([^=\s#]+)\s*=\s*"?([^"#]+?)"?\s*(?:#.*)?$/
+  )
   expected_timeout = input('system_activity_timeout')
 
   describe 'Shell inactivity timeout (TMOUT)' do
     it 'should be set' do
-      expect(timeout_setting).to_not be_nil, 'TMOUT not set in /etc/bash.bashrc or /etc/profile.d/*.sh'
+      expect(t.params['TMOUT']).to_not be_nil, 'TMOUT not set in /etc/bash.bashrc or /etc/profile.d/*.sh'
     end
-    unless timeout_setting.nil?
+    unless t.nil?
       it "should lock the session after #{expected_timeout} seconds" do
-        expect(timeout_setting['timeout'].to_i).to cmp <= expected_timeout
+        expect(t.params['TMOUT'].to_i).to cmp <= expected_timeout
       end
     end
   end

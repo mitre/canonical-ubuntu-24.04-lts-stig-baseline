@@ -53,7 +53,9 @@ Note: The system must be restarted for these settings to take effect.'
       end
     else
       describe "Systemd journal directory #{base}" do
-        skip "#{base} does not exist; skipping ownership validation per applicability"
+        it 'is absent; and is not misconfigured' do
+          expect(file(base)).not_to exist
+        end
       end
     end
   end

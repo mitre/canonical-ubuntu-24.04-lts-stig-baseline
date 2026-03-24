@@ -88,28 +88,23 @@ $ sudo systemctl -s SIGHUP kill sshd)
   tag 'container-conditional'
 
   only_if('Control not applicable - SSH is not installed within containerized Ubuntu', impact: 0.0) {
-    !%w[docker podman kubepods lxc].include?(virtualization.system) || file('/etc/ssh/sshd_config').exist?
+    !%w[docker podman kubepods lxc].include?(virtualization.system) || package('openssh-server').installed?
   }
 
-  sshd_conf = file('/etc/ssh/sshd_config')
-  banner_path = nil
-  if sshd_conf.exist?
-    match = sshd_conf.content.lines.find { |l| l =~ /^\s*Banner\s+/i }
-    banner_path = match ? match.split(/\s+/)[1] : '/etc/issue.net'
-  else
-    banner_path = '/etc/issue.net'
-  end
-
+  sc = sshd_active_config
+  banner_path = sc.banner
   banner_file = file(banner_path)
 
-  describe banner_file do
-    it { should exist }
+  describe "File containing Banner Content (#{banner_file.path})" do
+    it 'should exist' do
+      expect(banner_file).to exist
+    end
   end
 
   if banner_file.exist?
     banner = banner_file.content.gsub(/[\r\n\s]/, '')
     expected_banner = input('banner_message_text_cli').gsub(/[\r\n\s]/, '')
-    describe 'The CLI Login Banner ' do
+    describe 'The CLI Login Banner' do
       it 'is set to the standard banner and has the correct text' do
         expect(banner).to eq(expected_banner), 'Banner does not match expected text'
       end

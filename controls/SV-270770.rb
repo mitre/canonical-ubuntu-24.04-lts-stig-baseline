@@ -26,7 +26,10 @@ $ sudo chmod 0640 /var/log/syslog'
   tag 'host'
   tag 'container'
 
-  describe file('/var/log/syslog') do
-    it { should_not be_more_permissive_than('640') }
+  sys_log = '/var/log/syslog'
+  sys_mode = input('expected_modes')[sys_log]
+
+  describe file(sys_log) do
+    it { should_not be_more_permissive_than(sys_mode) }
   end
 end

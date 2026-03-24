@@ -35,19 +35,11 @@ Note: Enabling the firewall will potentially disrupt ssh sessions.'
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  alternate_firewall_tool = input('alternate_firewall_tool')
+  expected_firewall_package = input('expected_firewall_package')
 
-  if alternate_firewall_tool == ''
-    describe service('ufw') do
-      it { should be_installed }
-      it { should be_enabled }
-      it { should be_running }
-    end
-  else
-    describe service(alternate_firewall_tool) do
-      it { should be_installed }
-      it { should be_enabled }
-      it { should be_running }
-    end
+  describe service(expected_firewall_package) do
+    it { should be_installed }
+    it { should be_enabled }
+    it { should be_running }
   end
 end

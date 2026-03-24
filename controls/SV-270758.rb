@@ -29,7 +29,10 @@ $ sudo chmod 740 /usr/bin/journalctl'
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  describe file('/usr/bin/journalctl') do
-    it { should_not be_more_permissive_than('0740') }
+  journalctl = '/usr/bin/journalctl'
+  journalctl_mode = input('expected_modes')[journalctl]
+
+  describe file(journalctl) do
+    it { should_not be_more_permissive_than(journalctl_mode) }
   end
 end

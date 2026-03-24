@@ -53,7 +53,7 @@ $ sudo dconf update'
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  if package('gnome-desktop3').installed?
+  if package('gnome-shell').installed?
     describe command("gsettings get org.gnome.desktop.session idle-delay | cut -d ' ' -f2") do
       its('stdout.strip') { should cmp <= input('system_inactivity_timeout') }
     end

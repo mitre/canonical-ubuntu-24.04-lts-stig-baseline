@@ -118,7 +118,10 @@ inputs:
       /etc/crontab: "0600"
       /etc/ssh/sshd_config: "0600"
       auditd_conf: "0640"
-      journal: "2640"
+      journal_dir: "2640"
+      journal_file: "0640"
+      /var/log/syslog: "0640"
+      /usr/bin/journalctl: "0740"
 
   
   - name: initialization_file_mode
@@ -656,7 +659,7 @@ inputs:
   
   - name: audit_tools
     description: Paths to tools related to audit function
-    tpye: Array
+    type: Array
     value:
       - /sbin/auditctl
       - /sbin/aureport
@@ -868,10 +871,10 @@ inputs:
 
     
   
-  - name: alternate_firewall_tool
-    description: Alternate firewall tool (other than firewalld) in use for the system - leave blank if using default OS tools
+  - name: expected_firewall_package
+    description: Expected firewall package in use for the system - should not be left blank
     type: String
-    value: ""
+    value: "ufw"
 
   
   - name: wifi_hardware
@@ -879,12 +882,7 @@ inputs:
     type: Boolean
     value: true
 
-  
-  
-  
-  
-  
-  
+
   - name: audit_rule_keynames
     description: The audit rules to be applied to the system
     type: Hash
@@ -1190,3 +1188,18 @@ inputs:
   - name: action_mail_acct
     type: string
     value: "root@localhost"
+  
+  # SV-270747
+  - name: luks_exceptions
+    description: List of block devices/partitions that are permitted to be unencrypted
+    type: Array
+    value: []
+  
+  - name: approved_ciphers
+    description: List of approved FIPS SSH ciphers for the Ciphers directive
+    type: Array
+    value:
+      - aes256-ctr
+      - aes256-gcm@openssh.com
+      - aes128-ctr
+      - aes128-gcm@openssh.com

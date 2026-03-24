@@ -30,7 +30,7 @@ UsePAM yes'
       skip 'Control not applicable to a container'
     end
   else
-    describe sshd_config do
+    describe sshd_active_config do
       its('UsePAM') { should cmp 'yes' }
     end
   end

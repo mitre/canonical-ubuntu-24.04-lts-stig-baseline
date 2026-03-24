@@ -41,11 +41,25 @@ Note: The system must be restarted for these settings to take effect.'
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  failing_files = command('find -L /run/log/journal /var/log/journal -type f ! -user root -exec ls -d {} \\; 2>/dev/null').stdout.split("\n").reject(&:empty?)
+  journal_bases = %w[/run/log/journal /var/log/journal]
 
-  describe 'Systemd journal files' do
-    it 'should be owned by root' do
-      expect(failing_files).to be_empty, "Files not owned by root:\n\t- #{failing_files.join("\n\t- ")}"
+  journal_bases.each do |base|
+    if file(base).exist?
+      describe "Systemd journal files under #{base}" do
+        subject do
+          command("find -L #{base} -type f ! -user root -print 2>/dev/null").stdout.split("\n").reject(&:empty?)
+        end
+
+        it 'should be owned by root' do
+          expect(subject).to be_empty, "Files under #{base} not owned by root:\n\t- #{subject.join("\n\t- ")}"
+        end
+      end
+    else
+      describe "Systemd journal directory #{base}" do
+        it 'is absent; and is not misconfigured' do
+          expect(file(base)).not_to exist
+        end
+      end
     end
   end
 end

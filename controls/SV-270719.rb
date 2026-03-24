@@ -46,7 +46,7 @@ To deny access to ports, protocols, or services, use:
   tag 'container-conditional'
 
   only_if('Control not applicable - containerized environment or external firewall in use per site policy', impact: 0.0) {
-    !%w[docker podman kubepods lxc].include?(virtualization.system) && !input('external_firewall')
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
   ufw_status = command('ufw status').stdout.strip.lines.first

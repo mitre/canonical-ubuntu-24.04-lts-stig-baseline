@@ -45,7 +45,7 @@ $ sudo apt install -y ssh'
   allow_container_openssh = input('allow_container_openssh_server')
 
   only_if('This requirement is Not Applicable in the container without open-ssh installed', impact: 0.0) {
-    !(is_container && !openssh_present)
+    !is_container || openssh_present
   }
 
   if is_container

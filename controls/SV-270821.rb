@@ -37,11 +37,12 @@ Replace "[audit_tool]" with the audit tool that does not have the correct permis
   }
 
   audit_tools = input('audit_tools')
+  audit_tool_mode = input('audit_tool_mode')
 
-  failing_tools = audit_tools.select { |at| file(at).more_permissive_than?(input('audit_tool_mode')) }
+  failing_tools = audit_tools.select { |at| file(at).more_permissive_than?(audit_tool_mode) }
 
   describe 'Audit executables' do
-    it "should be no more permissive than '#{input('audit_tool_mode')}'" do
+    it "should be no more permissive than '#{audit_tool_mode}'" do
       expect(failing_tools).to be_empty, "Failing tools:\n\t- #{failing_tools.join("\n\t- ")}"
     end
   end

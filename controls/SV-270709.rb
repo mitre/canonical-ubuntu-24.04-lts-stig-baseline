@@ -29,10 +29,10 @@ $ sudo systemctl restart sshd.service'
   tag 'container-conditional'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !(%w[docker podman kubepods lxc].include?(virtualization.system) && !file('/etc/ssh/sshd_config').exist?)
+    !%w[docker podman kubepods lxc].include?(virtualization.system) || package('openssh-server').installed?
   }
 
-  describe sshd_config do
+  describe sshd_active_config do
     its('X11UseLocalhost') { should cmp 'yes' }
   end
 end

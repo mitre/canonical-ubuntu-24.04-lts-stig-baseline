@@ -51,7 +51,7 @@ PubkeyAuthentication yes'
       skip 'This system is not using PKI for authentication so the controls is Not Applicable.'
     end
   else
-    describe sshd_config do
+    describe sshd_active_config do
       its('PubkeyAuthentication') { should cmp 'yes' }
     end
   end

@@ -47,8 +47,8 @@ $ sudo systemctl restart sshd'
       skip 'FIPS validation in a container must be reviewed manually'
     end
   else
-    approved = %w[aes256-ctr aes256-gcm@openssh.com aes128-ctr aes128-gcm@openssh.com]
-    ciphers = inspec.sshd_config.params['ciphers']
+    approved = input('approved_ciphers')
+    ciphers = inspec.sshd_active_config.params['ciphers']
     ciphers = ciphers.first.split(',').map(&:strip) unless ciphers.nil?
 
     describe 'SSH ciphers' do

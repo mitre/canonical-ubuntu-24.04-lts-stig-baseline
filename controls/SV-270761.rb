@@ -42,16 +42,22 @@ Note: The system must be restarted for these settings to take effect.'
   journald_group = 'systemd-journal'
 
   journal_bases.each do |base|
-    describe directory(base) do
-      it { should exist }
-    end
-  end
+    if file(base).exist?
+      describe "Systemd journal directory group ownership under #{base}" do
+        subject do
+          command("find -L #{base} -type d ! -group #{journald_group} -print 2>/dev/null").stdout.split("\n").reject(&:empty?)
+        end
 
-  failing_dirs = command("find -L #{journal_bases.join(' ')} -type d ! -group #{journald_group} -print 2>/dev/null").stdout.split("\n").reject(&:empty?)
-
-  describe 'Journal directories group-ownership' do
-    it "are group-owned by #{journald_group}" do
-      expect(failing_dirs).to be_empty, "Directories not group-owned by #{journald_group}:\n\t- #{failing_dirs.join("\n\t- ")}"
+        it 'should have all directories group-owned by systemd-journal' do
+          expect(subject).to be_empty, "Directories under #{base} not group-owned by #{journald_group}:\n\t- #{subject.join("\n\t- ")}"
+        end
+      end
+    else
+      describe "Systemd journal directory #{base}" do
+        it 'is absent; and is not misconfigured' do
+          expect(file(base)).not_to exist
+        end
+      end
     end
   end
 end

@@ -49,19 +49,20 @@ Note: The system must be restarted for these settings to take effect.'
   tag 'host'
   tag 'container'
 
-  journal_dirs = command('sudo find /run/log/journal /var/log/journal  -type d -exec stat -c "%n" {} \;').stdout.split("\n")
-  mode = '2750'
+  expected_mode = input('expected_modes')
 
-  non_compliant_journal_dirs = journal_dirs.select { |dir| file(dir).more_permissive_than?(mode) }
+  journal_dirs = command('find /run/log/journal /var/log/journal  -type d -exec stat -c "%n" {} \;').stdout.split("\n")
+  dir_mode = expected_modes['journal_dir']
+  non_compliant_journal_dirs = journal_dirs.select { |dir| file(dir).more_permissive_than?(dir_mode) }
 
   describe 'All journal directories' do
-    it "have a mode of '#{mode}' or less permissive" do
+    it "have a mode of '#{dir_mode}' or less permissive" do
       expect(non_compliant_journal_dirs).to be_empty, "Failing directories:\n\t- #{non_compliant_journal_dirs.join("\n\t- ")}"
     end
   end
 
   journal_files = command('sudo find /run/log/journal /var/log/journal  -type f -exec stat -c "%n" {} \;').stdout.split("\n")
-  file_mode = '0640'
+  file_mode = expected_modes['journal_file']
   non_compliant_journal_files = journal_files.select { |f| file(f).more_permissive_than?(file_mode) }
 
   describe 'Journal files' do
