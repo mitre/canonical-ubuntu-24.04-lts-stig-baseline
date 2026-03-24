@@ -49,7 +49,7 @@ Note: The system must be restarted for these settings to take effect.'
   tag 'host'
   tag 'container'
 
-  expected_mode = input('expected_modes')
+  expected_modes = input('expected_modes')
 
   journal_dirs = command('find /run/log/journal /var/log/journal  -type d -exec stat -c "%n" {} \;').stdout.split("\n")
   dir_mode = expected_modes['journal_dir']

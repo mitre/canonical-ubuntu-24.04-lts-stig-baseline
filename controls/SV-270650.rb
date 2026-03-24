@@ -48,12 +48,12 @@ Done.'
 
   file_integrity_tool = input('file_integrity_tool')
 
-  only_if('This control is Not Applicable to containers or systesm without AIDE', impact: 0.0) {
-    !%w[docker podman kubepods lxc].include?(virtualization.system) && package('aide').installed?
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
   if file_integrity_tool == 'aide'
-    describe command('sudo aide -c /etc/aide/aide.conf --check') do
+    describe command('aide -c /etc/aide/aide.conf --check') do
       its('exit_status') { should eq 0 }
     end
   end

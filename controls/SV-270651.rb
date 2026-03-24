@@ -62,7 +62,38 @@ $  sudo cp -f /usr/share/aide/config/cron.daily/aide /etc/cron.daily/dailyaidech
   tag 'host'
   tag 'container'
 
-  describe('Verify that the Advanced Intrusion Detection Environment (AIDE) default script used to check file integrity each 30 days or less is unchanged.') do
-    skip('manual test')
+  only_if('This control is Not Applicable to containers') do
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  end
+
+  file_integrity_tool = input('file_integrity_tool')
+  expected_aide_sha1sum = input('expected_aide_sha1sum')
+
+  if file_integrity_tool == 'aide'
+    cron_script_path = '/etc/cron.daily/dailyaidecheck'
+
+    # Validate the default scheduled check for AIDE either via cron or systemd timer
+    describe.one do
+      describe file(cron_script_path) do
+        it { should exist }
+        it { should be_file }
+        its('content') { should match(%r{\b/usr/share/aide/bin/dailyaidecheck\b}) }
+      end
+
+      describe command("systemctl list-timers --all | grep -E '\\bdailyaidecheck\\.timer\\b'") do
+        its('exit_status') { should eq 0 }
+        its('stdout') { should match(/dailyaidecheck\.timer/) }
+      end
+    end
+    # Verify aide.conf matches expected vendor default SHA-1 (provided via input)
+    describe command("sha1sum /etc/aide/aide.conf | awk '{print $1}' | tr -d '\n'") do
+      its('exit_status') { should eq 0 }
+      its('stdout') { should cmp expected_aide_sha1sum }
+    end
+
+  else
+    describe('Non-AIDE file integrity tool in use') do
+      skip('Manual review: verify the configured tool provides a default script scheduled to run at least every 30 days, and that it is the vendor default')
+    end
   end
 end

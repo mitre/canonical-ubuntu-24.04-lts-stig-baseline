@@ -122,6 +122,7 @@ inputs:
       journal_file: "0640"
       /var/log/syslog: "0640"
       /usr/bin/journalctl: "0740"
+      /var/log/audit: "0750"
 
   
   - name: initialization_file_mode
@@ -1203,3 +1204,19 @@ inputs:
       - aes256-gcm@openssh.com
       - aes128-ctr
       - aes128-gcm@openssh.com
+  
+  - name: expected_kex
+    description: List of approved FIPS SSH key exchange algorithms for the KexAlgorithms directive
+    type: Array
+    value:
+      - ecdh-sha2-nistp521
+      - ecdh-sha2-nistp384
+      - ecdh-sha2-nistp256
+      - diffie-hellman-group-exchange-sha256
+      - diffie-hellman-group16-sha512
+      - diffie-hellman-group14-sha256
+
+  - name: expected_aide_sha1sum
+    description: SHA1 checksum of the default AIDE cron script from the aide-common package
+    type: String
+    value: "b71bb2cafaedf15ec3ac2f566f209d3260a37af0"

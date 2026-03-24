@@ -34,14 +34,7 @@ $ sudo systemctl restart sshd'
     !%w[docker podman kubepods lxc].include?(virtualization.system) || package('openssh-server').installed?
   }
 
-  expected_kex = %w[
-    ecdh-sha2-nistp521
-    ecdh-sha2-nistp384
-    ecdh-sha2-nistp256
-    diffie-hellman-group-exchange-sha256
-    diffie-hellman-group16-sha512
-    diffie-hellman-group14-sha256
-  ]
+  expected_kex = input('expected_kex')
 
   sshd_t_output = command('/usr/sbin/sshd -T 2>/dev/null').stdout
   kex_line = sshd_t_output.lines.find { |l| l.start_with?('kexalgorithms ') }

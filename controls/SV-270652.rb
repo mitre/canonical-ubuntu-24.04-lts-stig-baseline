@@ -32,8 +32,16 @@ SILENTREPORTS=no'
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  describe file('/etc/default/aide') do
-    it { should exist }
-    its('content') { should match(/^\s*SILENTREPORTS=(['"]?)no\1\s*$/) }
+  file_integrity_tool = input('file_integrity_tool')
+
+  if file_integrity_tool == 'aide'
+    describe file('/etc/default/aide') do
+      it { should exist }
+      its('content') { should match(/^\s*SILENTREPORTS=(['"]?)no\1\s*$/) }
+    end
+  else
+    describe('Manual review') do
+      skip("File integrity tool is '#{file_integrity_tool}', not 'aide'. Manually review the tool's notification configuration.")
+    end
   end
 end

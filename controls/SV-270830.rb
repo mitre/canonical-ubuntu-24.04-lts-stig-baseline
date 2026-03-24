@@ -46,6 +46,7 @@ $ sudo chmod -R  750 /var/log/audit'
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
+  audit_mode = input('expected_modes')['/var/log/audit']
   audit_conf = auditd_conf('/etc/audit/auditd.conf')
   log_file = audit_conf.log_file
 
@@ -57,7 +58,7 @@ $ sudo chmod -R  750 /var/log/audit'
     log_dir = File.dirname(log_file)
 
     describe directory(log_dir) do
-      it { should_not be_more_permissive_than('0750') }
+      it { should_not be_more_permissive_than(audit_mode) }
     end
   end
 end

@@ -31,31 +31,13 @@ $ sudo find /etc/sudoers /etc/sudoers.d -type f -exec sed -i '/NOPASSWD/ s/^/# /
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  sudo = sudoers(input('sudoers_config_files'))
-  approved_groups = Array(input('passwordless_admins'))
+  failing_results = sudoers(input('sudoers_config_files').join(' ')).rules.where { tags.nil? && (tags || '').include?('NOPASSWD') }
 
-  # Identify NOPASSWD rules
-  nopass = sudo.rules.where { !tags.nil? && tags.include?('NOPASSWD:') }
+  failing_results = failing_results.where { !input('passwordless_admins').include?(users) } if input('passwordless_admins').nil?
 
-  # Allow only NOPASSWD rules for ISSO-approved admin groups (group entries begin with '%')
-  unauthorized = nopass.entries.reject do |r|
-    userspec = r[:users]
-    next false if userspec.nil?
-
-    if userspec.start_with?('%')
-      grp = userspec.sub(/^%/, '')
-      approved_groups.include?(grp)
-    else
-      false
-    end
-  end
-
-  unauthorized_details = unauthorized.map { |r| "#{r[:users]} #{r[:hosts]}= #{r[:commands]}" }.join('; ')
-
-  describe 'Disallowed NOPASSWD entries in sudoers' do
-    subject { unauthorized }
-    it 'should be empty (only ISSO-approved admin groups using MFA may be NOPASSWD)' do
-      expect(subject).to be_empty, "Unauthorized NOPASSWD entries: #{unauthorized_details}"
+  describe 'Sudoers' do
+    it 'should not include any (non-exempt) users with NOPASSWD set' do
+      expect(failing_results.users).to be_empty, "NOPASSWD settings found for users:\n\t- #{failing_results.users.join("\n\t- ")}"
     end
   end
 end
