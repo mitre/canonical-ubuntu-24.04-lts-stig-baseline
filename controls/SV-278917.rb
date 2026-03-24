@@ -80,7 +80,7 @@ If the installed version of Ubuntu 24.04 LTS is not supported, this is a finding
     # Beyond ESM end-of-life; release is no longer vendor supported
     describe 'Ubuntu 24.04 LTS ESM end-of-life status' do
       it 'is within vendor support lifecycle' do
-        expect(now <= esm_support_eol).to be true, "Vendor support for Ubuntu 22.04 LTS ended on #{esm_support_eol.utc.strftime('%Y-%m-%d')}; current date: #{now.utc.strftime('%Y-%m-%d')}"
+        expect(now <= esm_support_eol).to be true, "Vendor support for Ubuntu 24.04 LTS ended on #{esm_support_eol.utc.strftime('%Y-%m-%d')}; current date: #{now.utc.strftime('%Y-%m-%d')}"
       end
     end
   end
