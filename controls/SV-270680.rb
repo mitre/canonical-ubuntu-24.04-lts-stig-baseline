@@ -43,21 +43,28 @@ $ export TMOUT=600'
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  content = command('cat /etc/bash.bashrc /etc/profile.d/*.sh 2>/dev/null').stdout
-  t = parse_config(
-    content,
-    assignment_regex: /^\s*(?:export\s+)?([^=\s#]+)\s*=\s*"?([^"#]+?)"?\s*(?:#.*)?$/
-  )
   expected_timeout = input('system_activity_timeout')
 
-  describe 'Shell inactivity timeout (TMOUT)' do
-    it 'should be set' do
-      expect(t.params['TMOUT']).to_not be_nil, 'TMOUT not set in /etc/bash.bashrc or /etc/profile.d/*.sh'
+  # Grab all TMOUT lines from bashrc and profile.d scripts, ignoring comments
+  tmout_lines = command(
+    'sudo grep -E "^[^#]*\\bTMOUT=[0-9]+" /etc/bash.bashrc /etc/profile.d/* 2>/dev/null'
+  ).stdout.lines.map(&:strip)
+
+  describe 'TMOUT configuration' do
+    it 'should be set in at least one system-wide profile file' do
+      expect(tmout_lines).not_to be_empty, 'No TMOUT value set in any system-wide profile file'
     end
-    unless t.nil?
-      it "should lock the session after #{expected_timeout} seconds" do
-        expect(t.params['TMOUT'].to_i).to cmp <= expected_timeout
-      end
+
+    it 'should not set TMOUT=0 in any file' do
+      insecure = tmout_lines.grep(/TMOUT\s*=\s*0/i)
+      expect(insecure).to be_empty, "Insecure TMOUT=0 found in: #{insecure.join(', ')}"
+    end
+
+    it "should terminate sessions after no more than #{expected_timeout} seconds" do
+      values = tmout_lines.map { |l| l.match(/TMOUT\s*=\s*(\d+)/i)&.captures&.first }.compact.map(&:to_i)
+      expect(values).not_to be_empty
+      over = values.select { |v| v > expected_timeout }
+      expect(over).to be_empty, "TMOUT values exceeding #{expected_timeout} found: #{over.join(', ')}"
     end
   end
 end

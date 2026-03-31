@@ -63,7 +63,7 @@ $ sudo systemctl restart gdm3'
       it { should match(/banner-message-enable\s*=\s*true/) }
     end
   else
-    describe command('which Xorg').exit_status do
+    describe xorg_status do
       skip("GUI not installed.\nwhich Xorg exit_status: #{command('which Xorg').exit_status}")
     end
   end

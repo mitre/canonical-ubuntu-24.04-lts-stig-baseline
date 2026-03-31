@@ -60,11 +60,12 @@ $ sudo dconf update'
     it { should be_file }
   end
 
-  system_db =
-    if file(profile_file).exist?
-      m = file(profile_file).content.match(/^\s*system-db\s*:\s*(\S+)\s*$/)
-      m && m[1]
-    end
+  system_db = 'local'
+  if file(profile_file).exist?
+    content = file(profile_file).content.to_s
+    m = content.match(/^\s*system-db\s*:\s*([^\s#]+).*$/)
+    system_db = m[1] if m
+  end
 
   locks_dir = "/etc/dconf/db/#{system_db}.d/locks"
   required_lock = '/org/gnome/desktop/media-handling/automount-open'

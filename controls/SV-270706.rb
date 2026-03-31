@@ -31,18 +31,21 @@ auth    required    pam_faildelay.so    delay=4000000'
       skip 'Control not applicable to a container'
     end
   else
+    expected_delay_sec = input('login_prompt_delay')
+    expected_delay_microseconds = expected_delay_sec.to_i * 1_000_000
+
     describe file('/etc/pam.d/common-auth') do
       it { should exist }
     end
 
     describe command('grep pam_faildelay /etc/pam.d/common-auth') do
       its('exit_status') { should eq 0 }
-      its('stdout.strip') { should match(/^\s*auth\s+required\s+pam_faildelay.so\s+.*delay=([4-9]\d{6,}|[1-9]\d{7,}).*$/) }
+      its('stdout.strip') { should match(/^\s*auth\s+required\s+pam_faildelay.so\s+.*\bdelay=#{expected_delay_microseconds}\b.*$/) }
     end
 
     file('/etc/pam.d/common-auth').content.to_s.scan(/^\s*auth\s+required\s+pam_faildelay.so\s+.*delay=(\d+).*$/).flatten.each do |entry|
-      describe entry do
-        it { should cmp >= 4_000_000 }
+      describe entry.to_i do
+        it { should cmp == expected_delay_microseconds }
       end
     end
   end

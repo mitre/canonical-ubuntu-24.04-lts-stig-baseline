@@ -23,24 +23,18 @@ ldap_user_certificate=userCertificate;binary'
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  if input('pki_disabled')
-    impact 0.0
-    describe 'This system is not using PKI for authentication so the controls is Not Applicable.' do
-      skip 'This system is not using PKI for authentication so the controls is Not Applicable.'
-    end
-  else
-    config_file = '/etc/pam_pkcs11/pam_pkcs11.conf'
-    config_file_exists = file(config_file).exist?
+  sssd_conf = '/etc/sssd/sssd.conf'
 
-    if config_file_exists
-      describe parse_config_file(config_file) do
-        its('use_mappers') { should cmp 'pwent' }
-      end
-    else
-      describe("#{config_file} exists") do
-        subject { config_file_exists }
-        it { should be true }
-      end
+  describe file(sssd_conf) do
+    it { should exist }
+  end
+
+  describe 'SSSD PKI mapping setting' do
+    subject { file(sssd_conf).content.to_s }
+
+    it "includes 'ldap_user_certificate=userCertificate;binary'" do
+      expected = /^\s*ldap_user_certificate\s*=\s*userCertificate;binary\s*$/m
+      expect(subject).to match(expected), "Expected #{sssd_conf} to contain: ldap_user_certificate=userCertificate;binary"
     end
   end
 end
