@@ -64,7 +64,7 @@ $ sudo systemctl restart gdm3'
     end
   else
     describe xorg_status do
-      skip("GUI not installed.\nwhich Xorg exit_status: #{xorg_status.exit_status}")
+      skip("GUI not installed.\nwhich Xorg exit_status: #{xorg_status}")
     end
   end
 end
