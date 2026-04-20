@@ -40,8 +40,11 @@ $ sudo augenrules --load'
   audit_file = '/sbin/apparmor_parser'
 
   if auditd.lines.nil? || auditd.lines.empty?
-    describe 'Audit rules' do
-      skip 'No audit rules loaded or auditd not configured'
+   describe 'Audit rules' do
+      it 'should have audit rules loaded and auditd configured' do
+        expect(auditd.lines).not_to be_nil, 'auditd is not configured or not available'
+        expect(auditd.lines).not_to be_empty, 'auditd is configured but no audit rules are loaded'
+      end
     end
   else
     describe auditd.file(audit_file) do

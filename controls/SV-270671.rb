@@ -43,9 +43,18 @@ $ sudo systemctl restart ssh'
   macs_cmd = command("/usr/sbin/sshd -T 2>/dev/null | awk '$1==\"macs\"{print $2}'")
   actual_macs = macs_cmd.stdout.strip
 
+  config_cmd = command("grep -h -i '^MACs' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/* 2>/dev/null | tail -n 1 | awk '{print $2}'")
+  config_macs = config_cmd.stdout.strip
+
   describe 'OpenSSH server MACs' do
     it 'matches the approved list in exact order' do
       expect(actual_macs).to eq(approved_macs), "OpenSSH server MACs:\n\t#{actual_macs}\ndoes not match the expected value:\n\t#{approved_macs}"
+    end
+  end
+
+  describe 'OpenSSH server MACs in config files' do
+    it 'matches the approved list in exact order' do
+      expect(config_macs).to eq(approved_macs), "OpenSSH config MACs:\n\t#{config_macs}\ndoes not match the expected value:\n\t#{approved_macs}"
     end
   end
 end

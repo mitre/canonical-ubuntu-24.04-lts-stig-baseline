@@ -61,7 +61,7 @@ Note: The system must be restarted for these settings to take effect.'
     end
   end
 
-  journal_files = command('sudo find /run/log/journal /var/log/journal  -type f -exec stat -c "%n" {} \;').stdout.split("\n")
+  journal_files = command('find /run/log/journal /var/log/journal  -type f -exec stat -c "%n" {} \;').stdout.split("\n")
   file_mode = expected_modes['journal_file']
   non_compliant_journal_files = journal_files.select { |f| file(f).more_permissive_than?(file_mode) }
 
