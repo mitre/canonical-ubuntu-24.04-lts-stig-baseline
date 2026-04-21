@@ -44,8 +44,9 @@ If any of the seven audit tools do not have appropriate selection lines, this is
 
   audit_tools = input('audit_tools')
   audit_rule_suffix = 'p+i+n+u+g+s+b+acl+xattrs+sha512'
+  file_integrity_tool = input('file_integrity_tool')
 
-  if package('aide').installed?
+  if file_integrity_tool == 'aide'
     describe file('/etc/aide/aide.conf') do
       it { should exist }
     end

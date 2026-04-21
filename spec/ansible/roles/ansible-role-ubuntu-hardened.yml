@@ -9,7 +9,7 @@
   become: yes
   vars:
     ubtu24stig_bootloader_password_hash: "changethispassword"
-    system_is_ec2: true
+    system_is_ec2: false
     ubtu24stig_disruption_high: false
     # Skip broken upstream controls
     ubtu24stig_900920: false

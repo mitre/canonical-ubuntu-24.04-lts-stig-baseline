@@ -43,7 +43,7 @@ $ sudo chmod 0600 /var/log/audit/*'
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  log_file = auditd_conf('/etc/audit/auditd.conf').log_file
+  log_file = auditd_conf.log_file
   describe file(log_file) do
     it { should_not be_more_permissive_than('0600') }
   end

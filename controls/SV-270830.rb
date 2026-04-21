@@ -47,12 +47,15 @@ $ sudo chmod -R  750 /var/log/audit'
   }
 
   audit_mode = input('expected_modes')['/var/log/audit']
-  audit_conf = auditd_conf('/etc/audit/auditd.conf')
-  log_file = audit_conf.log_file
+  log_file = auditd_conf.log_file
 
   if log_file.nil? || log_file.strip.empty?
     describe 'auditd log_file setting' do
-      skip "Unable to determine audit log directory: 'log_file' is not set in /etc/audit/auditd.conf"
+      it 'must be set in /etc/audit/auditd.conf' do
+        fail_msg = "Unable to determine audit log directory: 'log_file' is not set in /etc/audit/auditd.conf"
+        expect(log_file).not_to be_nil, fail_msg
+        expect(log_file.to_s.strip).not_to be_empty, fail_msg
+      end
     end
   else
     log_dir = File.dirname(log_file)
