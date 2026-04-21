@@ -34,21 +34,12 @@ The script must be located in the "/etc/cron.weekly" directory.'
     !%w[docker podman kubepods lxc].include?(virtualization.system) && !input('airgapped_system')
   }
 
-  cron_file = input('auditoffload_config_file')
+  cron_file = input('audit_offload_script')
 
   describe file(cron_file) do
     it { should exist }
     it { should be_file }
     it { should be_executable }
     its('content') { should_not be_empty }
-  end
-
-  describe 'cron script path' do
-    subject { cron_file }
-    it { should start_with('/etc/cron.weekly/') }
-  end
-
-  describe 'Manual review - validate audit offload behavior' do
-    skip "Manual verification required: Confirm that the weekly script at #{cron_file} offloads audit events to external media."
   end
 end

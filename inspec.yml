@@ -32,6 +32,7 @@ supports:
 
 inputs:
   
+  # SV-270707, SV-274868
   - name: sudoers_config_files
     description: 'The files and directories you keep your sudoers configs'
     type: Array
@@ -40,12 +41,14 @@ inputs:
       - '/etc/sudoers.d/*'
 
   
+  # SV-274868
   - name: passwordless_admins
     description: List of administrative groups permitted by ISSO to have NOPASSWD set in sudoers files
     type: Array
     value: []
 
   
+  # SV-270743
   - name: sshd_config_values
     description: 'The agreed sshd server config values for the organization'
     type: Hash
@@ -89,18 +92,21 @@ inputs:
     value: '0640'
 
   
+  # SV-270775
   - name: audit_conf_mode
     description: All audit config files on the filesystem should be equal or less permissive than this octet
     type: String
     value: '0640'
 
   
+  # SV-270821
   - name: audit_tool_mode
     description: All audit config tools on the filesystem should be equal or less permissive than this octet
     type: String
     value: '0755'
 
   
+  # SV-270757, SV-270758, SV-270770, SV-270830
   - name: expected_modes
     description: Expected modes of system files and/or directories
     type: Hash
@@ -161,11 +167,13 @@ inputs:
     value: "usbguard"
 
   
+  # SV-270665, SV-270743
   - name: allow_container_openssh_server
     description: "If the OpenSSH Server has been approved outside standard container guidance to default transprots"
     type: Boolean
     value: false
 
+  # SV-270694
   - name: ssh_ack_script_path
     description: Path to shell script that enforces SSH banner acknowledgement
     type: String
@@ -176,6 +184,7 @@ inputs:
     type: String
     value: "Do you agree? [y/N]"
 
+  # SV-270694
   - name: ssh_ack_script_content
     description: Full content of the SSH acknowledgement script that must match the on-host file exactly
     type: String
@@ -239,18 +248,21 @@ inputs:
     value: 4
 
   
+  # SV-270729
   - name: difok
     description: "The minimum number of required changed characters when passwords are updated."
     type: Numeric
     value: 8
 
   
+  # SV-270730
   - name: pass_min_days
     description: "The minimum password lifetime restriction in days"
     type: Numeric
     value: 1
 
   
+  # SV-270731
   - name: pass_max_days
     description: "The maximum password lifetime restriction in days"
     type: Numeric
@@ -274,13 +286,20 @@ inputs:
     type: Boolean
     value: false
 
-  
+
+  # SV-270817
+  - name: airgapped_system
+    description: System is airgapped (no network connectivity)
+    type: Boolean
+    value: false
+
   - name: use_fips
     description: "'(boolean)' Set to true if the system is required to use FIPS Encryption"
     type: Boolean
     value: true
 
   
+  # SV-270747
   - name: data_at_rest_exempt
     description: "'(boolean) Set to true if the system is exempt from using Data at Rest"
     type: Boolean
@@ -299,6 +318,7 @@ inputs:
     value: 3
 
   
+  # SV-270732
   - name: pass_min_len
     description: Minimum number of characters for a new password
     type: Numeric
@@ -323,6 +343,7 @@ inputs:
     value: 0
 
   
+  # SV-270677
   - name: concurrent_sessions_permitted
     description: Number of permitted concurrent sessions on this system
     type: Numeric
@@ -427,18 +448,21 @@ inputs:
       - systemd-network
 
   
+  # SV-270672, SV-270734
   - name: smart_card_enabled
     description: Smart card status of the system
     type: Boolean
     value: false
 
   
+  # SV-270649, SV-270650, SV-270651, SV-270652, SV-270831
   - name: file_integrity_tool
     description: Name of tool
     type: String
     value: "aide"
 
   
+  # SV-270751
   - name: authoritative_timeserver
     description: Timeserver used in /etc/chrony.conf
     type: String
@@ -463,36 +487,42 @@ inputs:
     value: "/etc/sssd/pki/sssd_auth_ca_db.pem"
 
   
+  # SV-270690
   - name: unsuccessful_attempts
     description: Maximum number of unsuccessful attempts before lockout
     type: Numeric
     value: 3
 
   
+  # SV-270678
   - name: system_inactivity_timeout
     description: Maximum system inactivity timeout (time in seconds).
     type: Numeric
     value: 900
 
   
+  # SV-270683
   - name: days_of_inactivity
     description: Maximum number of days if account inactivity before account lockout
     type: Numeric
     value: 35
 
   
+  # SV-270682
   - name: temporary_accounts
     description: Temporary user accounts
     type: Array
     value: []
 
   
+  # SV-270682
   - name: temporary_account_max_days
     description: Max number of days a temporary account should be permitted to exist
     type: Numeric
     value: 3
 
   
+  # SV-270691
   - name: banner_message_text_cli
     description: Banner message text for command line interface logins.
     type: String
@@ -541,18 +571,21 @@ inputs:
       Agreement for details."
 
   
+  # SV-270690
   - name: fail_interval
     description: Interval of time in which the consecutive failed logon attempts must occur in order for the account to be locked out (time in seconds)
     type: Numeric
     value: 900
 
   
+  # SV-270690
   - name: lockout_time
     description: Minimum amount of time account must be locked out after failed logins. '0' indicates an account should not unlock until reset by an admin.
     type: Numeric
     value: 0
 
   
+  # SV-270680
   - name: system_activity_timeout
     description: The expected maximum delay in seconds before the system will lock the session
     type: Numeric
@@ -565,6 +598,7 @@ inputs:
     value: /var/log/faillock
 
   
+  # SV-270742
   - name: sshd_client_alive_count_max
     description: all network connections associated with SSH traffic are terminated at the end of the session or after 10 minutes of inactivity
     type: Numeric
@@ -647,6 +681,7 @@ inputs:
     value: "no"
 
   
+  # SV-270716
   - name: permissions_for_shells
     description: Define default permissions for logon and non-logon shells.
     type: Hash
@@ -663,6 +698,7 @@ inputs:
     value: "0755"
 
   
+  # SV-270696, SV-270697, SV-270698, SV-270699, SV-270700
   - name: system_libraries
     description: Define system libraries which should have strict permissions enforced
     type: Array
@@ -673,6 +709,7 @@ inputs:
       - /usr/lib64
 
   
+  # SV-270702, SV-270703
   - name: system_command_dirs
     description: Directories containing system command executables
     type: Array
@@ -686,6 +723,7 @@ inputs:
       - /usr/local/sbin
 
   
+  # SV-270821, SV-270822, SV-270823, SV-270831
   - name: audit_tools
     description: Paths to tools related to audit function
     type: Array
@@ -698,6 +736,7 @@ inputs:
       - /sbin/augenrules
 
   
+  # SV-270700
   - name: required_system_accounts
     description: List of system accounts permitted to group-own system libraries
     type: Array
@@ -731,6 +770,7 @@ inputs:
     value: true
 
   
+  # SV-270714, SV-270725
   - name: pam_auth_files
     description: THe pam.d auth paths
     type: Hash
@@ -786,6 +826,7 @@ inputs:
     value: /var/log/faillock
 
   
+  # SV-270713
   - name: users_allowed_blank_passwords
     description: Users allowed to not have a password set
     type: Array
@@ -818,6 +859,7 @@ inputs:
     value: 900
 
   
+  # SV-270706
   - name: login_prompt_delay
     description: Delay in seconds before the login prompt is displayed again after a failed login attempt
     type: Numeric
@@ -838,6 +880,7 @@ inputs:
     value: false
 
   
+  # SV-270653
   - name: alternative_logging_method
     description: Alternative tool for logging (instead of auditd and other built-in OS logging features) - leave blank if using default OS tools
     type: String
@@ -899,18 +942,21 @@ inputs:
 
     
   
+  # SV-270654, SV-270655
   - name: expected_firewall_package
     description: Expected firewall package in use for the system - should not be left blank
     type: String
     value: "ufw"
 
   
+  # SV-270755
   - name: wifi_hardware
     description: Set to false if there is no wireless network capability on board the system
     type: Boolean
     value: true
 
 
+  # SV-270684, SV-270685, SV-270686, SV-270687, SV-270688, SV-270689, SV-270715, SV-270778, SV-270780, SV-270781, SV-270782, SV-270783, SV-270784, SV-270785, SV-270786, SV-270787, SV-270788, SV-270789, SV-270790, SV-270791, SV-270792, SV-270794, SV-270795, SV-270796, SV-270797, SV-270798, SV-270799, SV-270800, SV-270801, SV-270802, SV-270803, SV-270804, SV-270805, SV-270806, SV-270807, SV-270808, SV-270809, SV-270814, SV-270815, SV-274870
   - name: audit_rule_keynames
     description: The audit rules to be applied to the system
     type: Hash
@@ -997,6 +1043,7 @@ inputs:
   # If you need to override these values, do so via adding the desired key/value to
   # the `audit_rule_keynames_overrides` input instead -- overriding `audit_rule_keynames`
   # directly will lose the values for any key you do not explictly define.
+  # SV-270684, SV-270685, SV-270686, SV-270687, SV-270688, SV-270689, SV-270715, SV-270778, SV-270780, SV-270781, SV-270782, SV-270783, SV-270784, SV-270785, SV-270786, SV-270787, SV-270788, SV-270789, SV-270790, SV-270791, SV-270792, SV-270794, SV-270795, SV-270796, SV-270797, SV-270798, SV-270799, SV-270800, SV-270801, SV-270802, SV-270803, SV-270804, SV-270805, SV-270806, SV-270807, SV-270808, SV-270809, SV-270814, SV-270815, SV-274870
   - name: audit_rule_keynames_overrides
     description: The audit rules to be applied to the system
     type: Hash
@@ -1038,6 +1085,7 @@ inputs:
         - ssh
 
   
+  # SV-270668, SV-270671
   - name: approved_openssh_server_conf
     description: Config values expected for openssh server (order matters, so these values are comma-delimited strings and not arrays)
     type: Hash
@@ -1046,6 +1094,7 @@ inputs:
       macs: hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
 
   
+  # SV-270725
   - name: password_hash_rounds
     description: Number of rounds for hashing passwords
     type: Numeric
@@ -1154,6 +1203,7 @@ inputs:
     value: false
 
   
+  # SV-270708
   - name: x11_forwarding_required
     description: Set to true if there is a requirement for this system to enable X11 forwarding that is documented with the ISSO
     type: Boolean
@@ -1172,47 +1222,49 @@ inputs:
     value: false
   
   
+  # SV-270752
   - name: chrony_config_file
     description: File to sync internal information system clocks
     type: String
     value: "/etc/chrony/chrony.conf"
   
-  #SV-260526
+  # SV-270667, SV-270670
   - name: disable_fips
     description: Boolean to disable/enable FIPS testing
     type: Boolean
     value: false
 
-  #SV-260559
+  # SV-270748
   - name: sudo_accounts
     description: Array of users who need access to security functions are part of the sudo group.
     type: Array
     value: [ "ubuntu" ]
 
-  #SV-260575
+  # SV-270721, SV-270722, SV-270735, SV-270737, SV-270738
   - name: pki_disabled
     description: Is PKI authentication used for this system
     type: boolean
     value: false
 
-  #SV-260580
+  # SV-270745
   - name: allowed_ca_fingerprints_regex
     description: Certificate fingerprint regex for DoD PKI-established certificate authorities
     type: string
     value: (9676F287356C89A12683D65234098CB77C4F1C18F23C0E541DE0E196725B7EBE|B107B33F453E5510F68E513110C6F6944BACC263DF0137F821C1B3C2F8F863D2|559A5189452B13F8233F0022363C06F26E3C517C1D4B77445035959DF3244F74|1F4EDE9DC2A241F6521BF518424ACD49EBE84420E69DAF5BAC57AF1F8EE294A9)
 
-  #SV-260587
-  - name: auditoffload_config_file
-    description: Location of audit offload config file
+  # SV-270817
+  - name: audit_offload_script
+    description: Location of audit offload script
     type: String
     value: '/etc/cron.weekly/audit-offload'
   
-  #SV-260599, SV-260603 
+  # SV-270777, SV-270829
   - name: admin_groups
     description: Array of groups that have administrative privileges
     type: Array
     value: ['root']
 
+  # SV-270818
   - name: action_mail_acct
     type: string
     value: "root@localhost"
@@ -1223,6 +1275,7 @@ inputs:
     type: Array
     value: []
   
+  # SV-270667
   - name: approved_ciphers
     description: List of approved FIPS SSH ciphers for the Ciphers directive
     type: Array
@@ -1232,6 +1285,7 @@ inputs:
       - aes128-ctr
       - aes128-gcm@openssh.com
   
+  # SV-270669
   - name: expected_kex
     description: List of approved FIPS SSH key exchange algorithms for the KexAlgorithms directive
     type: Array
@@ -1243,6 +1297,7 @@ inputs:
       - diffie-hellman-group16-sha512
       - diffie-hellman-group14-sha256
 
+  # SV-270651
   - name: expected_aide_sha1sum
     description: SHA1 checksum of the default AIDE cron script from the aide-common package
     type: String
