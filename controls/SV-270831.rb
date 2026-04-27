@@ -52,14 +52,10 @@ If any of the seven audit tools do not have appropriate selection lines, this is
     end
 
     describe 'AIDE audit tools selection lines' do
-      subject do
-        content = file('/etc/aide/aide.conf').content.to_s
-        audit_tools.reject do |tool|
-          content.lines.any? { |line| line.match?(/^#{Regexp.escape(tool)}\s+#{Regexp.escape(audit_rule_suffix)}$/) }
-        end
-      end
       it 'must include exact lines for all audit tools' do
-        expect(subject).to be_empty, "Missing or incorrect lines in /etc/aide/aide.conf for: #{subject.join(', ')}"
+        config = parse_config_file('/etc/aide/aide.conf', assignment_regex: %r{^\s*(/\S+)\s+(.*?)\s*$})
+        missing = audit_tools.reject { |tool| config[tool].to_s == audit_rule_suffix }
+        expect(missing).to be_empty, "Missing or incorrect lines in /etc/aide/aide.conf for: #{missing.join(', ')}"
       end
     end
   else
