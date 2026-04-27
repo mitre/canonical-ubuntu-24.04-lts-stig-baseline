@@ -37,20 +37,14 @@ $ sudo augenrules --load'
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  audit_file = '/var/log/btmp'
+  audit_command = '/var/log/btmp'
 
-  if auditd.lines.nil? || auditd.lines.empty?
-    describe 'Audit rules' do
-      it 'should have audit rules loaded and auditd configured' do
-        expect(auditd.lines).not_to be_nil, 'auditd is not configured or not available'
-        expect(auditd.lines).not_to be_empty, 'auditd is configured but no audit rules are loaded'
-      end
-    end
-  else
-    describe auditd.file(audit_file) do
-      it { should exist }
-      its('action') { should_not include 'never' }
-      its('permissions.flatten') { should include('w', 'a') }
+  describe 'Command' do
+    it "#{audit_command} is audited properly" do
+      audit_rule = auditd.file(audit_command)
+      expect(audit_rule).to exist
+      expect(audit_rule.permissions.flatten).to include('w', 'a')
+      expect(audit_rule.key.uniq).to include(input('audit_rule_keynames').merge(input('audit_rule_keynames_overrides'))[audit_command])
     end
   end
 end

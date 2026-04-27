@@ -37,20 +37,16 @@ $ sudo augenrules --load'
     !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  audit_file = '/sbin/apparmor_parser'
+  audit_command = '/sbin/apparmor_parser'
 
-  if auditd.lines.nil? || auditd.lines.empty?
-    describe 'Audit rules' do
-      it 'should have audit rules loaded and auditd configured' do
-        expect(auditd.lines).not_to be_nil, 'auditd is not configured or not available'
-        expect(auditd.lines).not_to be_empty, 'auditd is configured but no audit rules are loaded'
-      end
-    end
-  else
-    describe auditd.file(audit_file) do
-      it { should exist }
-      its('action') { should_not include 'never' }
-      its('permissions.flatten') { should include 'x' }
+  describe 'Command' do
+    it "#{audit_command} is audited properly" do
+      audit_rule = auditd.file(audit_command)
+      expect(audit_rule).to exist
+      expect(audit_rule.action.uniq).to cmp 'always'
+      expect(audit_rule.list.uniq).to cmp 'exit'
+      expect(audit_rule.fields.flatten).to include('perm=x', 'auid>=1000', 'auid!=-1')
+      expect(audit_rule.key.uniq).to include(input('audit_rule_keynames').merge(input('audit_rule_keynames_overrides'))[audit_command])
     end
   end
 end

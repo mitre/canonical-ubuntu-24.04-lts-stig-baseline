@@ -956,7 +956,7 @@ inputs:
     value: true
 
 
-  # SV-270684, SV-270685, SV-270686, SV-270687, SV-270688, SV-270689, SV-270715, SV-270778, SV-270780, SV-270781, SV-270782, SV-270783, SV-270784, SV-270785, SV-270786, SV-270787, SV-270788, SV-270789, SV-270790, SV-270791, SV-270792, SV-270794, SV-270795, SV-270796, SV-270797, SV-270798, SV-270799, SV-270800, SV-270801, SV-270802, SV-270803, SV-270804, SV-270805, SV-270806, SV-270807, SV-270808, SV-270809, SV-270814, SV-270815, SV-274870
+  # SV-270684, SV-270685, SV-270686, SV-270687, SV-270688, SV-270689, SV-270715, SV-270740, SV-270778, SV-270779, SV-270780, SV-270781, SV-270782, SV-270783, SV-270784, SV-270785, SV-270786, SV-270787, SV-270788, SV-270789, SV-270790, SV-270791, SV-270792, SV-270793, SV-270794, SV-270795, SV-270796, SV-270797, SV-270798, SV-270799, SV-270800, SV-270801, SV-270802, SV-270803, SV-270804, SV-270805, SV-270806, SV-270807, SV-270808, SV-270809, SV-270810, SV-270811, SV-270812, SV-270813, SV-270814, SV-270815, SV-274870
   - name: audit_rule_keynames
     description: The audit rules to be applied to the system
     type: Hash
@@ -1023,8 +1023,17 @@ inputs:
       '/usr/sbin/usermod'             : 'privileged-usermod',
       '/usr/bin/chacl'                : 'perm_mod',
       '/bin/kmod'                     : 'modules',
+      '/sbin/modprobe'                : 'modules',
+      '/sbin/apparmor_parser'         : 'perm_chng',
+      '/usr/bin/chfn'                 : 'privileged-chfn',
       '/var/log/faillock'             : 'logins',
       '/var/log/lastlog'              : 'logins',
+      '/var/log/btmp'                 : 'logins',
+      '/var/log/wtmp'                 : 'logins',
+      '/var/run/utmp'                 : 'logins',
+      '/var/log/sudo.log'             : 'maintenance',
+      '/etc/cron.d'                   : 'cronjobs',
+      '/var/spool/cron'               : 'cronjobs',
       '/usr/bin/sudoedit'             : 'priv_cmd',
       '/usr/sbin/init'                : 'privileged-init',
       '/usr/sbin/poweroff'            : 'privileged-poweroff',
@@ -1043,7 +1052,7 @@ inputs:
   # If you need to override these values, do so via adding the desired key/value to
   # the `audit_rule_keynames_overrides` input instead -- overriding `audit_rule_keynames`
   # directly will lose the values for any key you do not explictly define.
-  # SV-270684, SV-270685, SV-270686, SV-270687, SV-270688, SV-270689, SV-270715, SV-270778, SV-270780, SV-270781, SV-270782, SV-270783, SV-270784, SV-270785, SV-270786, SV-270787, SV-270788, SV-270789, SV-270790, SV-270791, SV-270792, SV-270794, SV-270795, SV-270796, SV-270797, SV-270798, SV-270799, SV-270800, SV-270801, SV-270802, SV-270803, SV-270804, SV-270805, SV-270806, SV-270807, SV-270808, SV-270809, SV-270814, SV-270815, SV-274870
+  # SV-270684, SV-270685, SV-270686, SV-270687, SV-270688, SV-270689, SV-270715, SV-270740, SV-270778, SV-270779, SV-270780, SV-270781, SV-270782, SV-270783, SV-270784, SV-270785, SV-270786, SV-270787, SV-270788, SV-270789, SV-270790, SV-270791, SV-270792, SV-270793, SV-270794, SV-270795, SV-270796, SV-270797, SV-270798, SV-270799, SV-270800, SV-270801, SV-270802, SV-270803, SV-270804, SV-270805, SV-270806, SV-270807, SV-270808, SV-270809, SV-270810, SV-270811, SV-270812, SV-270813, SV-270814, SV-270815, SV-274870
   - name: audit_rule_keynames_overrides
     description: The audit rules to be applied to the system
     type: Hash
@@ -1302,3 +1311,4 @@ inputs:
     description: SHA1 checksum of the default AIDE cron script from the aide-common package
     type: String
     value: "b5c99edb28d39b84f76a523a15dca80f0d609fee"
+
