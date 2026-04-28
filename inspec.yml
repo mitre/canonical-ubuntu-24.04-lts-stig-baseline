@@ -102,11 +102,13 @@ inputs:
     type: Boolean
     value: false
 
+
   # SV-270694
   - name: ssh_ack_script_path
     description: Path to shell script that enforces SSH banner acknowledgement
     type: String
     value: "/etc/profile.d/ssh_confirm.sh"
+
 
   # SV-270694
   - name: ssh_ack_script_content
@@ -544,11 +546,13 @@ inputs:
     type: String
     value: "/etc/chrony/chrony.conf"
   
+
   # SV-270667, SV-270670
   - name: disable_fips
     description: Boolean to disable/enable FIPS testing
     type: Boolean
     value: false
+
 
   # SV-270748
   - name: sudo_accounts
@@ -556,11 +560,13 @@ inputs:
     type: Array
     value: [ "ubuntu" ]
 
+
   # SV-270721, SV-270722, SV-270735, SV-270737, SV-270738
   - name: pki_disabled
     description: Is PKI authentication used for this system
     type: boolean
     value: false
+
 
   # SV-270745
   - name: allowed_ca_fingerprints_regex
@@ -568,29 +574,34 @@ inputs:
     type: string
     value: (9676F287356C89A12683D65234098CB77C4F1C18F23C0E541DE0E196725B7EBE|B107B33F453E5510F68E513110C6F6944BACC263DF0137F821C1B3C2F8F863D2|559A5189452B13F8233F0022363C06F26E3C517C1D4B77445035959DF3244F74|1F4EDE9DC2A241F6521BF518424ACD49EBE84420E69DAF5BAC57AF1F8EE294A9)
 
+
   # SV-270817
   - name: audit_offload_script
     description: Location of audit offload script
     type: String
     value: '/etc/cron.weekly/audit-offload'
   
+
   # SV-270777, SV-270829
   - name: admin_groups
     description: Array of groups that have administrative privileges
     type: Array
     value: ['root']
 
+
   # SV-270818
   - name: action_mail_acct
     type: string
     value: "root@localhost"
   
+
   # SV-270747
   - name: luks_exceptions
     description: List of block devices/partitions that are permitted to be unencrypted
     type: Array
     value: []
   
+
   # SV-270667
   - name: approved_ciphers
     description: List of approved FIPS SSH ciphers for the Ciphers directive
@@ -601,6 +612,7 @@ inputs:
       - aes128-ctr
       - aes128-gcm@openssh.com
   
+
   # SV-270669
   - name: expected_kex
     description: List of approved FIPS SSH key exchange algorithms for the KexAlgorithms directive
@@ -612,6 +624,7 @@ inputs:
       - diffie-hellman-group-exchange-sha256
       - diffie-hellman-group16-sha512
       - diffie-hellman-group14-sha256
+
 
   # SV-270651
   - name: expected_aide_sha1sum
