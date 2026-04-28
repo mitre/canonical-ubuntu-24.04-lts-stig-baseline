@@ -1,27 +1,27 @@
 control 'SV-270775' do
   title 'Ubuntu 24.04 LTS must be configured so that audit configuration files are not write-accessible by unauthorized users.'
-  desc "Without the capability to restrict which roles and individuals can select which events are audited, unauthorized personnel may be able to prevent the auditing of critical events.  
-  
-Misconfigured audits may degrade the system's performance by overwhelming the audit log. Misconfigured audits may also make it more difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one."
-  desc 'check', 'Verify /etc/audit/audit.rules, /etc/audit/rules.d/*, and /etc/audit/auditd.conf files have a mode of "0640" or less permissive with the following command: 
- 
-$ sudo ls -al /etc/audit/ /etc/audit/rules.d/
-/etc/audit/: 
- 
--rw-r-----   1 root root   804 Nov 25 11:01 auditd.conf 
- -rw-r-----   1 root root  9128 Dec 27 09:56 audit.rules 
--rw-r-----   1 root root   127 Feb  7  2018 audit-stop.rules 
- 
-drwxr-x---   2 root root  4096 Dec 27 09:56 rules.d 
- 
-/etc/audit/rules.d/: 
+  desc "Without the capability to restrict which roles and individuals can select which events are audited, unauthorized personnel may be able to prevent the auditing of critical events.
 
- -rw-r----- 1 root root 244 Dec 27 09:56 audit.rules 
--rw-r----- 1 root root 10357 Dec 27 09:56 stig.rules 
- 
+Misconfigured audits may degrade the system's performance by overwhelming the audit log. Misconfigured audits may also make it more difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one."
+  desc 'check', 'Verify /etc/audit/audit.rules, /etc/audit/rules.d/*, and /etc/audit/auditd.conf files have a mode of "0640" or less permissive with the following command:
+
+$ sudo ls -al /etc/audit/ /etc/audit/rules.d/
+/etc/audit/:
+
+-rw-r-----   1 root root   804 Nov 25 11:01 auditd.conf
+ -rw-r-----   1 root root  9128 Dec 27 09:56 audit.rules
+-rw-r-----   1 root root   127 Feb  7  2018 audit-stop.rules
+
+drwxr-x---   2 root root  4096 Dec 27 09:56 rules.d
+
+/etc/audit/rules.d/:
+
+ -rw-r----- 1 root root 244 Dec 27 09:56 audit.rules
+-rw-r----- 1 root root 10357 Dec 27 09:56 stig.rules
+
 If /etc/audit/audit.rule, /etc/audit/rules.d/*, or /etc/audit/auditd.conf files have a mode more permissive than "0640", this is a finding.'
-  desc 'fix', 'Configure /etc/audit/audit.rules, /etc/audit/rules.d/*, and /etc/audit/auditd.conf files to have a mode of "0640" by using the following command: 
- 
+  desc 'fix', 'Configure /etc/audit/audit.rules, /etc/audit/rules.d/*, and /etc/audit/auditd.conf files to have a mode of "0640" by using the following command:
+
 $ sudo chmod -R 0640 /etc/audit/audit*.{rules,conf} /etc/audit/rules.d/*'
   impact 0.5
   tag severity: 'medium'
@@ -35,14 +35,19 @@ $ sudo chmod -R 0640 /etc/audit/audit*.{rules,conf} /etc/audit/rules.d/*'
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !virtualization.system.eql?('docker')
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  rules_files = bash('ls -d /etc/audit/rules.d/*.rules').stdout.strip.split.append('/etc/audit/auditd.conf').append('/etc/audit/audit.rules')
-  failing_files = rules_files.select { |rf| file(rf).more_permissive_than?(input('audit_conf_mode')) }
+  expected_mode = input('audit_conf_mode')
+  rules_dir_files = command("find /etc/audit/rules.d -maxdepth 1 -type f -printf '%p\\n' 2>/dev/null").stdout.split("\n").reject(&:empty?)
+  audit_files = ['/etc/audit/auditd.conf', '/etc/audit/audit.rules'] + rules_dir_files
+  existing_files = audit_files.select { |p| file(p).exist? }
+  failing_files = existing_files.select { |p| file(p).more_permissive_than?(expected_mode) }
+
   describe 'Audit configuration files' do
-    it "should be no more permissive than '#{input('audit_conf_mode')}'" do
-      expect(failing_files).to be_empty, "Failing files:\n\t- #{failing_files.join("\n\t- ")}"
+    subject { failing_files }
+    it "should be no more permissive than '#{expected_mode}'" do
+      expect(subject).to be_empty, "Failing files:\n\t- #{subject.join("\n\t- ")}"
     end
   end
 end

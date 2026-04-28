@@ -1,17 +1,17 @@
 control 'SV-270647' do
   title 'Ubuntu 24.04 LTS must not have the telnet package installed.'
-  desc 'Remote access services, such as those providing remote access to network devices and information systems, which lack automated control capabilities, increase risk and make remote user access management difficult at best. 
- 
-Remote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless. 
- 
+  desc 'Remote access services, such as those providing remote access to network devices and information systems, which lack automated control capabilities, increase risk and make remote user access management difficult at best.
+
+Remote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
+
 Ubuntu 24.04 LTS functionality (e.g., RDP) must be capable of taking enforcement action if the audit reveals unauthorized activity. Automated control of remote access sessions allows organizations to ensure ongoing compliance with remote access policies by enforcing connection rules of remote access applications on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets).'
-  desc 'check', 'Verify the telnet package is not installed on Ubuntu 24.04 LTS with the following command: 
- 
-$ dpkg -l | grep telnetd 
+  desc 'check', 'Verify the telnet package is not installed on Ubuntu 24.04 LTS with the following command:
+
+$ dpkg -l | grep telnetd
 
 If the telnetd package is installed, this is a finding.'
-  desc 'fix', 'Remove the telnet package from Ubuntu 24.04 LTS with the following command: 
- 
+  desc 'fix', 'Remove the telnet package from Ubuntu 24.04 LTS with the following command:
+
 $ sudo apt remove telnetd'
   impact 0.7
   tag severity: 'high'

@@ -17,7 +17,7 @@ $ sudo systemctl disable ctrl-alt-del.target
 $ sudo systemctl mask ctrl-alt-del.target
 Created symlink /etc/systemd/system/ctrl-alt-del.target ? /dev/null.
 
-Reload the daemon to take effect: 
+Reload the daemon to take effect:
 
 $ sudo systemctl daemon-reload'
   impact 0.7
@@ -31,9 +31,11 @@ $ sudo systemctl daemon-reload'
   tag 'documentable'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
+  tag 'host'
+  tag 'container'
 
   describe service('ctrl-alt-del.target') do
-    it {should_not be_enabled}
-    it {should_not be_running}
+    it { should_not be_enabled }
+    it { should_not be_running }
   end
 end

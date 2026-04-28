@@ -1,14 +1,14 @@
 control 'SV-270661' do
   title 'Ubuntu 24.04 LTS must have the "libpam-pwquality" package installed.'
   desc 'Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. "pwquality" enforces complex password construction configuration and has the ability to limit brute-force attacks on the system.'
-  desc 'check', 'Verify Ubuntu 24.04 LTS has the "libpam-pwquality" package installed with the following command: 
- 
+  desc 'check', 'Verify Ubuntu 24.04 LTS has the "libpam-pwquality" package installed with the following command:
+
 $ dpkg -l | grep libpam-pwquality
-ii  libpam-pwquality:amd64     1.4.5-3build1     amd64     PAM module to check password strength 
- 
+ii  libpam-pwquality:amd64     1.4.5-3build1     amd64     PAM module to check password strength
+
 If "libpam-pwquality" is not installed, this is a finding.'
-  desc 'fix', 'Install the "pam_pwquality" package by using the following command: 
- 
+  desc 'fix', 'Install the "pam_pwquality" package by using the following command:
+
 $ sudo apt install -y libpam-pwquality'
   impact 0.5
   tag check_id: 'C-74694r1067152_chk'
@@ -21,6 +21,8 @@ $ sudo apt install -y libpam-pwquality'
   tag 'documentable'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
+  tag 'host'
+  tag 'container'
 
   describe package('libpam-pwquality') do
     it { should be_installed }

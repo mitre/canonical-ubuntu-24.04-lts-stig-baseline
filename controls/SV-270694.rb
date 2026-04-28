@@ -1,7 +1,7 @@
 control 'SV-270694' do
   title 'Ubuntu 24.04 LTS must be configured to enforce the acknowledgement of the Standard Mandatory DOD Notice and Consent Banner for all SSH connections.'
-  desc 'The banner must be acknowledged by the user prior to allowing the user access to Ubuntu 24.04 LTS. This provides assurance that the user has seen the message and accepted the conditions for access. If the consent banner is not acknowledged by the user, DOD will not be in compliance with system use notifications required by law. 
- 
+  desc 'The banner must be acknowledged by the user prior to allowing the user access to Ubuntu 24.04 LTS. This provides assurance that the user has seen the message and accepted the conditions for access. If the consent banner is not acknowledged by the user, DOD will not be in compliance with system use notifications required by law.
+
 Ubuntu 24.04 LTS must prevent further activity until the user executes a positive action to manifest agreement.'
   desc 'check', 'Verify Ubuntu 24.04 LTS is configured to prompt a user to acknowledge the Standard Mandatory DOD Notice and Consent Banner before granting access with the following command:
 
@@ -10,7 +10,7 @@ $ less /etc/profile.d/ssh_confirm.sh
 
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
         while true; do
-                read -p " 
+                read -p "
 
 
 You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
@@ -43,7 +43,7 @@ $ sudo vi /etc/profile.d/ssh_confirm.sh
 
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
         while true; do
-                read -p " 
+                read -p "
 
 You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
 
@@ -79,4 +79,15 @@ Note: The "ssh_confirm.sh" script is provided as a supplemental file to this doc
   tag 'documentable'
   tag cci: ['CCI-000050']
   tag nist: ['AC-8 b']
+  tag 'host'
+  tag 'container-conditional'
+
+  script_path = input('ssh_ack_script_path')
+  expected_content = input('ssh_ack_script_content')
+
+  describe file(script_path) do
+    it { should exist }
+    it { should be_file }
+    its('content') { should eq expected_content }
+  end
 end

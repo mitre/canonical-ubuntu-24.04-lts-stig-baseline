@@ -1,24 +1,24 @@
 control 'SV-270783' do
   title 'Ubuntu 24.04 LTS must generate audit records for successful/unsuccessful uses of the ssh-keysign command.'
-  desc 'Without generating audit records specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one. 
- 
+  desc 'Without generating audit records specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
+
 Audit records can be generated from various components within the information system (e.g., module or policy filter).'
   desc 'check', 'Verify Ubuntu 24.04 LTS generates an audit record upon successful/unsuccessful attempts to use the "ssh-keysign" command with the following command:
- 
+
 $ sudo auditctl -l | grep ssh-keysign
--a always,exit -F path=/usr/lib/openssh/ssh-keysign -F perm=x -F auid>=1000 -F auid!=-1 -k privileged-ssh 
- 
-If the command does not return lines that match the example or the lines are commented out, this is a finding. 
- 
+-a always,exit -F path=/usr/lib/openssh/ssh-keysign -F perm=x -F auid>=1000 -F auid!=-1 -k privileged-ssh
+
+If the command does not return lines that match the example or the lines are commented out, this is a finding.
+
 Note: The "-k" allows for specifying an arbitrary identifier, and the string after it does not need to match the example output above.'
-  desc 'fix', 'Configure the audit system to generate an audit event for any successful/unsuccessful use of the "ssh-keysign" command.  
- 
-Add or update the following rules in the "/etc/audit/rules.d/stig.rules" file: 
- 
--a always,exit -F path=/usr/lib/openssh/ssh-keysign -F perm=x -F auid>=1000 -F auid!=-1 -k privileged-ssh 
- 
-To reload the rules file, issue the following command: 
- 
+  desc 'fix', 'Configure the audit system to generate an audit event for any successful/unsuccessful use of the "ssh-keysign" command.
+
+Add or update the following rules in the "/etc/audit/rules.d/stig.rules" file:
+
+-a always,exit -F path=/usr/lib/openssh/ssh-keysign -F perm=x -F auid>=1000 -F auid!=-1 -k privileged-ssh
+
+To reload the rules file, issue the following command:
+
 $ sudo augenrules --load'
   impact 0.5
   tag severity: 'medium'
@@ -32,10 +32,10 @@ $ sudo augenrules --load'
   tag nist: ['AU-12 a', 'AU-3 a', 'AU-3 (1)', 'AU-12 c', 'MA-4 (1) (a)']
   tag 'host'
 
-  audit_command = '/usr/libexec/openssh/ssh-keysign'
+  audit_command = '/usr/lib/openssh/ssh-keysign'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !virtualization.system.eql?('docker')
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
   describe 'Command' do

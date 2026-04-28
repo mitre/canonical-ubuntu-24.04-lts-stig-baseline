@@ -1,7 +1,7 @@
 control 'SV-270757' do
   title 'Ubuntu 24.04 LTS must generate system journal entries without revealing information that could be exploited by adversaries.'
-  desc 'Any operating system providing too much information in error messages risks compromising the data and security of the structure, and content of error messages must be carefully considered by the organization. 
- 
+  desc 'Any operating system providing too much information in error messages risks compromising the data and security of the structure, and content of error messages must be carefully considered by the organization.
+
 Organizations carefully consider the structure/content of error messages. The extent to which information systems are able to identify and handle error conditions is guided by organizational policy and operational requirements. Information that could be exploited by adversaries includes, for example, erroneous logon attempts with passwords entered by mistake as the username, mission/business information that can be derived from (if not stated explicitly by) information recorded, and personal information, such as account numbers, social security numbers, and credit card numbers.'
   desc 'check', 'Verify the /run/log/journal and /var/log/journal directories have permissions set to "2640" or less permissive with the following command:
 
@@ -46,15 +46,28 @@ Note: The system must be restarted for these settings to take effect.'
   tag 'documentable'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
+  tag 'host'
+  tag 'container'
 
-  journal_dirs = command('sudo find /run/log/journal /var/log/journal  -type d -exec stat -c "%n" {} \;').stdout.split("\n")
-  mode = '3000'
+  expected_modes = input('expected_modes')
 
-  non_compliant_journal_dirs = journal_dirs.select { |dir| file(dir).more_permissive_than?(mode) }
+  journal_dirs = command('find /run/log/journal /var/log/journal  -type d -exec stat -c "%n" {} \;').stdout.split("\n")
+  dir_mode = expected_modes['journal_dir']
+  non_compliant_journal_dirs = journal_dirs.select { |dir| file(dir).more_permissive_than?(dir_mode) }
 
   describe 'All journal directories' do
-    it "have a mode of '#{mode}' or less permissive" do
+    it "have a mode of '#{dir_mode}' or less permissive" do
       expect(non_compliant_journal_dirs).to be_empty, "Failing directories:\n\t- #{non_compliant_journal_dirs.join("\n\t- ")}"
+    end
+  end
+
+  journal_files = command('find /run/log/journal /var/log/journal  -type f -exec stat -c "%n" {} \;').stdout.split("\n")
+  file_mode = expected_modes['journal_file']
+  non_compliant_journal_files = journal_files.select { |f| file(f).more_permissive_than?(file_mode) }
+
+  describe 'Journal files' do
+    it "have a mode of '#{file_mode}' or less permissive" do
+      expect(non_compliant_journal_files).to be_empty, "Failing files:\n\t- #{non_compliant_journal_files.join("\n\t- ")}"
     end
   end
 end

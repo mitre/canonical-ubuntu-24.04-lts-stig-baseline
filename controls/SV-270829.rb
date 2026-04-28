@@ -1,24 +1,24 @@
 control 'SV-270829' do
   title 'Ubuntu 24.04 LTS must permit only authorized groups ownership of the audit log files.'
-  desc 'Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.  
-  
+  desc 'Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.
+
 Audit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit operating system activity.'
-  desc 'check', 'Verify the group owner is set to own newly created audit logs in the audit configuration file with the following command: 
+  desc 'check', 'Verify the group owner is set to own newly created audit logs in the audit configuration file with the following command:
 
 $ sudo grep -iw log_group /etc/audit/auditd.conf
-log_group = root 
+log_group = root
 
 If the value of the "log_group" parameter is other than "root", this is a finding.
 
-Determine where the audit logs are stored with the following command: 
+Determine where the audit logs are stored with the following command:
 
 $ sudo grep -iw log_file /etc/audit/auditd.conf
-log_file = /var/log/audit/audit.log 
+log_file = /var/log/audit/audit.log
 
-Using the path of the directory containing the audit logs, determine if the audit log files are owned by the "root" group with the following command: 
+Using the path of the directory containing the audit logs, determine if the audit log files are owned by the "root" group with the following command:
 
 $ sudo stat -c "%n %G" /var/log/audit/*
-/var/log/audit/audit.log root 
+/var/log/audit/audit.log root
 
 If the audit log files are owned by a group other than "root", this is a finding.'
   desc 'fix', %q(Configure the audit log directory and its underlying files to be owned by "root" group.
@@ -43,7 +43,7 @@ $ sudo systemctl kill auditd -s SIGHUP)
   tag nist: ['AU-9', 'AU-9 a', 'SI-11 b']
   tag 'host'
 
-  if virtualization.system.eql?('docker')
+  if %w[docker podman kubepods lxc].include?(virtualization.system)
     impact 0.0
     describe 'Control not applicable to a container' do
       skip 'Control not applicable to a container'
@@ -58,7 +58,7 @@ $ sudo systemctl kill auditd -s SIGHUP)
         its('group') { should be_in admin_groups }
       end
     else
-      describe('Audit log file ' + log_file + ' exists') do
+      describe("Audit log file #{log_file} exists") do
         subject { log_file_exists }
         it { should be true }
       end

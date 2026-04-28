@@ -1,8 +1,8 @@
 control 'SV-270736' do
   title 'Ubuntu 24.04 LTS must map the authenticated identity to the user or group account for PKI-based authentication.'
   desc 'Without mapping the certificate used to authenticate to the user account, the ability to determine the identity of the individual user or group will not be available for forensic analysis.'
-  desc 'check', 'Verify that authenticated certificates are mapped to the appropriate user group in the "/etc/sssd/sssd.conf" file with the following command: 
- 
+  desc 'check', 'Verify that authenticated certificates are mapped to the appropriate user group in the "/etc/sssd/sssd.conf" file with the following command:
+
 $ grep -i ldap_user_certificate /etc/sssd/sssd.conf
 ldap_user_certificate=userCertificate;binary'
   desc 'fix', 'Configure sssd to map authenticated certificates to the appropriate user group by adding the following line to the "/etc/sssd/sssd.conf" file:
@@ -20,11 +20,21 @@ ldap_user_certificate=userCertificate;binary'
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !virtualization.system.eql?('docker')
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
-  describe file('/etc/sssd/sssd.conf') do
+  sssd_conf = '/etc/sssd/sssd.conf'
+
+  describe file(sssd_conf) do
     it { should exist }
-    its('content') { should match(/^\s*\[certmap.*\]\s*$/) }
+  end
+
+  describe 'SSSD PKI mapping setting' do
+    subject { file(sssd_conf).content.to_s }
+
+    it "includes 'ldap_user_certificate=userCertificate;binary'" do
+      expected = /^\s*ldap_user_certificate\s*=\s*userCertificate;binary\s*$/m
+      expect(subject).to match(expected), "Expected #{sssd_conf} to contain: ldap_user_certificate=userCertificate;binary"
+    end
   end
 end

@@ -1,21 +1,21 @@
 control 'SV-270771' do
   title 'Ubuntu 24.04 LTS must implement nonexecutable data to protect its memory from unauthorized code execution.'
-  desc 'Some adversaries launch attacks with the intent of executing code in nonexecutable regions of memory or in memory locations that are prohibited. Security safeguards employed to protect memory include, for example, data execution prevention and address space layout randomization. Data execution prevention safeguards can either be hardware-enforced or software-enforced with hardware providing the greater strength of mechanism.  
-  
+  desc 'Some adversaries launch attacks with the intent of executing code in nonexecutable regions of memory or in memory locations that are prohibited. Security safeguards employed to protect memory include, for example, data execution prevention and address space layout randomization. Data execution prevention safeguards can either be hardware-enforced or software-enforced with hardware providing the greater strength of mechanism.
+
 Examples of attacks are buffer overflow attacks.'
-  desc 'check', 'Verify the NX (no-execution) bit flag is set on the system with the following command: 
- 
-$ sudo dmesg | grep -i "execute disable" 
-[    0.000000] NX (Execute Disable) protection: active 
- 
-If "dmesg" does not show "NX (Execute Disable) protection: active", check the cpuinfo settings with the following command:  
- 
-$ grep flags /proc/cpuinfo | grep -w nx | sort -u 
-flags       : fpu vme de pse tsc ms nx rdtscp lm constant_tsc 
- 
+  desc 'check', 'Verify the NX (no-execution) bit flag is set on the system with the following command:
+
+$ sudo dmesg | grep -i "execute disable"
+[    0.000000] NX (Execute Disable) protection: active
+
+If "dmesg" does not show "NX (Execute Disable) protection: active", check the cpuinfo settings with the following command:
+
+$ grep flags /proc/cpuinfo | grep -w nx | sort -u
+flags       : fpu vme de pse tsc ms nx rdtscp lm constant_tsc
+
 If "flags" does not contain the "nx" flag, this is a finding.'
-  desc 'fix', %q(Configure Ubuntu 24.04 LTS to enable NX. 
- 
+  desc 'fix', %q(Configure Ubuntu 24.04 LTS to enable NX.
+
 If "nx" is not showing up in "/proc/cpuinfo", and the system's BIOS setup configuration permits toggling the No Execution bit, set it to "enable".)
   impact 0.5
   tag severity: 'medium'
@@ -29,7 +29,7 @@ If "nx" is not showing up in "/proc/cpuinfo", and the system's BIOS setup config
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !virtualization.system.eql?('docker')
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
   }
 
   dmesg_nx_conf = command('dmesg | grep \'[NX|DX]*protection\'').stdout

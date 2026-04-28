@@ -3,9 +3,9 @@ This InSpec Profile was created to facilitate testing and auditing of `Canonical
 infrastructure and applications when validating compliancy with [Department of Defense (DoD) STIG](https://public.cyber.mil/stigs/)
 requirements.
 
-- Profile Version: **1.1.0**
-- Benchmark Date: **28 Jan 2025**
-- Benchmark Version: **Version 1 Release 1 (V1R1)**
+- Profile Version: **1.4.0**
+- Benchmark Date: **22 Jan 2026**
+- Benchmark Version: **Version 1 Release 4 (V1R4)**
 
 
 This profile was developed to reduce the time it takes to perform a security checks based upon the

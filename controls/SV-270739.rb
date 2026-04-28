@@ -1,16 +1,16 @@
 control 'SV-270739' do
   title 'Ubuntu 24.04 LTS must encrypt all stored passwords with a FIPS 140-3 approved cryptographic hashing algorithm.'
   desc 'Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.'
-  desc 'check', 'Verify the shadow password suite configuration is set to encrypt passwords with a FIPS 140-3 approved cryptographic hashing algorithm with the following command: 
- 
-$ grep -i ENCRYPT_METHOD /etc/login.defs 
-ENCRYPT_METHOD SHA512 
- 
+  desc 'check', 'Verify the shadow password suite configuration is set to encrypt passwords with a FIPS 140-3 approved cryptographic hashing algorithm with the following command:
+
+$ grep -i ENCRYPT_METHOD /etc/login.defs
+ENCRYPT_METHOD SHA512
+
 If "ENCRYPT_METHOD" does not equal SHA512 or greater, this is a finding.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to encrypt all stored passwords.  
- 
-Edit/modify the following line in the "/etc/login.defs" file and set "ENCRYPT_METHOD" to SHA512: 
- 
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to encrypt all stored passwords.
+
+Edit/modify the following line in the "/etc/login.defs" file and set "ENCRYPT_METHOD" to SHA512:
+
 ENCRYPT_METHOD SHA512'
   impact 0.5
   tag severity: 'medium'

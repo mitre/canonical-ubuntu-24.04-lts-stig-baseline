@@ -1,44 +1,82 @@
 control 'SV-270679' do
-  title "Ubuntu 24.04 LTS must retain a user's session lock until the user reestablishes access using established identification and authentication procedures."
-  desc 'A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence. 
- 
-The session lock is implemented at the point where session activity can be determined. 
- 
-Regardless of where the session lock is determined and implemented, once invoked, a session lock of Ubuntu 24.04 LTS must remain in place until the user reauthenticates. No other activity aside from reauthentication must unlock the system.'
-  desc 'check', 'Note: If Ubuntu 24.04 LTS does not have a graphical user interface installed, this requirement is not applicable. 
- 
-Verify the Ubuntu operation system has a graphical user interface session lock enabled with the following command:
- 
-$ sudo gsettings get org.gnome.desktop.screensaver lock-enabled
-true  
- 
-If "lock-enabled" is not set to "true", this is a finding.'
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to allow a user to lock the current graphical user interface session.  
- 
-Set the "lock-enabled" setting to allow graphical user interface session locks with the following command:  
- 
-$ gsettings set org.gnome.desktop.screensaver lock-enabled true'
+  title 'Ubuntu 24.04 LTS must prevent a user from overriding the disabling of the graphical user interface automount function.'
+  desc 'A nonprivileged account is any operating system account with authorizations of a nonprivileged user.
+
+'
+  desc 'check', %q(Note: This requirement assumes the use of the Ubuntu 24.04 LTS default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
+
+Verify Ubuntu 24.04 LTS disables the ability of the user to override the graphical user interface automount setting.
+
+Determine which profile the system database is using with the following command:
+
+$ sudo grep system-db /etc/dconf/profile/user
+
+system-db:local
+
+Check that the automount setting is locked from nonprivileged user modification with the following command:
+
+Note: The example below is using the database "local" for the system, so the path is "/etc/dconf/db/local.d". This path must be modified if a database other than "local" is being used.
+
+$ grep 'automount-open' /etc/dconf/db/local.d/locks/*
+
+/org/gnome/desktop/media-handling/automount-open
+
+If the command does not return at least the example result, this is a finding.)
+  desc 'fix', 'Configure Ubuntu 24.04 LTS so the GNOME desktop does not allow a user to change the setting that disables automated mounting of removable media.
+
+Add the following line to "/etc/dconf/db/local.d/locks/00-security-settings-lock" to prevent user modification:
+
+/org/gnome/desktop/media-handling/automount-open
+
+Update the dconf system databases:
+
+$ sudo dconf update'
   impact 0.5
+  tag check_id: 'C-74712r1101775_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000028-GPOS-00009'
-  tag satisfies: ['SRG-OS-000028-GPOS-00009', 'SRG-OS-000030-GPOS-00011']
   tag gid: 'V-270679'
-  tag rid: 'SV-270679r1066526_rule'
+  tag rid: 'SV-270679r1107295_rule'
   tag stig_id: 'UBTU-24-200040'
-  tag fix_id: 'F-74613r1066525_fix'
+  tag gtitle: 'SRG-OS-000028-GPOS-00009'
+  tag fix_id: 'F-74613r1107294_fix'
+  tag satisfies: ['SRG-OS-000114-GPOS-00059', 'SRG-OS-000378-GPOS-00163', 'SRG-OS-000480-GPOS-00227']
+  tag 'documentable'
   tag cci: ['CCI-000056']
   tag nist: ['AC-11 b']
   tag 'host'
 
-  output = command('which Xorg').exit_status
+  only_if('This control is Not Applicable to containers', impact: 0.0) {
+    !%w[docker podman kubepods lxc].include?(virtualization.system)
+  }
 
-  if output == 0
-    describe command('gsettings get org.gnome.desktop.screensaver lock-enabled').stdout.strip do
-      it { should cmp true }
-    end
-  else
-    describe command('which Xorg').exit_status do
-      skip("GUI not installed.\nwhich Xorg exit_status: " + command('which Xorg').exit_status.to_s)
-    end
+  only_if('This requirement is not applicable because GNOME is not installed.', impact: 0.0) do
+    package('gnome-shell').installed? || file('/usr/bin/gnome-shell').exist?
+  end
+
+  profile_file = '/etc/dconf/profile/user'
+
+  describe file(profile_file) do
+    it { should exist }
+    it { should be_file }
+  end
+
+  system_db = 'local'
+  if file(profile_file).exist?
+    content = file(profile_file).content.to_s
+    m = content.match(/^\s*system-db\s*:\s*([^\s#]+).*$/)
+    system_db = m[1] if m
+  end
+
+  locks_dir = "/etc/dconf/db/#{system_db}.d/locks"
+  required_lock = '/org/gnome/desktop/media-handling/automount-open'
+
+  describe file(locks_dir) do
+    it { should exist }
+    it { should be_directory }
+  end
+
+  describe command("grep -Rhs '^#{Regexp.escape(required_lock)}$' #{locks_dir} 2>/dev/null") do
+    its('exit_status') { should eq 0 }
+    its('stdout') { should include(required_lock) }
   end
 end
