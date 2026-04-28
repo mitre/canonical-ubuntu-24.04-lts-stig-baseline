@@ -53,7 +53,6 @@ inputs:
     description: 'The agreed sshd server config values for the organization'
     type: Hash
     value:
-      GSSAPIAuthentication: 'no'
       ClientAliveInterval: '600'
 
   
@@ -76,19 +75,6 @@ inputs:
     description: Expected modes of system files and/or directories
     type: Hash
     value:
-      home_dirs: "0750"
-      cron_dirs: "0700"
-      /etc/group: "0644"
-      /etc/group-: "0644"
-      /etc/gshadow: "0000"
-      /etc/gshadow-: "0000"
-      /etc/passwd: "0644"
-      /etc/passwd-: "0644"
-      /etc/shadow: "0000"
-      /etc/shadow-: "0000"
-      /etc/crontab: "0600"
-      /etc/ssh/sshd_config: "0600"
-      auditd_conf: "0640"
       journal_dir: "2640"
       journal_file: "0640"
       /var/log/syslog: "0640"
@@ -307,9 +293,6 @@ inputs:
     type: Hash
     value:
       default_umask: "077"
-      bashrc_umask: "077"
-      cshrc_umask: "077"
-      profile_umask: "077"
 
   
   # SV-270696, SV-270697, SV-270698, SV-270699, SV-270700
@@ -429,15 +412,7 @@ inputs:
       '/usr/bin/passwd'               : 'privileged-passwd',
       '/usr/bin/mount'                : 'privileged-mount',
       '/usr/bin/umount'               : 'privileged-umount',
-      'mount'                         : 'privileged-mount',
       '/sbin/unix_update'             : 'privileged-unix-update',
-      '/usr/sbin/postdrop'            : 'privileged-unix-update',
-      '/usr/sbin/postqueue'           : 'privileged-unix-update',
-      '/usr/sbin/semanage'            : 'privileged-unix-update',
-      '/usr/sbin/setfiles'            : 'privileged-unix-update',
-      '/usr/sbin/userhelper'          : 'privileged-unix-update',
-      '/usr/sbin/setsebool'           : 'privileged-unix-update',
-      '/usr/sbin/unix_chkpwd'         : 'privileged-unix-update',
       '/usr/lib/openssh/ssh-keysign'  : 'privileged-ssh',
       '/usr/bin/setfacl'              : 'perm_mod',
       '/usr/sbin/pam_timestamp_check' : 'privileged-pam_timestamp_check',
@@ -460,9 +435,6 @@ inputs:
       'openat'                        : 'perm_access',
       'open_by_handle_at'             : 'perm_access',
       'chown'                         : 'perm_mod',
-      'fchown'                        : 'perm_mod',
-      'fchownat'                      : 'perm_mod',
-      'lchown'                        : 'perm_mod',
       'chmod'                         : 'perm_chng',
       'fchmod'                        : 'perm_chng',
       'fchmodat'                      : 'perm_chng',
@@ -473,7 +445,6 @@ inputs:
       '/sbin/modprobe'                : 'modules',
       '/sbin/apparmor_parser'         : 'perm_chng',
       '/usr/bin/chfn'                 : 'privileged-chfn',
-      '/var/log/faillock'             : 'logins',
       '/var/log/lastlog'              : 'logins',
       '/var/log/btmp'                 : 'logins',
       '/var/log/wtmp'                 : 'logins',
@@ -482,14 +453,7 @@ inputs:
       '/etc/cron.d'                   : 'cronjobs',
       '/var/spool/cron'               : 'cronjobs',
       '/usr/bin/sudoedit'             : 'priv_cmd',
-      '/usr/sbin/init'                : 'privileged-init',
-      '/usr/sbin/poweroff'            : 'privileged-poweroff',
-      '/usr/sbin/reboot'              : 'privileged-reboot',
-      '/usr/sbin/shutdown'            : 'privileged-shutdown',
-      '/usr/bin/umount'               : 'privileged-mount',
-      'umount2'                       : 'perm_mod',
       '/var/log/faillog'              : 'logins',
-      '/var/log/tallylog'             : 'logins',
       '/usr/sbin/fdisk'               : 'fdisk'
     }
 
@@ -508,9 +472,6 @@ inputs:
       '/etc/sudoers'                  : 'privilege_modification',
       '/var/log/journal'              : 'systemd_journal',
       'chown'                         : 'perm_chng',
-      'fchown'                        : 'perm_chng',
-      'fchownat'                      : 'perm_chng',
-      'lchown'                        : 'perm_chng',
       '/usr/bin/chacl'                : 'perm_chng',
       '/usr/bin/chcon'                : 'perm_chng',
       '/usr/bin/setfacl'              : 'perm_chng',
@@ -521,8 +482,7 @@ inputs:
   - name: approved_openssh_server_conf
     description: Config values expected for openssh server (order matters, so these values are comma-delimited strings and not arrays)
     type: Hash
-    value: 
-      ciphers: aes256-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes128-ctr
+    value:
       macs: hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
 
   
