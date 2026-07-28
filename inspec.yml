@@ -13,6 +13,8 @@ version: 1.4.0
 supports:
   - platform-name: ubuntu
     release: 24.*
+  - platform-name: debian
+    release: 13.*
 
 ### INPUTS ###
 # Inputs are variables that can be referenced by any control in the profile,
