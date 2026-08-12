@@ -34,25 +34,21 @@ $ sudo update-ca-certificates)
   tag 'host'
   tag 'container'
 
-  ca_inventory = command(<<~'SH')
-    openssl crl2pkcs7 -nocrl \
-      -certfile /etc/ssl/certs/ca-certificates.crt 2>/dev/null |
-      openssl pkcs7 -print_certs -noout 2>/dev/null
-  SH
-
-  dod_ca_subjects = ca_inventory.stdout.lines.map(&:strip).select do |line|
-    line.match?(/\Asubject\s*=/i) && line.upcase.include?('DOD ROOT CA')
-  end
+  dod_ca_check = command(
+    "openssl crl2pkcs7 -nocrl -certfile /etc/ssl/certs/ca-certificates.crt 2>/dev/null | " \
+    "openssl pkcs7 -print_certs -noout 2>/dev/null | " \
+    "grep -Eim1 '^subject=.*DOD ROOT CA'"
+  )
 
   describe 'The system trusted CA bundle' do
-    it 'can be inspected with OpenSSL' do
-      failure_message = 'Unable to inspect /etc/ssl/certs/ca-certificates.crt with OpenSSL'
-      expect(ca_inventory.exit_status).to eq(0), failure_message
-    end
-
     it 'contains at least one DoD Root CA certificate' do
-      failure_message = "No certificate subject containing 'DOD ROOT CA' was found in /etc/ssl/certs/ca-certificates.crt"
-      expect(dod_ca_subjects).not_to be_empty, failure_message
+      failure_message =
+        "No certificate subject containing 'DOD ROOT CA' was found " \
+        'in /etc/ssl/certs/ca-certificates.crt'
+
+      expect(dod_ca_check.stdout).to match(
+        /^subject=.*DOD ROOT CA/i
+      ), failure_message
     end
   end
 end
