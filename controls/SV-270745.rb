@@ -70,3 +70,4 @@ $ sudo update-ca-certificates)
         'No certificate in /etc/ssl/certs/ca-certificates.crt has an approved DoD CA SHA-256 fingerprint'
     end
   end
+end
