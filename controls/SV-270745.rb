@@ -1,3 +1,4 @@
+require 'openssl'
 control 'SV-270745' do
   title 'Ubuntu 24.04 LTS must use DOD PKI-established certificate authorities (CAs) for verification of the establishment of protected sessions.'
   desc 'Untrusted CAs can issue certificates, but they may be issued by organizations or individuals that seek to compromise DOD systems or by organizations with insufficient security controls. If the CA used for verifying the certificate is not a DOD-approved CA, trust of this CA has not been established.
@@ -34,16 +35,38 @@ $ sudo update-ca-certificates)
   tag 'host'
   tag 'container'
 
-  allowed_ca_fingerprints_regex = input('allowed_ca_fingerprints_regex')
-  find_command = "
-  found=1
-  for f in $(find -L /etc/ssl/certs -type f); do
-    openssl x509 -sha256 -in $f -noout -fingerprint 2>/dev/null | cut -d= -f2 | tr -d ':' | grep -Eq '^#{allowed_ca_fingerprints_regex}$' && found=0 && break
-  done
-  test $found -eq 0
-  "
+  approved_fingerprints = input('allowed_ca_fingerprints_regex')
+                          .scan(/[0-9a-f]{64}/i)
+                          .map(&:upcase)
+                          .uniq
 
-  describe command(find_command) do
-    its('exit_status') { should eq 0 }
+  trusted_ca_bundle = file('/etc/ssl/certs/ca-certificates.crt')
+
+  describe 'The system trusted CA bundle' do
+    it 'contains at least one certificate with an approved DoD CA SHA-256 fingerprint' do
+      inspection_error = nil
+      installed_fingerprints = []
+
+      begin
+        certificates = trusted_ca_bundle.content.to_s.scan(
+          /-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----/m
+        )
+
+        installed_fingerprints = certificates.map do |pem|
+          certificate = OpenSSL::X509::Certificate.new(pem)
+          OpenSSL::Digest::SHA256.hexdigest(certificate.to_der).upcase
+        end
+      rescue StandardError => e
+        inspection_error = "#{e.class}: #{e.message}"
+      end
+
+      expect(approved_fingerprints).not_to be_empty,
+        "input('allowed_ca_fingerprints_regex') contains no valid SHA-256 fingerprints"
+
+      expect(inspection_error).to be_nil,
+        "Unable to inspect /etc/ssl/certs/ca-certificates.crt: #{inspection_error}"
+
+      expect(installed_fingerprints & approved_fingerprints).not_to be_empty,
+        'No certificate in /etc/ssl/certs/ca-certificates.crt has an approved DoD CA SHA-256 fingerprint'
+    end
   end
-end
