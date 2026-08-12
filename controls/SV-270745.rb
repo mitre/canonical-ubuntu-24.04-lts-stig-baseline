@@ -34,21 +34,16 @@ $ sudo update-ca-certificates)
   tag 'host'
   tag 'container'
 
-  dod_ca_check = command(
-    "openssl crl2pkcs7 -nocrl -certfile /etc/ssl/certs/ca-certificates.crt 2>/dev/null | " \
-    "openssl pkcs7 -print_certs -noout 2>/dev/null | " \
-    "grep -Eim1 '^subject=.*DOD ROOT CA'"
-  )
+  allowed_ca_fingerprints_regex = input('allowed_ca_fingerprints_regex')
+  find_command = "
+  found=1
+  for f in $(find -L /etc/ssl/certs -type f); do
+    openssl x509 -sha256 -in $f -noout -fingerprint 2>/dev/null | cut -d= -f2 | tr -d ':' | grep -Eq '^#{allowed_ca_fingerprints_regex}$' && found=0 && break
+  done
+  test $found -eq 0
+  "
 
-  describe 'The system trusted CA bundle' do
-    it 'contains at least one DoD Root CA certificate' do
-      failure_message =
-        "No certificate subject containing 'DOD ROOT CA' was found " \
-        'in /etc/ssl/certs/ca-certificates.crt'
-
-      expect(dod_ca_check.stdout).to match(
-        /^subject=.*DOD ROOT CA/i
-      ), failure_message
-    end
+  describe command(find_command) do
+    its('exit_status') { should eq 0 }
   end
 end

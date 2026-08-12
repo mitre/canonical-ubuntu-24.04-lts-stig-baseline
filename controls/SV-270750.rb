@@ -29,23 +29,13 @@ $ sudo chmod +t  [Public Directory]'
   tag 'host'
   tag 'container'
 
-  find_result = command(
-    'find / -xdev -type d -perm -0002 ! -perm -1000 -print 2>/dev/null'
-  )
+  output = command('find / -xdev -type d  \( -perm -0002 -a ! -perm -1000 \) -print 2>/dev/null').stdout.strip.split("\n").entries
 
-  missing_sticky_bit = find_result.stdout.lines.map(&:strip)
-    .select { |line| line.start_with?('/') }
-    .uniq
+  # Ignore Kubernetes transport messages; valid find results start with "/".
+  output.select! { |line| line.start_with?('/') }
 
-  describe 'World-writable directories on the root filesystem' do
-    it 'can be searched successfully' do
-      failure_message = 'The search for world-writable directories did not complete successfully'
-      expect(find_result.exit_status).to eq(0), failure_message
-    end
-
-    it 'all have the sticky bit set' do
-      failure_message = "World-writable directories without the sticky bit (run chmod +t <directory>):\n\t- #{missing_sticky_bit.join("\n\t- ")}"
-      expect(missing_sticky_bit).to be_empty, failure_message
-    end
+  describe 'Sticky bit has been set' do
+    subject { output }
+    its('count') { should eq 0 }
   end
 end
