@@ -1,0 +1,6 @@
+pass_min_days: 10
+airgapped_system: true
+pass_min_length: 500
+smart_card_enabled: true
+temporary_account_max_days: 50
+system_activity_timeout: 60
