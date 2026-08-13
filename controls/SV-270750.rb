@@ -30,12 +30,17 @@ $ sudo chmod +t  [Public Directory]'
   tag 'container'
 
   output = command('find / -xdev -type d  \( -perm -0002 -a ! -perm -1000 \) -print 2>/dev/null').stdout.strip.split("\n").entries
-
-  # Ignore Kubernetes transport messages; valid find results start with "/".
-  output.select! { |line| line.start_with?('/') }
-
-  describe 'Sticky bit has been set' do
-    subject { output }
-    its('count') { should eq 0 }
+  if output.any?
+    output.each do |line|
+      dir = line.strip
+      describe directory(dir) do
+        it { should be_sticky }
+      end
+    end
+  else
+    describe 'Sticky bit has been set' do
+      subject { output }
+      its('count') { should eq 0 }
+    end
   end
 end
