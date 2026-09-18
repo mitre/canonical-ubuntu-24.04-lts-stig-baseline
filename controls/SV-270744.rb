@@ -34,7 +34,7 @@ $ sudo pro enable fips-updates'
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !%w[docker podman kubepods lxc].include?(virtualization.system)
+    !virtualization.container_system?
   }
 
   describe command('grep -i 1 /proc/sys/crypto/fips_enabled') do

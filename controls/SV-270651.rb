@@ -63,7 +63,7 @@ $  sudo cp -f /usr/share/aide/config/cron.daily/aide /etc/cron.daily/dailyaidech
   tag 'container'
 
   only_if('This control is Not Applicable to containers') do
-    !%w[docker podman kubepods lxc].include?(virtualization.system)
+    !virtualization.container_system?
   end
 
   file_integrity_tool = input('file_integrity_tool')

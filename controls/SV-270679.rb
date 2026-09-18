@@ -46,7 +46,7 @@ $ sudo dconf update'
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !%w[docker podman kubepods lxc].include?(virtualization.system)
+    !virtualization.container_system?
   }
 
   only_if('This requirement is not applicable because GNOME is not installed.', impact: 0.0) do

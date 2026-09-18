@@ -35,7 +35,7 @@ $ sudo su -c "echo blacklist usb-storage >> /etc/modprobe.d/DISASTIG.conf"'
   tag cci: ['CCI-001958', 'CCI-003959']
   tag nist: ['IA-3', 'CM-7 (9) (b)']
 
-  if %w[docker podman kubepods lxc].include?(virtualization.system)
+  if virtualization.container_system?
     impact 0.0
     describe 'Control not applicable to a container' do
       skip 'Control not applicable to a container'
