@@ -32,7 +32,7 @@ $ sudo systemctl restart rsyslog.service'
   tag 'container-conditional'
 
   only_if('Control not applicable; remote access not configured within containerized Ubuntu', impact: 0.0) {
-    !%w[docker podman kubepods lxc].include?(virtualization.system) || package('openssh-server').installed?
+    !virtualization.container_system? || package('openssh-server').installed?
   }
 
   auth_pattern     = /(^|[,[:space:]])auth\.\*/

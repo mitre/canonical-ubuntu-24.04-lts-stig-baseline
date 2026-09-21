@@ -42,7 +42,7 @@ PubkeyAuthentication yes'
   tag 'host'
 
   only_if('Control not applicable within a container', impact: 0.0) do
-    !%w[docker podman kubepods lxc].include?(virtualization.system)
+    !virtualization.container_system?
   end
 
   if input('pki_disabled')

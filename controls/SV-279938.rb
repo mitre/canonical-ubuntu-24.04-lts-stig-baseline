@@ -35,7 +35,7 @@ $ sudo systemctl list-units --type=service | grep nfs'
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !%w[docker podman kubepods lxc].include?(virtualization.system)
+    !virtualization.container_system?
   }
 
   nfs_packages = %w[nfs-common nfs-kernel-server]

@@ -24,7 +24,7 @@ If the audit system is not set to be immutable by adding the "-e 2" option to th
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !%w[docker podman kubepods lxc].include?(virtualization.system)
+    !virtualization.container_system?
   }
 
   describe file('/etc/audit/audit.rules') do

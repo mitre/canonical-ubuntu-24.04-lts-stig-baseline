@@ -35,7 +35,7 @@ $ sudo augenrules --load'
   audit_command = '/bin/su'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {
-    !%w[docker podman kubepods lxc].include?(virtualization.system)
+    !virtualization.container_system?
   }
   describe 'Command' do
     it "#{audit_command} is audited properly" do
