@@ -4,15 +4,13 @@ control 'SV-270659' do
 
 Some of the programs, installed by default, may be harmful or may not be necessary to support essential organizational operations (e.g., key missions, functions). Removal of executable programs is not always possible; therefore, establishing a method of preventing program execution is critical to maintaining a secure system baseline.
 
-Methods for complying with this requirement include restricting execution of programs in certain environments, while preventing execution in other environments; or limiting execution of certain program functionality based on organization-defined criteria (e.g., privileges, subnets, sandboxed environments, or roles).
-
-'
+Methods for complying with this requirement include restricting execution of programs in certain environments, while preventing execution in other environments; or limiting execution of certain program functionality based on organization-defined criteria (e.g., privileges, subnets, sandboxed environments, or roles).'
   desc 'check', 'Verify Ubuntu 24.04 LTS has AppArmor installed with the following command:
-
+ 
 $ dpkg -l | grep apparmor
 ii  apparmor                                4.0.1really4.0.1-0ubuntu0.24.04.3        amd64        user-space parser utility for AppArmor
 ii  libapparmor1:amd64                      4.0.1really4.0.1-0ubuntu0.24.04.3        amd64        changehat AppArmor library
-
+ 
 If the AppArmor package is not installed, this is a finding.'
   desc 'fix', 'Install "AppArmor" with the following command:
 

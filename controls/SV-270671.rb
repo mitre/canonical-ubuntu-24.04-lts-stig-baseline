@@ -1,11 +1,11 @@
 control 'SV-270671' do
   title 'Ubuntu 24.04 LTS SSH client must be configured to use only Message Authentication Codes (MACs) employing FIPS 140-3 validated cryptographic hash algorithms.'
-  desc 'Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
-
-Remote access (e.g., RDP) is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless. Nonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network.
-
-Local maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection.
-
+  desc 'Without cryptographic integrity protections, information can be altered by unauthorized users without detection.  
+ 
+Remote access (e.g., RDP) is access to DoW nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless. Nonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network.  
+ 
+Local maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection.  
+ 
 Encrypting information for transmission protects information from unauthorized disclosure and modification. Cryptographic mechanisms implemented to protect information integrity include, for example, cryptographic hash functions that have common application in digital signatures, checksums, and message authentication codes.'
   desc 'check', 'Verify the SSH client is configured to only use MACs employing FIPS 140-3 approved algorithms with the following command:
 
@@ -24,7 +24,7 @@ $ sudo systemctl restart ssh'
   tag check_id: 'C-74704r1155228_chk'
   tag severity: 'medium'
   tag gid: 'V-270671'
-  tag rid: 'SV-270671r1155244_rule'
+  tag rid: 'SV-270671r1268237_rule'
   tag stig_id: 'UBTU-24-100860'
   tag gtitle: 'SRG-OS-000250-GPOS-00093'
   tag fix_id: 'F-74605r1067117_fix'

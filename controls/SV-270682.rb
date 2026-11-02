@@ -4,9 +4,7 @@ control 'SV-270682' do
 
 Temporary accounts are different from emergency accounts. Emergency accounts, also known as "last resort" or "break glass" accounts, are local logon accounts enabled on the system for emergency use by authorized system administrators to manage a system when standard logon methods are failing or not available. Emergency accounts are not subject to manual removal or scheduled expiration requirements.
 
-The automatic expiration of temporary accounts may be extended as needed by the circumstances but it must not be extended indefinitely. A documented permanent account must be established for privileged users who need long-term maintenance accounts.
-
-'
+The automatic expiration of temporary accounts may be extended as needed by the circumstances but it must not be extended indefinitely. A documented permanent account must be established for privileged users who need long-term maintenance accounts.'
   desc 'check', 'Verify temporary accounts have been provisioned with an expiration date of 72 hours with the following command:
 
 $ sudo chage -l <temporary_account_name> | grep -i "account expires"
@@ -21,14 +19,14 @@ $ sudo chage -E $(date -d +3days +%Y-%m-%d) <temporary_account_name>'
   tag check_id: 'C-74715r1066533_chk'
   tag severity: 'medium'
   tag gid: 'V-270682'
-  tag rid: 'SV-270682r1066535_rule'
+  tag rid: 'SV-270682r1268212_rule'
   tag stig_id: 'UBTU-24-200250'
   tag gtitle: 'SRG-OS-000002-GPOS-00002'
   tag fix_id: 'F-74616r1066534_fix'
   tag satisfies: ['SRG-OS-000002-GPOS-00002', 'SRG-OS-000123-GPOS-00064']
   tag 'documentable'
   tag cci: ['CCI-000016', 'CCI-001682']
-  tag nist: ['AC-2 (2)', 'AC-2 (2)']
+  tag nist: ['AC-2 (2)']
   tag 'host'
   tag 'container'
 

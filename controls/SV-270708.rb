@@ -11,20 +11,20 @@ $ sudo grep -ir x11forwarding /etc/ssh/sshd_config* | grep -v "^#"
 X11Forwarding no
 
 If the "X11Forwarding" keyword is set to "yes" and is not documented with the information system security officer (ISSO) as an operational requirement, is missing, or multiple conflicting results are returned, this is a finding.'
-  desc 'fix', 'Edit the "/etc/ssh/sshd_config" file to uncomment or add the line for the "X11Forwarding" keyword and set its value to "no" (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor):
+  desc 'fix', 'Edit the "/etc/ssh/sshd_config" file to uncomment or add the line for the "X11Forwarding" keyword and set its value to "no" (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor): 
+ 
+X11Forwarding no 
+ 
+Restart SSH for the changes to take effect: 
 
-X11Forwarding no
-
-Restart the SSH daemon for the changes to take effect:
-
-$ sudo systemctl restart sshd.service'
+$ sudo systemctl restart ssh'
   impact 0.7
   tag severity: 'high'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag gid: 'V-270708'
-  tag rid: 'SV-270708r1066613_rule'
+  tag rid: 'SV-270708r1268251_rule'
   tag stig_id: 'UBTU-24-300022'
-  tag fix_id: 'F-74642r1066612_fix'
+  tag fix_id: 'F-74642r1208292_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
   tag 'host'
