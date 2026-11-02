@@ -2,9 +2,7 @@ control 'SV-274873' do
   title 'Ubuntu 24.04 LTS must prevent a user from overriding the disabling of the graphical user smart card removal action.'
   desc 'A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence.
 
-The session lock is implemented at the point where session activity can be determined. Rather than be forced to wait for a period of time to expire before the user session can be locked, Ubuntu 24.04 LTS must provide users with the ability to manually invoke a session lock so users can secure their session if it is necessary to temporarily vacate the immediate physical vicinity.
-
-'
+The session lock is implemented at the point where session activity can be determined. Rather than be forced to wait for a period of time to expire before the user session can be locked, Ubuntu 24.04 LTS must provide users with the ability to manually invoke a session lock so users can secure their session if it is necessary to temporarily vacate the immediate physical vicinity.'
   desc 'check', 'Note: This requirement assumes the use of the Ubuntu 24.04 LTS default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
 
 Verify Ubuntu 24.04 LTS disables the ability of the user to override the smart card removal action setting.
@@ -34,7 +32,7 @@ $ sudo dconf update'
   tag satisfies: ['SRG-OS-000028-GPOS-00009', 'SRG-OS-000030-GPOS-00011']
   tag 'documentable'
   tag cci: ['CCI-000056', 'CCI-000057', 'CCI-000058']
-  tag nist: ['AC-11 b', 'AC-11 a', 'AC-11 a']
+  tag nist: ['AC-11 b', 'AC-11 a']
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {

@@ -1,10 +1,8 @@
 control 'SV-270747' do
-  title 'Ubuntu 24.04 LTS handling data requiring "data at rest" protections must employ cryptographic mechanisms to prevent unauthorized disclosure and modification of the information at rest.'
+  title 'Ubuntu 24.04 LTS handling data requiring data-at-rest protections must employ cryptographic mechanisms to prevent unauthorized disclosure and modification of the information at rest.'
   desc 'Information at rest refers to the state of information when it is located on a secondary storage device (e.g., disk drive and tape drive, when used for backups) within an operating system.
 
-This requirement addresses protection of user-generated data, as well as operating system-specific configuration data. Organizations may choose to employ different mechanisms to achieve confidentiality and integrity protections, as appropriate, in accordance with the security category and/or classification of the information.
-
-'
+This requirement addresses protection of user-generated data, as well as operating system-specific configuration data. Organizations may choose to employ different mechanisms to achieve confidentiality and integrity protections, as appropriate, in accordance with the security category and/or classification of the information.'
   desc 'check', 'Note: If there is a documented and approved mission requirement for data-at-rest to not be encrypted, this requirement is not applicable.
 
 Verify Ubuntu 24.04 LTS prevents unauthorized disclosure or modification of all information requiring at-rest protection by using disk encryption.
@@ -36,18 +34,18 @@ If any partitions other than the boot partition or pseudo file systems (such as 
   desc 'fix', 'To encrypt an entire partition, dedicate a partition for encryption in the partition layout.
 
 Note: Encrypting a partition in an already-installed system is more difficult because it will need to be resized and existing partitions changed.'
-  impact 0.5
+  impact 0.7
   tag check_id: 'C-74780r1066728_chk'
-  tag severity: 'medium'
+  tag severity: 'high'
   tag gid: 'V-270747'
-  tag rid: 'SV-270747r1066730_rule'
+  tag rid: 'SV-270747r1261473_rule'
   tag stig_id: 'UBTU-24-600090'
   tag gtitle: 'SRG-OS-000185-GPOS-00079'
   tag fix_id: 'F-74681r1066729_fix'
   tag satisfies: ['SRG-OS-000185-GPOS-00079', 'SRG-OS-000404-GPOS-00183', 'SRG-OS-000405-GPOS-00184', 'SRG-OS-000780-GPOS-00240']
   tag 'documentable'
   tag cci: ['CCI-001199', 'CCI-002475', 'CCI-002476', 'CCI-004910']
-  tag nist: ['SC-28', 'SC-28 (1)', 'SC-28 (1)', 'SC-28 (3)']
+  tag nist: ['SC-28', 'SC-28 (1)', 'SC-28 (3)']
   tag 'host'
 
   all_args = command('blkid').stdout.strip.split("\n").map { |s| s.sub(/^"(.*)"$/, '\1') }

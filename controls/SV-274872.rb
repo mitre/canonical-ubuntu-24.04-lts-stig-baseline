@@ -1,8 +1,6 @@
 control 'SV-274872' do
   title 'Ubuntu 24.04 LTS must prevent a user from overriding the disabling of the graphical user interface autorun function.'
-  desc 'Techniques used to address this include protocols using nonces (e.g., numbers generated for a specific one-time use) or challenges (e.g., TLS, WS_Security). Additional techniques include time-synchronous or challenge-response one-time authenticators.
-
-'
+  desc 'Techniques used to address this include protocols using nonces (e.g., numbers generated for a specific one-time use) or challenges (e.g., TLS, WS_Security). Additional techniques include time-synchronous or challenge-response one-time authenticators.'
   desc 'check', 'Note: This requirement assumes the use of the Ubuntu 24.04 LTS default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
 
 Verify Ubuntu 24.04 LTS disables ability of the user to override the graphical user interface autorun setting.
@@ -34,7 +32,7 @@ $ sudo dconf update'
   tag satisfies: ['SRG-OS-000114-GPOS-00059', 'SRG-OS-000378-GPOS-00163', 'SRG-OS-000480-GPOS-00227']
   tag 'documentable'
   tag cci: ['CCI-000778', 'CCI-001958']
-  tag nist: ['IA-3', 'IA-3']
+  tag nist: ['IA-3']
   tag 'host'
 
   only_if('This control is Not Applicable to containers', impact: 0.0) {

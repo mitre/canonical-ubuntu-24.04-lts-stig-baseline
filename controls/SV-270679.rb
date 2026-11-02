@@ -1,8 +1,6 @@
 control 'SV-270679' do
   title 'Ubuntu 24.04 LTS must prevent a user from overriding the disabling of the graphical user interface automount function.'
-  desc 'A nonprivileged account is any operating system account with authorizations of a nonprivileged user.
-
-'
+  desc 'A nonprivileged account is any operating system account with authorizations of a nonprivileged user.'
   desc 'check', %q(Note: This requirement assumes the use of the Ubuntu 24.04 LTS default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.
 
 Verify Ubuntu 24.04 LTS disables the ability of the user to override the graphical user interface automount setting.

@@ -11,9 +11,9 @@ Reconstruction of harmful events or forensic analysis is not possible if audit r
 Successful incident response and auditing relies on timely, accurate system information and analysis to allow the organization to identify and respond to potential incidents in a proficient manner. If Ubuntu 24.04 LTS does not provide the ability to centrally review Ubuntu 24.04 LTS logs, forensic analysis is negatively impacted.
 
 Associating event types with detected events in Ubuntu 24.04 LTS audit logs provides a means of investigating an attack; recognizing resource utilization or capacity thresholds; or identifying an improperly configured operating system.'
-  desc 'check', 'Verify the audit service is configured to produce audit records with the following command:
-
-$ dpkg -l | grep auditd
+  desc 'check', 'Verify the audit service is configured to produce audit records with the following command: 
+ 
+$ dpkg -l | grep auditd 
 ii  auditd     1:3.0.7-1build1     amd64     User space tools for security auditing
 
 If the "auditd" package is not installed, this is a finding.'

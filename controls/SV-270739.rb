@@ -16,7 +16,7 @@ ENCRYPT_METHOD SHA512'
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000120-GPOS-00061'
   tag gid: 'V-270739'
-  tag rid: 'SV-270739r1067124_rule'
+  tag rid: 'SV-270739r1268232_rule'
   tag stig_id: 'UBTU-24-400400'
   tag fix_id: 'F-74673r1066705_fix'
   tag cci: ['CCI-000196', 'CCI-000803']

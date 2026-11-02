@@ -11,24 +11,29 @@ $ sudo find /run/log/journal /var/log/journal  -type d -exec stat -c "%n %U" {} 
 /var/log/journal/d5745ad455d34fb8b6f78be37c1fcd3e root
 
 If any output returned is not owned by "root", this is a finding.'
-  desc 'fix', 'Configure the system to set the appropriate ownership to the directories used by the systemd journal:
+  desc 'fix', 'Configure the system to set the appropriate ownership to the directories used by the systemd journal.
 
-$ sudo nano /usr/lib/tmpfiles.d/systemd.conf
+Create a drop-in file if it does not already exist with the following command:
 
-Edit the following lines of the configuration file:
+$ sudo vi /etc/tmpfiles.d/zzz-systemd-stig.conf
+ 
+Add or modify the following lines in the "/usr/lib/tmpfiles.d/zzz-systemd-stig.conf" file: 
 
-z /run/log/journal 2640 root systemd-journal - -
-z /var/log/journal 2640 root systemd-journal - -
+z /run/log/journal 2755 root systemd-journal - -
+Z /run/log/journal/%m ~2750 root systemd-journal - -
+z /var/log/journal 2755 root systemd-journal - -
+z /var/log/journal/%m 2755 root systemd-journal - -
+z /var/log/journal/%m/system.journal 0640 root systemd-journal - -
 
-Note: The system must be restarted for these settings to take effect.'
+Note: Restart the system for these settings to take effect.'
   impact 0.5
   tag check_id: 'C-74796r1066776_chk'
   tag severity: 'medium'
   tag gid: 'V-270763'
-  tag rid: 'SV-270763r1066778_rule'
+  tag rid: 'SV-270763r1261497_rule'
   tag stig_id: 'UBTU-24-700080'
   tag gtitle: 'SRG-OS-000206-GPOS-00084'
-  tag fix_id: 'F-74697r1066777_fix'
+  tag fix_id: 'F-74697r1261496_fix'
   tag 'documentable'
   tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']

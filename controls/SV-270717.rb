@@ -8,23 +8,23 @@ PermitEmptyPasswords no
 PermitUserEnvironment no
 
 If the "PermitEmptyPasswords" or "PermitUserEnvironment" keywords are set to a value other than "no", are commented out, are both missing, or conflicting results are returned, this is a finding.)
-  desc 'fix', 'Configure Ubuntu 24.04 LTS to allow the SSH daemon to not allow unattended or automatic login to the system.
+  desc 'fix', 'Configure Ubuntu 24.04 LTS to allow the SSH daemon to not allow unattended or automatic login to the system. 
+ 
+Add or edit the following lines in the "/etc/ssh/sshd_config" file: 
+ 
+PermitEmptyPasswords no 
+PermitUserEnvironment no 
+ 
+Restart SSH for the changes to take effect: 
 
-Add or edit the following lines in the "/etc/ssh/sshd_config" file:
-
-PermitEmptyPasswords no
-PermitUserEnvironment no
-
-Restart the SSH daemon for the changes to take effect:
-
-$ sudo systemctl restart sshd.service'
+$ sudo systemctl restart ssh'
   impact 0.7
   tag severity: 'high'
   tag gtitle: 'SRG-OS-000480-GPOS-00229'
   tag gid: 'V-270717'
-  tag rid: 'SV-270717r1067177_rule'
+  tag rid: 'SV-270717r1208700_rule'
   tag stig_id: 'UBTU-24-300031'
-  tag fix_id: 'F-74651r1066639_fix'
+  tag fix_id: 'F-74651r1208297_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
   tag 'host'
